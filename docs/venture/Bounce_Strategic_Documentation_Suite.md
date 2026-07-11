@@ -4,7 +4,7 @@
 
 ---
 
-**Document Version:** 0.2 (Merged Concept — Post-Research Revision)
+**Document Version:** 0.3 (Claim-hardened — rebaseline re-sourced, moat sweep done, costs partially audited)
 **Founding Team:** 3-Developer AI-Augmented Squad (side project)
 **Prepared:** July 2026
 **Status:** Desk research done (July 2026), core whitespace verified, math refactored. **Nothing is validated with real users yet** — the Phase 1 pilot is the first real evidence gate. Tweak freely.
@@ -29,7 +29,7 @@ A user logs "Philosophical night at Toit" in two taps. Bounce then:
 
 Competitive research (July 2026) found:
 
-- **The closed loop is genuinely unoccupied [verified].** No app, globally or in India, takes a logged vice and recalculates *both* health targets and budget. The closest (Paceline, US) is one-directional cashback-for-exercise. Indian incumbents (HealthifyMe, Cult.fit, Jupiter, CRED) run parallel scoring systems that never bridge domains.
+- **The closed loop is genuinely unoccupied [verified — store + Crunchbase/Tracxn sweep, 2026-07-12].** No app, globally or in India, takes a logged vice and *forward-recalculates* both health targets and budget. Sharpened by the sweep: a few trackers (Reframe, Sunnyside, DrinkControl) already show money-saved *and* calories from one drink log — but as **retrospective dashboards**, not a **prospective re-plan**. The forward recalculation is the actual moat. Adjacent-but-opposite closed loops exist and are fundable — Paceline (US) and Aditya Birla Activ Health (India) both run exercise→money — validating the mechanic without occupying it. Indian incumbents (HealthifyMe, Cult.fit, Jupiter, CRED) run parallel scoring systems that never bridge domains.
 - **"No-shame" tone alone is crowded [verified].** Reframe, Sunnyside, Hoot, and Finch already do guilt-free logging well. Bounce's differentiation is the **recalibration mechanic**, not the empathy framing. Every pitch sentence should lean on "one log adjusts everything," not "we don't judge you."
 
 ### Positioning (hypothesis)
@@ -49,7 +49,7 @@ Competitive research (July 2026) found:
 
 | Finding | Verdict | Consequence in this doc |
 |---|---|---|
-| Closed-loop spend↔physiology whitespace | **Confirmed** (strong, not airtight — no App-Store/Crunchbase sweep yet) | Loop promoted to core mechanic (Part 1) |
+| Closed-loop spend↔physiology whitespace | **Confirmed — sweep done** [verified — App/Play-store keyword + Crunchbase/Tracxn/Product Hunt sweep, 2026-07-12]. Nothing recalculates *both* a forward health plan *and* a forward budget from one vice log. Sharpening: several trackers (Reframe, Sunnyside, DrinkControl) already show money-saved + calories side-by-side from one drink log, but as **retrospective dashboards**, not **prospective re-planning** — Bounce's real moat is the *forward recalculation*, narrower and better-defended than "no dual-domain app exists." | Loop promoted to core mechanic (Part 1); pitch the *forward re-plan*, not merely dual display |
 | "No-shame" framing as differentiator | **Crowded** — Reframe, Sunnyside, Hoot, Finch | Differentiate on mechanic, not tone |
 | RBI Account Aggregator for bank data | **Structurally out of reach** — FIU must be RBI/SEBI-regulated; no TSP bypass; ₹2 Cr NOF for own license | Manual logging is the hero trigger; AA deferred to funded-company stage, permanently out of MVP |
 | Gmail transaction parsing | **Blocked** — restricted-scope API needs $15–75k CASA assessment | Not pursued |
@@ -59,7 +59,8 @@ Competitive research (July 2026) found:
 | Unknown: link→install→notification-permission funnel | **Unmeasured anywhere** — biggest silent-failure risk | Promoted to a primary pilot metric |
 | D7 ≥45% success gate (v0.1) | **Miscalibrated** — category median D7 ≈ 7–20%; good = 28–40%; 45% = Duolingo-tier | Gates reset: kill <20%, iterate 20–30%, strong ≥30% |
 | India wearables assumption | **Whoop/Oura = premium niche** — smart rings −30.6% in 2025; Oura India only since Mar 2026 at ₹29k+; Android ≈95% | Wearable-free core mandatory; Health Connect primary, Ultrahuman candidate API |
-| Alcohol physiology anchor | **Oura 600k-member data:** HRV −15.6%, RHR +8.2%, 24–48h rebaseline | Used to calibrate ω and the 48h Recovery window |
+| Alcohol physiology anchor (same-night deltas) | **Oura 600k-member data [verified — ouraring.com]:** HRV −15.6%, **lowest** RHR +8.2% (source's own label — this is the lowest-RHR metric, *not* average RHR). Same-night/adjacent-day deltas only — the Oura source carries **no** recovery-timeframe data. | Used to calibrate ω (the physiology top-up) |
+| Rebaseline window (how long recovery takes) | **Re-sourced [hypothesis — MunichBREW II, Eur Heart J 2024]:** the originally-cited Oura study never established this. MunichBREW II (48h continuous ECG, n=202, BAC ≥1.2 g/kg) shows HR/HRV normalizing by ~24h — but *under controlled heavy dosing*, and WHOOP real-world data shows 19–29% still suppressed at day 2–3 with a tail to day 4–5. | Treat 24–48h as an **optimistic median, not a design guarantee**; the 48h Recovery window is a calibration placeholder, tunable with pilot wearable data |
 | DPDP Act 2023 burden at our scale | **Manageable** — privacy policy, named grievance officer, consent logging; no consent-manager requirement for tiny apps | Added to MVP checklist |
 
 *Key sources: Paceline (paceline.fit, CNBC), Reframe/Sunnyside/Hoot product pages, IDC India wearables 2025, CASParser State-of-AA-2026, Setu AA pricing, Google Play SMS-permission policy + Bluecoins case, Google Play closed-testing help, Oura alcohol-impact study (600k members), UXCam/Business-of-Apps retention benchmarks, dpdpa.com. Full links in research session notes.*
@@ -108,7 +109,7 @@ Four domains, three tiers each, logged qualitatively — never as raw numbers:
 | **Food delivery / cheat** | `Mindful Order` — **5** | `Late-Night Binge` — **15** | `Weekend Write-Off` — **30** |
 | **Sugar** | `Extra-Sweet Chai` — **3** | `Dessert Raid` — **8** | `Sugar Spiral` — **15** |
 
-**Calibration status:** alcohol severities are loosely anchored to real physiology (Oura 600k data: a drinking night ≈ HRV −15.6%, RHR +8.2%, 24–48h to rebaseline — the heaviest measurable vice signature, hence the heaviest tiers). Smoking/food/sugar weights are **relative guesses** pending pilot + wearable-delta data. Severities are stored as **positive magnitudes**; the formula's minus sign applies the penalty (storing negatives silently flips penalties into bonuses — a bug we already hit once).
+**Calibration status:** alcohol severities are loosely anchored to real physiology (Oura 600k data [verified]: a drinking night ≈ HRV −15.6%, **lowest** RHR +8.2% — the heaviest measurable vice signature, hence the heaviest tiers; recovery *duration* is a separate, weaker claim — see the Rebaseline row in the Research Digest). Smoking/food/sugar weights are **relative guesses** pending pilot + wearable-delta data. Severities are stored as **positive magnitudes**; the formula's minus sign applies the penalty (storing negatives silently flips penalties into bonuses — a bug we already hit once).
 
 **Default cost per tier** (editable at log time; drives the budget reflow):
 
@@ -116,10 +117,10 @@ Four domains, three tiers each, logged qualitatively — never as raw numbers:
 |---|---|---|---|
 | Alcohol T1 / T2 / T3 | 300 / 600 / 1000 | 600 / 1200 / 2500 | 1200 / 2500 / 5000 |
 | Delivery T1 / T2 / T3 | 200 / 250 / 500 | 400 / 500 / 900 | 800 / 900 / 1600 |
-| Smoking (per unit/pack) | ~20 / 50 / 350 (tier-independent MRP-ish) | | |
+| Smoking (per unit/pack) | **Updated** [verified — TaxGuru excise notification + live Zepto retail, 2026-07]: a **Feb 1 2026 excise overhaul** (₹2,050–8,500 / 1,000 sticks + 40% GST) raised prices, with a wider brand spread than one figure captures — Gold Flake ≈ ₹12/stick, Classic Milds ≈ ₹24/stick, pack ≈ ₹120–240. Store as per-stick × count, not a flat tier. | | |
 | Sugar | usually ₹0–50 — logged for score, mostly ignored by budget | | |
 
-*All costs are placeholder audits pending Phase 2 (Swiggy/Zomato + local price sweep).*
+*Costs are placeholder audits pending a full Phase 2 sweep. Partial audit done 2026-07-12 (`research/2026-07-12_bangalore-vice-cost-audit.md`): smoking updated above [verified]; alcohol premium row brackets real Toit/Byg Brewski menus ₹1,500–3,000+/person [verified] but the budget-tier row rests on cost-of-living estimates [hypothesis]; food-delivery AOV **could not be verified from primary sources** (Swiggy/Zomato investor PDFs are image-only) — the ₹425 figure is search-synthesized [hypothesis]. The ₹80 lunchbox baseline needs a scope decision — raw ingredients (₹25–40/portion [verified]) vs fully-loaded (LPG/protein/waste) — before it drives the savings ledger.*
 
 ---
 
@@ -160,7 +161,7 @@ $$V_t = \min\Big(100,\; V_{sub,t} + \Delta_t\Big)$$
 $$\Delta_t = \min\Big(25,\; \omega\big(\hat r_t + \hat h_t\big)\Big), \qquad \hat r_t = \max\!\Big(0, \tfrac{RHR_t - RHR_{base}}{RHR_{base}}\Big), \quad \hat h_t = \max\!\Big(0, \tfrac{HRV_{base} - HRV_t}{HRV_{base}}\Big)$$
 
 - Each ratio floors at 0 separately — a *good* RHR can't cancel out a *bad* HRV.
-- **$\omega = 20$, anchored to real data:** a typical alcohol night (Oura 600k: RHR +8.2%, HRV −15.6%) gives $\Delta = 20 \times 0.238 \approx 4.8$ — physiology quietly adds ~half a `Buzzed` tier when the body shows standard drinking strain; an extreme night (+20% RHR, −35% HRV) adds ~11; hard cap 25 so a sensor glitch can never nuke a score.
+- **$\omega = 20$, anchored to real data:** a typical alcohol night (Oura 600k [verified]: lowest RHR +8.2%, HRV −15.6%) gives $\Delta = 20 \times 0.238 \approx 4.8$ — physiology quietly adds ~half a `Buzzed` tier when the body shows standard drinking strain; an extreme night (+20% RHR, −35% HRV) adds ~11; hard cap 25 so a sensor glitch can never nuke a score.
 - No wearable → $\Delta_t = 0$, pure self-report. **The core works wearable-free [required for India].**
 - UI never surfaces $\Delta$ as an accusation — the score absorbs it silently; the morning message stays supportive.
 
@@ -213,7 +214,7 @@ $$R = W - \sum_{\text{this week}} c_i \qquad\qquad a_{daily} = \frac{\max(0, R)}
 
 ### 7. Recovery Mode (the third arrow) — unified trigger
 
-Enter for up to **48h** (matching the verified 24–48h alcohol rebaseline window) when **any** of:
+Enter for up to **48h** (an optimistic-median rebaseline window — see the Rebaseline row in the Research Digest; [hypothesis], not a design guarantee, so the 48h is a tunable placeholder) when **any** of:
 - $V_t \ge 25$ (one Philosophical night or equivalent stack), or
 - $h_t < 5$ hours, or
 - wearable recovery < 50% (when connected)
@@ -418,7 +419,7 @@ Cadence: daily 15-min standup, Friday demo+retro. Side-project honesty rule: if 
 | **$m_t$** | Sleep vice-amplifier, 1.0×@8h → 1.8×@0h, continuous |
 | **Budget reflow** | Weekly discretionary pot minus logged vice costs, re-divided over remaining days; no rollover |
 | **Vice tier** | Qualitative severity label, positive magnitude, culturally-worded (`Sutta-Chai Break`) |
-| **Recovery Mode** | ≤48h reduced-target soft-UI state; triggers: $V_t\ge25$ ∨ sleep<5h ∨ wearable recovery<50% |
+| **Recovery Mode** | ≤48h reduced-target soft-UI state (48h is an optimistic-median rebaseline placeholder, [hypothesis] — see Research Digest); triggers: $V_t\ge25$ ∨ sleep<5h ∨ wearable recovery<50% |
 | **TWA** | Trusted Web Activity — a thin Android wrapper that ships the existing PWA through the Play Store; ~free via Bubblewrap |
 
 ### What would change our minds
@@ -433,3 +434,4 @@ Cadence: daily 15-min standup, Friday demo+retro. Side-project honesty rule: if 
 |---|---|---|
 | 0.1 | Jul 2026 | First idea capture; hypothesis framing; EMA math v1 |
 | **0.2** | **Jul 2026** | **Merged concept (health+finance loop = core, [verified] whitespace); math refactored — 100-pt day-quality fixed (v1 capped at 70), sleep restored as credit + amplifier, ω Oura-anchored, provable bounds + worked examples; vice set broadened (delivery, sugar) with cost defaults; retention gates recalibrated to category benchmarks (kill <20%, not <45%); PWA+TWA dual-track distribution; funnel promoted to primary metric; AA/Gmail verified out of reach — manual-first locked; DPDP checklist added; Whoop-first retired for India** |
+| **0.3** | **Jul 2026** | **Claim-hardening pass (research + claim-verifier, 2026-07-12): "24–48h rebaseline" un-attributed from Oura (that study has no recovery-timeframe data) and re-sourced as [hypothesis — MunichBREW II, Eur Heart J 2024] — ~24h under heavy dosing, but WHOOP real-world shows a 4–5-day tail; the 48h Recovery window is now explicitly a tunable placeholder, not a guarantee. RHR figure corrected to *lowest* RHR +8.2% (source's own label), not average. Closed-loop moat sweep completed (App/Play + Crunchbase/Tracxn) — whitespace survives, sharpened to *prospective re-plan* vs retrospective dashboards; Paceline / Aditya Birla cited as adjacent-but-opposite validation. Smoking costs updated for the Feb 2026 excise overhaul [verified]; alcohol/food/lunchbox costs partially audited with open gaps flagged. Sources: `research/2026-07-12_*.md`.** |
