@@ -11,11 +11,17 @@ _Last synced: 2026-07-11._
 
 ---
 
-## About me (the human)
+## About us (the team)
 
-- One of a 3-founder side-project squad building **Bounce** (Founder A profile:
-  engine/PM lane per the venture doc's Part 4 charter). Day job: junior
-  Salesforce dev — this repo is personal, evenings-and-weekends.
+- Here are the 3-founder side-project squad building **Bounce**
+  - Founder A profile:
+    engine/PM lane per the venture doc's Part 4 charter.
+    Day job: junior Salesforce dev
+  - Founder B profile :
+    Day Job: junior python developer, working on optimizing AI workflows.
+  - Founder C profile:
+
+  (this repo is personal, evenings-and-weekends for all three of us.)
 - Hard constraints: git only when explicitly asked (see CLAUDE.local.md rule 1);
   claims discipline on all venture docs (rule 2). No company-visibility
   constraints — Claude Code is openly mentionable here.
