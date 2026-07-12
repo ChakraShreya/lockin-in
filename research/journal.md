@@ -9,6 +9,45 @@ Maintained by `/sync-context` — each run prepends one entry. Format per entry:
 
 ---
 
+## 2026-07-12 (evening meeting follow-up) — budget goes MONTHLY; meeting ideas triaged
+
+**What we did**
+
+- Triaged the 8 ideas from the founders' evening meeting (`founder_discussions`
+  notes) against the PRDs: 2 sprint adds, 4 backlog, 1 absorbed, 1 major change.
+- **Executed the major change — budget period weekly → monthly** (founder
+  decision, all three): PRD-02 bumped to **v0.4** (`monthly_budgets` schema,
+  1st-of-month 04:00 IST boundary, pro-rated first month, reworked fixtures +
+  §8 scripts, group-order note in FR4, auto bill-splitting fenced out, new
+  **FR8 weekly pacing checkpoint**). UX spec bumped to **v1.1** (all "till
+  Monday"/weekly copy → monthly + pacing line in Advanced Metrics). Venture doc
+  bumped to **v0.4.1** (Domain 1 §6, loop diagram, Part 3 schema, glossary,
+  copy-probe message).
+- Founder A decisions folded in same session: monthly tier amounts
+  ₹6,500/13,000/26,000 **confirmed-for-now** (retunable, still `[hypothesis]`);
+  **pro-rating decided**; **FR8 signed off** (Slice F now unconditional).
+- Process note: the product-manager subagent's first PRD-02 write reported
+  success but never persisted to disk — caught by verifying the file, re-ran,
+  then verified content directly. Verify subagent writes on disk.
+
+**What we concluded**
+
+- Meeting-idea triage: **staple-diet presets** (#6) and **group-order
+  share-editing** (#2, via FR4) are sprint-worthy; **BCA report tracking** (#1,
+  mechanism undecided — manual entry recommended over upload for DPDP),
+  **per-user high/low calibration** (#4/#7) and **sex-based score adjustment**
+  (#8, engine tunable only; avoid blackout/medical framing) are backlog;
+  weekend-blowoff worry (#3) is absorbed by the monthly pot + FR8 pacing.
+- The weekly reset was doing anti-guilt work; FR8's soft weekly pace read
+  (derived-on-read, no reset, no alarm) preserves that cadence under a monthly pot.
+
+**How it's going / next**
+
+- PRD-02 v0.4, UX spec v1.1, venture doc v0.4.1 all uncommitted in the working
+  tree (user commits explicitly). Staple-presets FR still needs writing
+  (PRD-01/UX spec). Gate-bands sign-off (#4) and BCA mechanism (#5) deferred
+  to a later founder call.
+
 ## 2026-07-12 (later night) — product renamed Bounce → Nudge
 
 **What we did**

@@ -3,7 +3,7 @@
 **Owner:** Product (Founder A lane — engine/PM)
 **Builds in:** Phase 3, Week 4 (alongside the $D_t$/EMA balance engine)
 **Source of truth:** `docs/venture/Nudge_Strategic_Documentation_Suite.md` v0.4, Domain 1 §6 ("Financial Recalibration") + Part 3 schema
-**Version:** v0.4 · 2026-07-12 · _**Monthly supersession:** the budget pot moves from **weekly to monthly** per the 2026-07-12 **evening** founder meeting (all three founders) — this supersedes v0.3.1's FINAL weekly design (Monday 04:00 IST boundary, `weekly_budgets`, weekly reset). The period boundary is now the **1st of the calendar month, 04:00 IST**; schema becomes `monthly_budgets`; FR1's defaults are mechanically scaled to monthly `[hypothesis — amounts not yet founder-decided]`; a weekly **pacing checkpoint** is added as a PROPOSED FR (FR8, pending sign-off); FR4 gains an explicit group-order note and the MVP fence gains "automatic bill/order splitting"; §7 fixtures and §8 scripts reworked to monthly framing. **What this does NOT change:** the lunchbox credit math (flat ₹80 home cost, ₹200/300/380 lunch baselines, ₹120/220/300 credits — all FINAL), the three-tier wallet concept, the verified AOV anchor (₹453–458), the no-rollover/no-debt principle, or the 04:00 IST day boundary (PRD-01 Q1). Prior: v0.3.1 reconciliation (money estimates FINAL after AOV verification; decision record added). v0.3 (Shreya): food-delivery AOV **verified** from Eternal + Swiggy primary filings. v0.2: founder decisions landed. v0.1: initial build-ready PRD._
+**Version:** v0.4 · 2026-07-12 · _**Monthly supersession:** the budget pot moves from **weekly to monthly** per the 2026-07-12 **evening** founder meeting (all three founders) — this supersedes v0.3.1's FINAL weekly design (Monday 04:00 IST boundary, `weekly_budgets`, weekly reset). The period boundary is now the **1st of the calendar month, 04:00 IST**; schema becomes `monthly_budgets`; FR1's defaults are mechanically scaled to monthly `[hypothesis — confirmed-for-now by Founder A same day, retunable on requirements]`; a weekly **pacing checkpoint** is added (FR8 — proposed, then **signed off by the founders the same evening**); FR4 gains an explicit group-order note and the MVP fence gains "automatic bill/order splitting"; §7 fixtures and §8 scripts reworked to monthly framing. **What this does NOT change:** the lunchbox credit math (flat ₹80 home cost, ₹200/300/380 lunch baselines, ₹120/220/300 credits — all FINAL), the three-tier wallet concept, the verified AOV anchor (₹453–458), the no-rollover/no-debt principle, or the 04:00 IST day boundary (PRD-01 Q1). Prior: v0.3.1 reconciliation (money estimates FINAL after AOV verification; decision record added). v0.3 (Shreya): food-delivery AOV **verified** from Eternal + Swiggy primary filings. v0.2: founder decisions landed. v0.1: initial build-ready PRD._
 
 ---
 
@@ -43,7 +43,7 @@ This PRD gets built first; the gate decides whether it survives.
 
 ## 2. Data model
 
-### 2.1 `monthly_budgets` (supersedes the venture doc Part 3 `weekly_budgets` sketch — doc to be updated on its next revision)
+### 2.1 `monthly_budgets` (supersedes the venture doc Part 3 `weekly_budgets` sketch — doc updated same day, v0.4.1)
 
 `{ user_id, month_start, budget_inr, spent_inr, daily_allowance_inr }` — **no
 rollover column by design** (see FR5).
@@ -58,7 +58,7 @@ rollover column by design** (see FR5).
 
 **Derived, not stored** (compute on read so there is no stale state):
 `R = budget_inr − spent_inr`; `overshoot_inr = max(0, −R)` (FR5). The weekly
-pacing figure (FR8, PROPOSED) is likewise **derived on read**, never stored.
+pacing figure (FR8) is likewise **derived on read**, never stored.
 
 ### 2.2 `vices_logged` (from venture doc Part 3 — referenced)
 
@@ -104,11 +104,10 @@ but a default must always exist.
 
 Tier defaults — **monthly**: **₹6,500 / ₹13,000 / ₹26,000**
 `[hypothesis — mechanically scaled from the weekly defaults (₹1,500/3,000/6,000
-× ~4.33, rounded to clean numbers); founder confirmation of the monthly amounts
-pending]`. **Note the scope of the founder decision:** the 2026-07-12 evening
-meeting decided the **period change only** (weekly → monthly). The monthly
-*amounts* were **not** decided — the figures above are Product's mechanical
-scaling, flagged for Founder A (see Decision record).
+× ~4.33, rounded to clean numbers); **confirmed-for-now by Founder A, 2026-07-12**,
+explicitly retunable on requirements / post-cohort]`. The 2026-07-12 evening
+meeting decided the period change (weekly → monthly); the scaled amounts were
+confirmed as working defaults the same day (see Decision record).
 
 - **Given** a new user selecting the **mid** wallet tier on the 1st of the month,
   **When** onboarding completes,
@@ -132,8 +131,8 @@ budget setting (the _setting_ carries; the _spend_ does not — see FR5).
 "Days left in month" for FR3 = **count of days from today through the last day of
 the month, inclusive of today** (the 29th of a 31-day month → 29/30/31 = 3).
 
-**Partial first month — pro-rate by default `[hypothesis — pro-rating chosen as
-the default over granting the full pot; flagged decision for Founder A]`:** when a
+**Partial first month — pro-rate `[DECIDED — Founder A, 2026-07-12: pro-rating
+over granting the full pot]`:** when a
 user onboards mid-month, the first `monthly_budgets` row gets
 `budget_inr = round(tier_default × days-left / days-in-month)`. A full pot on
 day 20 would read as three weeks of free headroom; pro-rating keeps the first
@@ -335,12 +334,11 @@ venture doc; the copy itself is out of this PRD's lane (marketing-growth).
 **Acceptance:** the displayed total equals `SUM(credit_inr WHERE status =
 'confirmed')`. `pending_confirm` and `expired` rows are excluded from the total.
 
-### FR8 — Weekly pacing checkpoint (**PROPOSED — pending founder sign-off, not yet a founder decision**)
+### FR8 — Weekly pacing checkpoint (**SIGNED OFF — founders, 2026-07-12**)
 
-> **Status:** Claude's recommendation, accepted by Founder A **for inclusion as a
-> proposal only** at the 2026-07-12 evening meeting. Do **not** build until all
-> three founders sign off (see Decision record). Everything else in this PRD
-> stands without it.
+> **Status:** proposed at the 2026-07-12 evening meeting (Claude recommendation,
+> carried by Founder A) and **signed off by the founders the same evening** —
+> a committed FR, built as Slice F (see Decision record).
 
 **Why it exists:** the weekly reset the monthly pot removed was quietly doing
 anti-guilt work — a frequent clean-slate rhythm. A monthly pot alone means a bad
@@ -366,7 +364,7 @@ preserves the weekly feedback cadence **without** a hard reset or scolding.
   **Then** the pacing line reads "You're pacing ₹1,800/week against your month
   (~₹2,935 is even pace)" — no alarm state, no change to `daily_allowance_inr`.
 
-**Acceptance (applies only if signed off):** the pacing figure is derived on read
+**Acceptance:** the pacing figure is derived on read
 (no new stored column); it never mutates `monthly_budgets`; an over-pace week
 triggers no alarm-register message; the Monday window boundary is 04:00 IST.
 
@@ -395,7 +393,7 @@ Per repo claims discipline, every figure the reflow depends on, traced to
 
 | Figure | Value | Status |
 |---|---|---|
-| Wallet-tier pot $W$ (**monthly**, v0.4) | ₹6,500 / 13,000 / 26,000 | `[hypothesis — mechanically scaled from the weekly ₹1,500/3,000/6,000 placeholders (themselves Phase-2-audit pending); founder confirmation of the monthly amounts pending]` |
+| Wallet-tier pot $W$ (**monthly**, v0.4) | ₹6,500 / 13,000 / 26,000 | `[hypothesis — mechanically scaled from the weekly ₹1,500/3,000/6,000 placeholders (themselves Phase-2-audit pending); confirmed-for-now by Founder A 2026-07-12, retunable on requirements]` |
 | Smoking cost | per-stick × count; Gold Flake ≈ ₹12, Classic Milds ≈ ₹24, pack ≈ ₹120–240 | `[verified — TaxGuru Feb-2026 excise notification + live Zepto/Blinkit/Instamart listings, cost audit 2026-07-12]` |
 | Alcohol **premium** row | ~₹1,200–5,000/person brackets real menus | `[verified — Toit + Byg Brewski menus via Magicpin/ExploreBangalore, cost audit 2026-07-12]` |
 | Alcohol **budget/mid** rows | 300/600/1000, 600/1200/2500 | `[hypothesis — cost-of-living/nightlife blogs, no per-venue budget menu fetched, cost audit 2026-07-12]` |
@@ -474,9 +472,13 @@ once per month; the next 1st's row shows `budget_inr = 13000, spent_inr = 0`, no
 **Lunchbox fixture (FR6 — unchanged by the monthly move):** mid-tier, accept
 prompt → next-day confirm → `credit_inr == 220`, running total += 220.
 
-**Pro-ration fixture (FR2, `[hypothesis]` default):** mid-tier onboarding on the
-16th of a 30-day month → first row `budget_inr == 6500` (`13000 × 15/30`); the
-following 1st's row → `budget_inr == 13000`.
+**Pro-ration fixture (FR2 — decided, Founder A 2026-07-12):** mid-tier onboarding
+on the 16th of a 30-day month → first row `budget_inr == 6500` (`13000 × 15/30`);
+the following 1st's row → `budget_inr == 13000`.
+
+**Pacing fixture (FR8):** mid-tier, 31-day month, ₹1,800 logged Mon–Thu →
+pacing line renders `week_spend = 1800`, `pace = round(13000 × 7/31) = 2935`,
+no alarm state, `monthly_budgets` row unchanged.
 
 ---
 
@@ -497,8 +499,8 @@ max(0,R)/days-left-in-month` on each inbound vice, exactly as FR3.
 > **Founder:** "Quick one to set up your month: roughly, what's a comfortable
 > _fun-spend_ budget for a month — nights out, deliveries, smokes? Ballpark is
 > fine, we'll tune it. Most people land ₹6.5k / ₹13k / ₹26k."
-> _(Amounts here are the FR1 `[hypothesis]` monthly scalings — retune when the
-> founders confirm the monthly figures.)_
+> _(Amounts here are the FR1 `[hypothesis]` monthly scalings — confirmed-for-now
+> by Founder A 2026-07-12, retune post-cohort.)_
 > **User:** "13k I guess"
 > **Founder:** "Perfect — ₹13,000/month of fun money. I'll track it as you log.
 > Just text me the vice in plain words whenever, like 'philosophical night at
@@ -523,8 +525,7 @@ max(0,R)/days-left-in-month` on each inbound vice, exactly as FR3.
 > _(Any further logs that month: founder does NOT re-nag the overshoot — just
 > logs and, if asked, says "still over, resets on the 1st.")_
 
-**Script — weekly pacing check-in (FR8, PROPOSED — probe this language only if
-the pacing checkpoint is signed off):**
+**Script — weekly pacing check-in (FR8):**
 > **Founder (Monday morning):** "New week inside your month: you're pacing
 > **₹1,800/week against ~₹2,935 even pace** — comfortably clear. Nothing resets,
 > nothing owed; just the rhythm."
@@ -556,10 +557,10 @@ risk in the venture doc register.)
 | Lunch baselines / split (was OQ3) | **FINAL: two-baseline split kept; baselines ₹200/300/380** (solo everyday lunch, bounded by the verified sub-₹250 budget-meal segment) → credits ₹120/220/300. History: ₹200/300/380 (v0.1) → raised ₹250/350/450 (v0.2) → **reverted to ₹200/300/380** with the verified anchor (v0.3.1). | 2026-07-12 PM, Founder A |
 | `{suggestion}` templatization (was OQ4) | Deterministic string for MVP; **no NLG/template investment until the reflow-reaction gate passes**, then marketing-growth's lane. | 2026-07-12, v0.3 |
 | Timezone / boundaries (was OQ5) | Asia/Kolkata hard-coded; **day boundary 04:00 IST** (PRD-01 Q1); no traveling-user handling in MVP. (Row originally also fixed the *week* boundary at Monday 04:00 — that part is superseded by the monthly decision below.) | 2026-07-12, Founder A |
-| **Budget period: weekly → MONTHLY** | **DECIDED — supersedes the prior FINAL weekly design** (v0.3.1: Monday 04:00 IST week boundary, `weekly_budgets` schema, weekly reset). The pot is a **calendar-month** pot; boundary = **1st of month, 04:00 IST** (FR2); schema = `monthly_budgets` (§2.1). **Scope note:** only the *period* was decided — the monthly tier *amounts* were not (FR1 figures are `[hypothesis]` scalings, pending). | **2026-07-12 evening founder meeting, all three founders** |
-| Monthly tier amounts (₹6,500/13,000/26,000) | **OPEN — flagged for founders.** Product's mechanical ×~4.33 scaling of the weekly defaults, rounded. Confirm or replace before onboarding copy freezes. | pending, all founders |
-| Partial-first-month handling | **OPEN — flagged for Founder A.** Default in this PRD: **pro-rate** the pot (`tier × days-left/days-in-month`) `[hypothesis]`; alternative is granting the full pot mid-month. | pending, Founder A |
-| Weekly pacing checkpoint (FR8) | **PROPOSED, not decided.** Claude recommendation accepted by Founder A **for inclusion as a proposal**; preserves the weekly clean-slate/anti-guilt cadence the reset used to give, with no hard reset and no alarm. Needs three-founder sign-off before build. | pending, all founders |
+| **Budget period: weekly → MONTHLY** | **DECIDED — supersedes the prior FINAL weekly design** (v0.3.1: Monday 04:00 IST week boundary, `weekly_budgets` schema, weekly reset). The pot is a **calendar-month** pot; boundary = **1st of month, 04:00 IST** (FR2); schema = `monthly_budgets` (§2.1). **Scope note:** the meeting decided the _period_; the amounts were confirmed-for-now separately, same day (next row). | **2026-07-12 evening founder meeting, all three founders** |
+| Monthly tier amounts (₹6,500/13,000/26,000) | **CONFIRMED-FOR-NOW.** Product's mechanical ×~4.33 scaling of the weekly defaults, rounded; Founder A: keep for now, revisit based on requirements. Stays `[hypothesis]` — retunable, not FINAL. | 2026-07-12, Founder A |
+| Partial-first-month handling | **DECIDED: pro-rate** the pot (`tier × days-left/days-in-month`); full-pot alternative rejected. | 2026-07-12, Founder A |
+| Weekly pacing checkpoint (FR8) | **SIGNED OFF.** Claude recommendation carried by Founder A; preserves the weekly clean-slate/anti-guilt cadence the reset used to give, with no hard reset and no alarm. Builds as Slice F. | 2026-07-12, founders (via Founder A) |
 
 ---
 
@@ -586,9 +587,9 @@ alongside the $D_t$/EMA engine (venture doc Phase 3 table).
    mirror; mid-tier `credit == 220` fixture gates it._
 5. **Slice E — Ledger surface.** Running confirmed total + recent credits (FR7).
    _Makes the banked savings visible; last because it only reads what D writes._
-6. **Slice F (CONDITIONAL — build only after founder sign-off) — Weekly pacing
-   line.** Derived-on-read pace figure + muted surface line (FR8). _Held out of
-   the committed build order until the Decision-record item closes._
+6. **Slice F — Weekly pacing line.** Derived-on-read pace figure + muted surface
+   line (FR8, signed off 2026-07-12). _Last: pure read-side, touches nothing the
+   earlier slices prove._
 
 **Grilling focus before build:** the month-boundary/pro-ration edge (Slice A —
 variable month lengths, mid-month onboarding, the 02:00-on-the-1st log), the

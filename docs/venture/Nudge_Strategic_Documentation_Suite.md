@@ -85,7 +85,7 @@ Competitive research (July 2026) found:
           ▼                        ▼                        ▼
  ┌─────────────────┐    ┌──────────────────┐    ┌──────────────────┐
  │  LIFE SCORE     │    │  BUDGET REFLOW   │    │  48H RECOVERY    │
- │  EMA absorbs    │    │  week's fun-money│    │  strain −25%,    │
+ │  EMA absorbs    │    │ month's fun-money│    │  strain −25%,    │
  │  bounded hit    │    │  recalculated    │    │  +hydration,     │
  │  (≤25%/day)     │    │  per day left    │    │  soft UI         │
  └─────────────────┘    └──────────────────┘    └──────────────────┘
@@ -93,7 +93,7 @@ Competitive research (July 2026) found:
           └────────────────────────┼────────────────────────┘
                                    ▼
                     "Logged. Score absorbed it, ₹200/day
-                     left till Monday — here's the path back."
+                     left till the 1st — here's the path back."
 ```
 
 No incumbent runs all three arrows from one input **[verified whitespace]**. That loop *is* the product; everything else is delivery.
@@ -202,13 +202,13 @@ Crash bounded at −17, recovery +10/day, back near baseline in two days. The us
 
 ### 6. Financial Recalibration (the second arrow of the loop)
 
-Onboarding sets a **weekly discretionary vice budget** $W$ (defaults by wallet tier: ₹1,500 / ₹3,000 / ₹6,000 — placeholder, Phase 2 audit). Every vice log carries its cost $c_i$ (tier default, editable). On each log:
+Onboarding sets a **monthly discretionary vice budget** $W$ (defaults by wallet tier: ₹6,500 / ₹13,000 / ₹26,000 — mechanically scaled from the v0.2 weekly defaults, confirmed-for-now by founder call 2026-07-12, retunable [hypothesis]; monthly period itself is a founder decision, 2026-07-12 meeting — see PRD-02 v0.4). Every vice log carries its cost $c_i$ (tier default, editable). On each log:
 
-$$R = W - \sum_{\text{this week}} c_i \qquad\qquad a_{daily} = \frac{\max(0, R)}{\text{days left in week}}$$
+$$R = W - \sum_{\text{this month}} c_i \qquad\qquad a_{daily} = \frac{\max(0, R)}{\text{days left in month}}$$
 
-**Worked example:** $W$=₹3,000, ₹800 already spent. Friday's `Philosophical` night (₹₹ default ₹1,200) + a delivery order (₹400) → $R = 3{,}000 - 800 - 1{,}600 = ₹600$, 3 days left → **"₹200/day of fun money till Monday — cook Saturday and Sunday and you're clear."**
+**Worked example:** $W$=₹13,000, ₹10,800 already spent. The 29th's `Philosophical` night (₹₹ default ₹1,200) + a delivery order (₹400) → $R = 13{,}000 - 10{,}800 - 1{,}600 = ₹600$, 3 days left → **"₹200/day of fun money till the 1st — cook the next couple of nights and you're clear."**
 
-**No-rollover rule:** overshooting ($R<0$) shows the overshoot once, then **resets clean on Monday**. Debt-carrying is a guilt mechanic in a spreadsheet costume — same reason the score freezes instead of decaying. This is the financial "never miss twice."
+**No-rollover rule:** overshooting ($R<0$) shows the overshoot once, then **resets clean on the 1st** (04:00 IST, same boundary convention as the day). Debt-carrying is a guilt mechanic in a spreadsheet costume — same reason the score freezes instead of decaying. This is the financial "never miss twice." A **weekly pacing check-in** (PRD-02 FR8, signed off 2026-07-12) keeps the short feedback loop the old weekly reset provided: a soft "you're pacing ₹X/week" read, no hard reset, no alarm.
 
 **Leftover / Lunchbox Loop (savings side):** at dinner logging, prompt double-portion cooking; confirmed lunchbox next day credits `(lunch delivery baseline − home cost)` to a visible savings ledger — **₹120–300/day by wallet tier** (final, founder call 2026-07-12: baselines ₹200/300/380 − flat ₹80 fully-loaded home cost, per PRD-02 FR6 — baselines anchored against the now-**[verified]** national blended delivery AOV of ₹453–458 FY25, solo-lunch segmentation still `[hypothesis]`). Weekly savings injection framed in visceral terms ("half a tank of petrol").
 
@@ -269,7 +269,7 @@ Effects: strain/workout targets ×0.75 (−25%, mid of the 20–30% evidence-bac
 - **DPDP basics:** privacy policy, named grievance officer + email, consent-log design — a few evenings of template work, done *before* collecting anyone's data
 - Recruit cohort: 30–40 profile-matched users (15 tech workers HSR/Indiranagar, 15 students), **≥12 of whom commit to the Play closed test** — now **load-bearing**: they are the Week-3 checkpoint cohort, not just Google's 12-tester requirement
 - Define instrumentation up front: the **funnel events** (link click → home-screen add → notification permission) and retention events
-- **Recruitment-embedded copy probe [new in v0.4]:** during recruitment conversations (happening anyway), show the mock reflow message ("₹200/day of fun money till Monday…") and record verbatim reactions. Not a gate, not a pilot — instrumented recruitment at ₹0. This is the cheapest surviving pre-code signal on the moat.
+- **Recruitment-embedded copy probe [new in v0.4]:** during recruitment conversations (happening anyway), show the mock reflow message ("₹200/day of fun money till the 1st…") and record verbatim reactions. Not a gate, not a pilot — instrumented recruitment at ₹0. This is the cheapest surviving pre-code signal on the moat.
 
 ## Phase 1 — Build Sprint (Weeks 1–3)
 
@@ -364,7 +364,7 @@ Onboard the full cohort to the real app (PWA link + Play closed-test track). Ext
 
 **`vices_logged` rows** gain: `cost_inr` (int, tier default, user-editable), `severity` (positive int — never negative, see Domain 1 sign-convention note).
 
-**New `weekly_budgets`:** `{ user_id, week_start, budget_inr, spent_inr, computed daily_allowance }` — no rollover column *by design*.
+**New `monthly_budgets`:** `{ user_id, month_start, budget_inr, spent_inr (query-derived), computed daily_allowance }` — no rollover column *by design*. (Was `weekly_budgets` through v0.4; period changed to monthly by founder meeting 2026-07-12 — schema detail in PRD-02 v0.4 §2.)
 
 **New `funnel_events`:** `{ anon_id, event: link_click | pwa_install | notif_granted | first_log, ts, source }` — written from day one, pre-auth (anonymous id), because the funnel starts before signup.
 
@@ -417,7 +417,7 @@ Cadence: daily 15-min standup, Friday demo+retro. Side-project honesty rule: if 
 | **$N_t$ gate** | Binary: protein ≥1.2 g/kg AND calories within ±15% TDEE → +15 pts and vice penalty halved |
 | **$\Delta_{physio}$** | Wearable strain top-up; ω=20 (Oura-anchored); add-only, capped 25; zero without wearable |
 | **$m_t$** | Sleep vice-amplifier, 1.0×@8h → 1.8×@0h, continuous |
-| **Budget reflow** | Weekly discretionary pot minus logged vice costs, re-divided over remaining days; no rollover |
+| **Budget reflow** | Monthly discretionary pot minus logged vice costs, re-divided over remaining days; no rollover; weekly pacing check-in (soft, no reset) |
 | **Vice tier** | Qualitative severity label, positive magnitude, culturally-worded (`Sutta-Chai Break`) |
 | **Recovery Mode** | ≤48h reduced-target soft-UI state (48h is an optimistic-median rebaseline placeholder, [hypothesis] — see Research Digest); triggers: $V_t\ge25$ ∨ sleep<5h ∨ wearable recovery<50% |
 | **TWA** | Trusted Web Activity — a thin Android wrapper that ships the existing PWA through the Play Store; ~free via Bubblewrap |
@@ -435,4 +435,5 @@ Cadence: daily 15-min standup, Friday demo+retro. Side-project honesty rule: if 
 | 0.1 | Jul 2026 | First idea capture; hypothesis framing; EMA math v1 |
 | **0.2** | **Jul 2026** | **Merged concept (health+finance loop = core, [verified] whitespace); math refactored — 100-pt day-quality fixed (v1 capped at 70), sleep restored as credit + amplifier, ω Oura-anchored, provable bounds + worked examples; vice set broadened (delivery, sugar) with cost defaults; retention gates recalibrated to category benchmarks (kill <20%, not <45%); PWA+TWA dual-track distribution; funnel promoted to primary metric; AA/Gmail verified out of reach — manual-first locked; DPDP checklist added; Whoop-first retired for India** |
 | **0.3** | **Jul 2026** | **Claim-hardening pass (research + claim-verifier, 2026-07-12): "24–48h rebaseline" un-attributed from Oura (that study has no recovery-timeframe data) and re-sourced as [hypothesis — MunichBREW II, Eur Heart J 2024] — ~24h under heavy dosing, but WHOOP real-world shows a 4–5-day tail; the 48h Recovery window is now explicitly a tunable placeholder, not a guarantee. RHR figure corrected to *lowest* RHR +8.2% (source's own label), not average. Closed-loop moat sweep completed (App/Play + Crunchbase/Tracxn) — whitespace survives, sharpened to *prospective re-plan* vs retrospective dashboards; Paceline / Aditya Birla cited as adjacent-but-opposite validation. Smoking costs updated for the Feb 2026 excise overhaul [verified]; alcohol/food/lunchbox costs partially audited with open gaps flagged. Sources: `research/2026-07-12_*.md`.** |
+| **0.4.1** | **Jul 2026** | **Budget period weekly → monthly (founder meeting decision 2026-07-12; detail in PRD-02 v0.4): Domain 1 §6 reworked to a monthly pot (tier defaults ₹6,500/13,000/26,000, mechanically scaled, confirmed-for-now [hypothesis]), reset on the 1st 04:00 IST, pro-rated mid-month onboarding (Founder A call), new weekly pacing check-in (PRD-02 FR8, signed off — soft pace read, no reset, preserving the anti-guilt short loop); Part 3 schema `weekly_budgets` → `monthly_budgets`; loop diagram + copy-probe message updated to "till the 1st". Credit math, tiers-as-concept, no-rollover, and the verified AOV anchor unchanged.** |
 | **0.4** | **Jul 2026** | **Build-first restructure (founder decision 2026-07-12, gate redesign by ceo-strategist): WhatsApp concierge pilot dropped. New sequence: Phase 0 (wk 0, + ₹0 recruitment-embedded copy probe) → build sprint (wks 1–3, old Phase-2 data work folded in as a parallel desk track) → Week-3 closed-test checkpoint (n=12, funnel + activation, fix-before-spend) → live cohort (wks 4–6, warm + cold arms, Week-5 interviews) as the first and only decision gate. Loop-engagement metric split: reflow delivery-view demoted to hygiene (≥80%); the moat test is now *unprompted budget-surface opens* [hypothesis bands]. Cold-arm qualifier on "Strong." Risk register: surveillance risk raised to High (its Phase-1 mitigation died), new sunk-cost-at-the-only-gate and untested-copy risks; competitor risk lowered (sweep clear). New riskiest assumption: users want the prospective ₹ number at all — first evidence now arrives Week 4+ in-app instead of Week 2 in chat.** |
