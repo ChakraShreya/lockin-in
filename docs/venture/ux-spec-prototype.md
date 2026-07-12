@@ -1,7 +1,7 @@
-# UX Spec — Bounce Prototype (Domain 2 build-ready, closing the standing gap)
+# UX Spec — Nudge Prototype (Domain 2 build-ready, closing the standing gap)
 
 **Owner:** Founder B (frontend lane) · **Builds in:** Week-1–2 sprint, alongside PRD-01/PRD-02
-**Source of truth:** `docs/venture/Bounce_Strategic_Documentation_Suite.md` (v0.4) Domain 2 + Domain 1
+**Source of truth:** `docs/venture/Nudge_Strategic_Documentation_Suite.md` (v0.4) Domain 2 + Domain 1
 math; `docs/venture/prd-01-balance-engine.md`; `docs/venture/prd-02-budget-reflow.md`
 **Version:** v1.0 · 2026-07-12 · First build-ready UX spec — Domain 2 previously had zero screen-level
 detail; this fills it for the 5 prototype screens.
@@ -76,7 +76,7 @@ Present, identically positioned, on **all 5 screens** unless a screen explicitly
 
 ```
 ┌────────────────────────────────────────────┐
-│  Bounce                                 ⋯   │
+│  Nudge                                 ⋯   │
 │                                              │
 │              ╭─────────────╮                │
 │             ╱               ╲               │

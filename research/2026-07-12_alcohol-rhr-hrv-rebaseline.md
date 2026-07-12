@@ -6,14 +6,14 @@
 
 ## Table
 
-| Finding | Verdict | Consequence for Bounce |
+| Finding | Verdict | Consequence for Nudge |
 |---|---|---|
 | The cited Oura 600k-member analysis reports same-night HR/HRV deltas only (avg HR +9.6%, lowest RHR +8.2%, HRV −15.6%/−10.8ms) and gives **no recovery timeframe** at all — confirms the prior claim-verifier finding. | Confirmed (absence) | The "24–48h" figure cannot be attributed to this source under any interpretation; it must cite something else or drop to `[hypothesis]`. |
-| No single peer-reviewed acute-dosing study we found measures RHR/HRV long enough (i.e., past ~10 hours) to empirically pin down a "return to baseline" time. | Unverified | Bounce cannot claim a precise, source-backed hour count for full autonomic rebaseline from acute literature alone. |
+| No single peer-reviewed acute-dosing study we found measures RHR/HRV long enough (i.e., past ~10 hours) to empirically pin down a "return to baseline" time. | Unverified | Nudge cannot claim a precise, source-backed hour count for full autonomic rebaseline from acute literature alone. |
 | The IV-ethanol RCT (Brunner et al. 2021, *Sci Rep*) found HRV markers (SDNN, RMSSD, LF, HF) were **still below baseline** even after breath alcohol had cleared to near-zero (~10.4h post-infusion) — i.e., incomplete recovery persisted beyond the point of "sobering up." | Confirmed (for its own protocol; n=15) | Suggests a 24–48h window is plausible as a lower bound, not an overshoot — the "no rebaseline before ~10h" data point is consistent with a longer (24h+) full-recovery window, though it doesn't prove one. |
 | The Finnish real-world sleep study (Pietilä et al. 2018, *JMIR Mental Health*, n=4,098) only tracked the **first 3 hours of sleep**; low-dose (≤0.25 g/kg) HR/recovery approached reference levels by hour 3 (visual inspection only, not statistically modeled beyond that), high dose (>0.75 g/kg) did not. | Unverified beyond 3h | Cannot be used to support or refute 24–48h; the study simply doesn't run long enough. |
 | The only source with a multi-day recovery curve is WHOOP's own "Four-Day Hangover" analysis (n=148 collegiate athletes, single 2015–16 season, self-reported single-item drinking flag, non-peer-reviewed company blog): 74% suppressed recovery day 1, 29% day 2, 19% day 3, "some" day 4–5. | Likely (as WHOOP's own data) but methodologically weak | This is the closest thing to an actual timeline and it does **not** cleanly support "24–48h to rebaseline" — a fifth to a third of the cohort is still below baseline past 48h, with a tail to 96–120h. A precise "24–48h" cutoff rounds this down. |
-| A 9-day smartwatch protocol (n=40, *Nutrients* 2025, PMC12073130) of *repeated* moderate drinking (3 consecutive nights, not a single acute episode) found RHR "returned rapidly to near-baseline" in the 3-day post-exposure phase, but only day-level granularity — no hour-level data, and the exposure pattern (multi-night, not single-night) doesn't match Bounce's single-log use case. | Unverified (wrong protocol for the claim) | Cannot be used to source a single-night 24–48h claim; different denominator (chronic short-term exposure vs. one night out). |
+| A 9-day smartwatch protocol (n=40, *Nutrients* 2025, PMC12073130) of *repeated* moderate drinking (3 consecutive nights, not a single acute episode) found RHR "returned rapidly to near-baseline" in the 3-day post-exposure phase, but only day-level granularity — no hour-level data, and the exposure pattern (multi-night, not single-night) doesn't match Nudge's single-log use case. | Unverified (wrong protocol for the claim) | Cannot be used to source a single-night 24–48h claim; different denominator (chronic short-term exposure vs. one night out). |
 | Acute lab dosing studies (Spaak et al. 2010, *AJP-Heart Circ Physiol*, n=12; Pietilä 2018) establish that alcohol suppresses HRV/raises HR acutely and dose-dependently, but none of them report a recovery/rebaseline time point at all. | Confirmed (for acute effect only) | Good evidence that vagal suppression happens and scales with dose — no evidence for how long it lasts. |
 
 ## Detail per finding
@@ -66,9 +66,9 @@
 ## Suggested next questions
 
 1. Should the venture doc's Recovery Mode duration be re-derived from the WHOOP athlete curve (74%/29%/19% by day) instead of a single "24–48h" point estimate — e.g., a decaying/tapering Recovery Mode rather than a hard cutoff?
-2. Is a "single acute episode, 72h+ continuous monitoring, time-to-baseline as an outcome" study findable at all in the literature, or does Bounce need to commission/estimate this itself (e.g., via a small pilot with Oura/WHOOP-wearing users)?
-3. Should Bounce attempt to directly fetch the WHOOP blog and Spaak et al. full text (e.g., via a different access route) to upgrade those two citations from `[hypothesis]` to `[verified]`?
-4. Given Bounce's target cohort (22–35 urban tech workers/students) skews younger and likely lighter-drinking than WHOOP's collegiate athletes or Pietilä's Finnish working-age sample — does the recovery window generalize, or does Bounce need cohort-matched data?
+2. Is a "single acute episode, 72h+ continuous monitoring, time-to-baseline as an outcome" study findable at all in the literature, or does Nudge need to commission/estimate this itself (e.g., via a small pilot with Oura/WHOOP-wearing users)?
+3. Should Nudge attempt to directly fetch the WHOOP blog and Spaak et al. full text (e.g., via a different access route) to upgrade those two citations from `[hypothesis]` to `[verified]`?
+4. Given Nudge's target cohort (22–35 urban tech workers/students) skews younger and likely lighter-drinking than WHOOP's collegiate athletes or Pietilä's Finnish working-age sample — does the recovery window generalize, or does Nudge need cohort-matched data?
 
 ## Out of scope, noticed
 

@@ -1,6 +1,6 @@
-# Project: lockin-in (Bounce)
+# Project: lockin-in (Nudge)
 
-**Bounce** — a lifestyle recalibration app: log a vice once, and both your
+**Nudge** — a lifestyle recalibration app: log a vice once, and both your
 health plan and money reflow around it, without guilt. Personal side project,
 3-founder squad. Currently pre-code: the venture doc is the source of truth.
 
@@ -10,9 +10,9 @@ installed AI tooling (agents, flows, when to use what).
 
 ## Layout
 
-- `docs/venture/Bounce_Strategic_Documentation_Suite.md` — **the venture doc**:
+- `docs/venture/Nudge_Strategic_Documentation_Suite.md` — **the venture doc**:
   product spec, scoring math, validation protocol, gates, risk register. The
-  single source of truth for what Bounce is (version history at its foot).
+  single source of truth for what Nudge is (version history at its foot).
 - `docs/session-summary/` — handoff docs between sessions/founders (created on
   first `/handoff`).
 - `research/` — dated research digests (`YYYY-MM-DD_topic.md`) +

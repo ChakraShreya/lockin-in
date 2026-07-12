@@ -1,4 +1,4 @@
-# PROJECT BOUNCE — VENTURE DRAFT
+# PROJECT NUDGE — VENTURE DRAFT
 ## The Closed-Loop Lifestyle Recalibration Engine
 ### Working document: desk-research validated, pilot pending
 
@@ -18,9 +18,9 @@
 
 ## EXECUTIVE SUMMARY
 
-**Bounce** is a lifestyle recalibration app built on one mechanic: **log a vice once, and both your health plan and your money reflow around it — without guilt.**
+**Nudge** is a lifestyle recalibration app built on one mechanic: **log a vice once, and both your health plan and your money reflow around it — without guilt.**
 
-A user logs "Philosophical night at Toit" in two taps. Bounce then:
+A user logs "Philosophical night at Toit" in two taps. Nudge then:
 1. **Absorbs it into a rolling Life Score** (a smoothed portfolio, not a daily pass/fail) — one bad night can never cost more than a bounded fraction of the score;
 2. **Reflows the week's discretionary budget** — "₹600 left for fun this week, here's the cheapest path back";
 3. **Adjusts the next 48 hours** — Recovery Mode trims training targets, raises hydration/protein emphasis, and the UI softens.
@@ -30,14 +30,14 @@ A user logs "Philosophical night at Toit" in two taps. Bounce then:
 Competitive research (July 2026) found:
 
 - **The closed loop is genuinely unoccupied [verified — store + Crunchbase/Tracxn sweep, 2026-07-12].** No app, globally or in India, takes a logged vice and *forward-recalculates* both health targets and budget. Sharpened by the sweep: a few trackers (Reframe, Sunnyside, DrinkControl) already show money-saved *and* calories from one drink log — but as **retrospective dashboards**, not a **prospective re-plan**. The forward recalculation is the actual moat. Adjacent-but-opposite closed loops exist and are fundable — Paceline (US) and Aditya Birla Activ Health (India) both run exercise→money — validating the mechanic without occupying it. Indian incumbents (HealthifyMe, Cult.fit, Jupiter, CRED) run parallel scoring systems that never bridge domains.
-- **"No-shame" tone alone is crowded [verified].** Reframe, Sunnyside, Hoot, and Finch already do guilt-free logging well. Bounce's differentiation is the **recalibration mechanic**, not the empathy framing. Every pitch sentence should lean on "one log adjusts everything," not "we don't judge you."
+- **"No-shame" tone alone is crowded [verified].** Reframe, Sunnyside, Hoot, and Finch already do guilt-free logging well. Nudge's differentiation is the **recalibration mechanic**, not the empathy framing. Every pitch sentence should lean on "one log adjusts everything," not "we don't judge you."
 
 ### Positioning (hypothesis)
 
-| Dimension | Incumbents | Bounce |
+| Dimension | Incumbents | Nudge |
 |---|---|---|
 | **Core mechanic** | Track & display (silos: health *or* money) | One log → dual recalculation (health *and* money) |
-| **Failure handling** | Streak breaks, guilt loop | Bounded damage + visible path back ("Bounce") |
+| **Failure handling** | Streak breaks, guilt loop | Bounded damage + visible path back ("The Rebound") |
 | **Vice scope** | Alcohol-only (Reframe/Sunnyside) or food-only (MFP) | Alcohol, smoking, food delivery, sugar — India-calibrated |
 | **Data demands** | Weighing food, wearables assumed | Two-tap tiers, household units, wearable-free core |
 
@@ -49,7 +49,7 @@ Competitive research (July 2026) found:
 
 | Finding | Verdict | Consequence in this doc |
 |---|---|---|
-| Closed-loop spend↔physiology whitespace | **Confirmed — sweep done** [verified — App/Play-store keyword + Crunchbase/Tracxn/Product Hunt sweep, 2026-07-12]. Nothing recalculates *both* a forward health plan *and* a forward budget from one vice log. Sharpening: several trackers (Reframe, Sunnyside, DrinkControl) already show money-saved + calories side-by-side from one drink log, but as **retrospective dashboards**, not **prospective re-planning** — Bounce's real moat is the *forward recalculation*, narrower and better-defended than "no dual-domain app exists." | Loop promoted to core mechanic (Part 1); pitch the *forward re-plan*, not merely dual display |
+| Closed-loop spend↔physiology whitespace | **Confirmed — sweep done** [verified — App/Play-store keyword + Crunchbase/Tracxn/Product Hunt sweep, 2026-07-12]. Nothing recalculates *both* a forward health plan *and* a forward budget from one vice log. Sharpening: several trackers (Reframe, Sunnyside, DrinkControl) already show money-saved + calories side-by-side from one drink log, but as **retrospective dashboards**, not **prospective re-planning** — Nudge's real moat is the *forward recalculation*, narrower and better-defended than "no dual-domain app exists." | Loop promoted to core mechanic (Part 1); pitch the *forward re-plan*, not merely dual display |
 | "No-shame" framing as differentiator | **Crowded** — Reframe, Sunnyside, Hoot, Finch | Differentiate on mechanic, not tone |
 | RBI Account Aggregator for bank data | **Structurally out of reach** — FIU must be RBI/SEBI-regulated; no TSP bypass; ₹2 Cr NOF for own license | Manual logging is the hero trigger; AA deferred to funded-company stage, permanently out of MVP |
 | Gmail transaction parsing | **Blocked** — restricted-scope API needs $15–75k CASA assessment | Not pursued |
@@ -180,7 +180,7 @@ Seed $LS_0 = 60$.
 
 1. **Bounded for free:** since $D_t \in [0,100]$ and $LS_0 \in [0,100]$, $LS_t \in [0,100]$ forever by induction — no output clamp needed.
 2. **The Forgiveness Guarantee:** worst possible day ($D_t = 0$) costs $(1-\alpha)\,LS_{t-1}$ — **at most 25% of your current score** (α=0.75). No single night can crater you.
-3. **The Bounce:** a good recovery day ($D_t = 90$) recovers ~10 points/day from a dip — crash −17, back in ~2 days. The name is the mechanic.
+3. **The Rebound:** a good recovery day ($D_t = 90$) recovers ~10 points/day from a dip — crash −17, back in ~2 days. The comeback is the mechanic.
 
 **Missing-data policy:** unlogged days **freeze** the score (no EMA step, no decay). Decay would be a streak mechanic wearing a costume — against the whole philosophy. After 3+ silent days: gentle re-entry message, zero penalty.
 
@@ -195,7 +195,7 @@ $$LS = 0.75(65) + 0.25(80.6) = \mathbf{68.9} \;(\uparrow 3.9)$$
 $$D = 35 + 14.1 + 0 + 0 - 1.35 \times 94.1 = -78 \;\rightarrow\; \mathbf{0}$$
 $$LS = 0.75(68.9) = \mathbf{51.7} \;(\downarrow 17.2 = \text{exactly the 25\% bound})$$
 
-**Day 3 — the bounce.** $LS_{t-1}=51.7$. Sleep 8h ($Z=25$, $m=1.0$), 30-min walk ($S=15$), ate clean ($N=1$), zero vices:
+**Day 3 — the rebound.** $LS_{t-1}=51.7$. Sleep 8h ($Z=25$, $m=1.0$), 30-min walk ($S=15$), ate clean ($N=1$), zero vices:
 $$D = 35 + 25 + 15 + 15 = 90, \qquad LS = 0.75(51.7)+0.25(90) = \mathbf{61.3} \;(\uparrow 9.6)$$
 
 Crash bounded at −17, recovery +10/day, back near baseline in two days. The user *sees* the path back instead of a broken streak.

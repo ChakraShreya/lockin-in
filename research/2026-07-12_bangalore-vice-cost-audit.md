@@ -13,7 +13,7 @@ blended food-delivery AOV of ₹453–458 (FY25)**, each independently re-derive
 disclosed GOV ÷ orders. See §3 and the "AOV resolution" verdict block. The rows
 below marked with a ⟳ have been upgraded from `[hypothesis]` accordingly.
 
-**Placeholders under test** (from `docs/venture/Bounce_Strategic_Documentation_Suite.md`):
+**Placeholders under test** (from `docs/venture/Nudge_Strategic_Documentation_Suite.md`):
 
 - Alcohol: T1/T2/T3 × budget/mid/premium = 300/600/1000, 600/1200/2500, 1200/2500/5000
 - Food delivery: T1/T2/T3 × budget/mid/premium = 200/250/500, 400/500/900, 800/900/1600
@@ -24,7 +24,7 @@ below marked with a ⟳ have been upgraded from `[hypothesis]` accordingly.
 
 ## Summary table
 
-| Finding | Verdict | Consequence for Bounce |
+| Finding | Verdict | Consequence for Nudge |
 |---|---|---|
 | Feb 1, 2026 tobacco excise overhaul added ₹2,050–₹8,500 excise duty per 1,000 sticks (on top of 40% GST), pushing retail cigarette prices up ~₹22–55/pack of 20 nationally | **Confirmed** `[verified — TaxGuru report of Central Excise notification, effective 1 Feb 2026]` + corroborated `[verified — multiple secondaries: Deccan Herald, WION, Angel One, A2Z Taxcorp]` | Smoking placeholder (~₹20/50/350) is now **stale**; real per-stick cost has a much wider spread by brand than one flat number can capture |
 | Live retail (quick-commerce) prices, July 2026: Gold Flake Premium 10-pack ₹99 (~₹9.9/stick); Gold Flake Filter 10-pack ₹117 (~₹11.7/stick); Classic Milds 10-pack ₹240 / 20-pack ₹480 (~₹24/stick) | **Confirmed** `[verified — Zepto product listings; Blinkit + Swiggy Instamart product listings, cross-checked]` | Real range is **₹10–24/stick** depending on brand tier — placeholder's "20" (Tier1) sits mid-pack, not at the budget end; need brand-tiered logic, not a single number |
@@ -36,10 +36,10 @@ below marked with a ⟳ have been upgraded from `[hypothesis]` accordingly.
 | ⟳ **Zomato (Eternal) food-delivery AOV = ₹453 in FY25** (blended, all-India), up from ₹428 in FY24 | **Confirmed** `[verified — Eternal Ltd FY25 Company Overview (May 2025), food-delivery GOV ₹38,646 Cr; order count 853 Mn per Eternal FY25 Annual Report (via MediaNama); re-derived 38,646 Cr ÷ 853 Mn = ₹453.1, matches disclosed AOV exactly]` | Supersedes the earlier unverified "₹425 Q1FY25" figure. The blended national AOV ≈ ₹453 anchors the food-delivery *vice* mid-tier (₹400–500) squarely on real data |
 | ⟳ **Swiggy food-delivery AOV = ₹458 in FY25** (blended, all-India), up from ₹428 (FY24) / ₹416 (FY23) / ₹407 (FY22) | **Confirmed** `[verified — Swiggy Ltd FY25 Annual Report, food-delivery GOV ₹28,783 Cr ÷ Total Orders 628.9 Mn = ₹457.6, matches disclosed AOV ₹458; AOV series cross-checked in the same report]` | Independent second major converges within ₹5 of Zomato — the two together make ₹453–458 a **verified national blended food-delivery AOV**, not a guess |
 | ⟳ **Caveat — this is a *blended national* AOV, not a Bangalore or single-diner figure.** Neither company publishes city-level AOV; AOV = GOV ÷ *all* orders (incl. multi-person/group orders), and Zomato is *deliberately* pushing sub-₹250 "budget" orders (min order for free delivery cut to ₹99) | **Confirmed (scope limits)** `[verified — Eternal Q4FY26 shareholder letter: "declining NAOV is a natural and intended consequence" of budget-meal strategy; curated meals under ₹250]` | ₹453–458 is a solid *anchor* but (a) Bangalore (metro/tier-1) likely sits at or above it, and (b) a solo indulgent order ≠ the blended average — treat ₹455 as the central peg, not a ceiling |
-| Quick-commerce (not restaurant food delivery) AOVs: Blinkit ₹665, Instamart ₹527 (FY25) | **Confirmed (different category)** `[verified — reported in search synthesis of company disclosures; consistent with widely-cited FY25 quick-commerce unit economics]` — but **flagged out of scope**: this is grocery quick-commerce, not Swiggy/Zomato *restaurant* food delivery | Don't conflate with food-delivery order value — Bounce's "food delivery" vice logging is about restaurant meals, a different spend pattern than 10-min grocery orders |
+| Quick-commerce (not restaurant food delivery) AOVs: Blinkit ₹665, Instamart ₹527 (FY25) | **Confirmed (different category)** `[verified — reported in search synthesis of company disclosures; consistent with widely-cited FY25 quick-commerce unit economics]` — but **flagged out of scope**: this is grocery quick-commerce, not Swiggy/Zomato *restaurant* food delivery | Don't conflate with food-delivery order value — Nudge's "food delivery" vice logging is about restaurant meals, a different spend pattern than 10-min grocery orders |
 | Generic AOV bands cited in blog analysis: "light users ~₹250, moderate users ~₹300 per order"; example restaurant-level comparison "Zomato ₹650 vs Swiggy ₹480" for one premium restaurant | **Superseded** `[hypothesis — restrologic.com blog, illustrative only]` — now overridden by the verified ₹453–458 blended AOV above | Directionally consistent (single-order values cluster ₹250–650 by tier/segment) but no longer load-bearing: the verified filings give the authoritative central figure the blogs only approximated |
-| Home-cook ingredient cost, computed from verified retail unit prices (Sona Masoori rice ₹62–94/kg; toor dal ₹122–159/kg; Fortune sunflower oil ₹195–200/L; onion/tomato ₹22–33/kg) → a simple rice+dal+one sabzi+oil portion computes to roughly ₹25–40/portion in raw ingredients alone | **Verified inputs, hypothesis for the total** `[verified — BigBasket product listings for rice/dal/oil (search-indexed prices, not independently re-fetched live); verified — mandi price trackers rozkabhav.com/oneindia.com for vegetables, dated Apr–May 2026]` + `[hypothesis — the ₹25–40/portion total is Bounce's own arithmetic, not a published figure, and excludes LPG/electricity, protein, condiments, wastage, and any labor cost]` | The venture doc's ₹80/meal assumption is **plausible and likely on the generous side** for a bare-ingredients meal, but becomes reasonable once LPG, protein, condiments and real-world wastage are added — recommend the doc state its ₹80 figure is "fully-loaded" not "raw ingredients," or it will look inflated next to this bottom-up math |
-| Bangalore monthly tiffin/subscription services: ₹2,500–₹7,000/month depending on provider and veg/non-veg, i.e. roughly ₹85–235/meal for a *prepared, delivered* meal (not self-cooked) | **Confirmed (as a different baseline)** `[verified — multiple tiffin-service pricing pages: Maa Ka Dulaar, Bangalore Tiffin, Tiffyy, Dabba Meals, Growfit, cross-checked, consistent range]` | This is a *paid-tiffin* cost, not a *self-cooked* cost — useful as an upper bound / alternative baseline if Bounce ever models "outsourced home-style food" as a third option, but should not be conflated with the ₹80 self-cook assumption |
+| Home-cook ingredient cost, computed from verified retail unit prices (Sona Masoori rice ₹62–94/kg; toor dal ₹122–159/kg; Fortune sunflower oil ₹195–200/L; onion/tomato ₹22–33/kg) → a simple rice+dal+one sabzi+oil portion computes to roughly ₹25–40/portion in raw ingredients alone | **Verified inputs, hypothesis for the total** `[verified — BigBasket product listings for rice/dal/oil (search-indexed prices, not independently re-fetched live); verified — mandi price trackers rozkabhav.com/oneindia.com for vegetables, dated Apr–May 2026]` + `[hypothesis — the ₹25–40/portion total is Nudge's own arithmetic, not a published figure, and excludes LPG/electricity, protein, condiments, wastage, and any labor cost]` | The venture doc's ₹80/meal assumption is **plausible and likely on the generous side** for a bare-ingredients meal, but becomes reasonable once LPG, protein, condiments and real-world wastage are added — recommend the doc state its ₹80 figure is "fully-loaded" not "raw ingredients," or it will look inflated next to this bottom-up math |
+| Bangalore monthly tiffin/subscription services: ₹2,500–₹7,000/month depending on provider and veg/non-veg, i.e. roughly ₹85–235/meal for a *prepared, delivered* meal (not self-cooked) | **Confirmed (as a different baseline)** `[verified — multiple tiffin-service pricing pages: Maa Ka Dulaar, Bangalore Tiffin, Tiffyy, Dabba Meals, Growfit, cross-checked, consistent range]` | This is a *paid-tiffin* cost, not a *self-cooked* cost — useful as an upper bound / alternative baseline if Nudge ever models "outsourced home-style food" as a third option, but should not be conflated with the ₹80 self-cook assumption |
 | Implied delivery-vs-homecook savings: a restaurant delivery order at the verified blended AOV (~₹455) against a self-cooked meal at ~₹25–80 (ingredient math + doc assumption) gives a gap of roughly ₹375–430/order | **Partially upgraded** `[verified — AOV side, ₹453–458 from filings]` + `[hypothesis — home-cost side ₹25–80, and the assumption that a *lunchbox-replacing* order equals the blended AOV]` | One of the two inputs (AOV) is now primary-verified. The doc's ₹120–300/day savings band is **conservative** against a full-AOV order — but the lunchbox baseline (₹200–380) deliberately uses a *solo everyday-lunch* order, which is below blended AOV; that solo-lunch figure is bounded by the sub-₹250 budget-meal segment but not independently verified as a standalone number |
 
 ---
@@ -146,7 +146,7 @@ only gestured at.
    Bangalore is a metro/tier-1 market and plausibly sits *at or above* the blended
    figure — so ₹453–458 is a reasonable floor for the Bangalore pilot, not a ceiling.
 2. **Per-order, not per-person.** AOV = GOV ÷ *all* orders, including multi-person /
-   group orders. Bounce's "food-delivery vice" is usually one person's indulgent
+   group orders. Nudge's "food-delivery vice" is usually one person's indulgent
    order, so AOV is an anchor, not a 1:1 map to a single-diner spend.
 3. **The tail is deliberately widening downward.** Eternal's Q4FY26 letter states a
    *declining net AOV* is an intended outcome of pushing budget-conscious orders
@@ -154,7 +154,7 @@ only gestured at.
    growing share of real orders sit ₹99–250 — which is exactly the band the
    **lunchbox delivery baseline (₹200–380)** models. The baseline is therefore
    *bounded and directionally supported* by primary data, though the specific
-   solo-lunch figure is still Bounce's own segmentation, not a published number.
+   solo-lunch figure is still Nudge's own segmentation, not a published number.
 
 **Not conflated:** Quick-commerce AOVs (Blinkit, and Swiggy Instamart's ₹700 in
 Q4FY26) are a **different product category** (10-min grocery) and are explicitly kept
@@ -172,7 +172,7 @@ by either platform; the blended AOV above is the best primary anchor available.
 | 2 | Swiggy food-delivery AOV = ₹458 (FY25, blended) | **Confirmed** | 95 | Swiggy FY25 AR GOV ₹28,783 Cr ÷ 628.9 Mn orders = ₹457.6; matches disclosed ₹458 |
 | 3 | National blended food-delivery AOV ≈ ₹453–458 (FY25) | **Confirmed** | 92 | Two independent primary sources converge within ₹5 |
 | 4 | Bangalore-specific food-delivery AOV | **Unverifiable** | 40 | Neither company publishes city-level AOV; genuine disclosure gap. Blended figure used as proxy (metro likely ≥ blend) |
-| 5 | Lunchbox delivery baseline ₹200–380 = a real solo-lunch order value | **Unverifiable** | 55 | Bounded by verified sub-₹250 budget-meal segment, but the specific solo figure is Bounce's own segmentation, not a published number |
+| 5 | Lunchbox delivery baseline ₹200–380 = a real solo-lunch order value | **Unverifiable** | 55 | Bounded by verified sub-₹250 budget-meal segment, but the specific solo figure is Nudge's own segmentation, not a published number |
 | 6 | Earlier "₹425 Q1FY25" blog figure | **Superseded** | — | Plausible for a single quarter; FY25 full-year is ₹453 (primary). Not contradicted, just replaced by a better source |
 
 **Summary:** 3 confirmed · 0 contradicted · 2 unverifiable (Bangalore-specific,
@@ -193,7 +193,7 @@ prices, not independently re-fetched live at full page load):
 - Onion/tomato: ₹22–33/kg retail, Bangalore, Apr–May 2026 mandi trackers [verified —
   rozkabhav.com, oneindia.com]
 
-Bounce's own arithmetic (not a published figure): a single portion of rice + dal +
+Nudge's own arithmetic (not a published figure): a single portion of rice + dal +
 one vegetable + oil, at these unit prices, computes to roughly ₹25–40 in raw
 ingredients. This excludes LPG/electricity, protein (egg/chicken/paneer), spices,
 condiments, real-world wastage, and any value for time/labor. [hypothesis — derived
@@ -252,7 +252,7 @@ distinction should be made explicit in the doc.
   explicit flag.
 - Swiggy's per-order delivery-partner payout (~₹56/order, FY24, per DRHP-derived
   search synthesis) — interesting for a future "gig worker cost" angle but irrelevant
-  to Bounce's consumer-facing budget reflow; noted only, not verified.
+  to Nudge's consumer-facing budget reflow; noted only, not verified.
 
 ## Suggested next questions
 
@@ -269,7 +269,7 @@ distinction should be made explicit in the doc.
    raw-ingredients-only or fully-loaded (LPG, protein, waste) — this changes whether
    ₹80 needs revising up or down, and this ambiguity should be resolved before the
    next doc revision rather than left implicit.
-4. If Bounce wants brand-tiered smoking costs (rather than one flat number), the
+4. If Nudge wants brand-tiered smoking costs (rather than one flat number), the
    Gold Flake (₹10–12/stick) vs Classic (₹24/stick) spread found here suggests at
    least a 2-tier split is warranted, with the budget tier still needing live-listing
    verification.
