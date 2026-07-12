@@ -9,6 +9,41 @@ Maintained by `/sync-context` — each run prepends one entry. Format per entry:
 
 ---
 
+## 2026-07-12 (night) — pull review, money reconciliation, git workflow
+
+**What we did**
+
+- Reviewed pulled commits: Shreya's `270ddc2` **verified the food-delivery AOV**
+  (₹453 Eternal / ₹458 Swiggy, FY25 primary filings, GOV÷orders re-derived and
+  re-checked here) — genuinely closes OQ1 — but her PRD-02 v0.3 was drafted from
+  stale text and re-asserted the retired flat-₹80/₹200-300-380 constants,
+  leaving the PRD internally contradictory with the same-day per-tier call.
+- **Founder A's final call: Shreya's verified-anchor numbers WIN** — flat ₹80
+  home cost, ₹200/300/380 lunch baselines, credits ₹120/220/300. Reconciled as
+  PRD-02 **v0.3.1** (consistent table/examples/fixtures/script; Monday 00:00
+  slip → 04:00; honest version history; Decision-record table added where §9
+  was deleted). Downstream synced: venture doc lunchbox line, UX-spec note,
+  handoff decisions table, STATE.
+- **Git workflow adopted** (founder rule): PRs-only into main, feature branches,
+  rebase-not-merge for linear history — CONTRIBUTING.md + `.githooks/`
+  (pre-commit/pre-push block direct main commits) + PR template + CLAUDE.md
+  section so AI sessions comply. Deliberately light; rules grow with the repo.
+
+**What we concluded**
+
+- Cross-session doc conflicts are now a real failure mode (two founders' AI
+  sessions edited the same PRD hours apart). Mitigations: the PR workflow, plus
+  decision-record tables in PRDs so decisions can't be silently overwritten by
+  stale drafts.
+
+**How it's going / next**
+
+- Landed via PRs `docs/prd02-money-reconcile` + `chore/git-workflow`
+  (rebase-merged). Next session: the prototype build (scaffold + slices) — on a
+  branch, per the new workflow.
+
+---
+
 ## 2026-07-12 (evening) — all PRD decisions made; team alignment handoff
 
 **What we did**

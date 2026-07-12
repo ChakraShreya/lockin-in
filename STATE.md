@@ -49,13 +49,14 @@ _As of 2026-07-12 — rewritten each sync._
 - **Direction: parallel tracks** — deepen all six features into build-ready
   specs now; build sprint is Weeks 1–3. Plan (amended for v0.4):
   `~/.claude/plans/research-on-the-current-reflective-bear.md`.
-- **PRDs are decision-complete (2026-07-12 evening):** Founder A answered all 12
-  open questions — PRD-01 v1.1 and PRD-02 v0.2 have zero blocking unknowns.
-  Headlines: 04:00 IST day/week boundary; any-signal=scored; dual EMA stored,
-  7d shown; home cost ₹100/200/300 + lunch baselines ₹250/350/450 → lunchbox
-  credit ≈₹150/day (supersedes ₹120–300). Full table:
-  `docs/session-summary/2026-07-12_decisions-and-alignment.md` (**the founder
-  alignment handoff — B & C start there**).
+- **PRDs are decision-complete (2026-07-12):** all open questions answered —
+  PRD-01 v1.1 and PRD-02 v0.3.1 have zero blocking unknowns. Headlines: 04:00
+  IST day/week boundary; any-signal=scored; dual EMA stored, 7d shown; **money
+  FINAL (after Shreya's AOV verification): flat ₹80 home cost + ₹200/300/380
+  lunch baselines → credits ₹120/220/300** (the same-day per-tier call was
+  superseded — full chain in PRD-02's Decision record). Alignment handoff:
+  `docs/session-summary/2026-07-12_decisions-and-alignment.md` (**B & C start
+  there**).
 - **Prototype build plan approved:** Next.js + Supabase (from day one), ux-designer
   wireframes first, full loop minus push nudges; friends & family are the later
   test cohort. UX spec: `docs/venture/ux-spec-prototype.md`.
@@ -94,10 +95,10 @@ _As of 2026-07-12 — rewritten each sync._
   (F6), lunchbox-expiry footnote interpretation (F5), Recovery-Mode score
   footer reading (F7). Non-prototype screens (settings/consent/onboarding)
   still unspecced.
-- **Cost tables only partially audited** — food-delivery AOV unverifiable from
-  primary sources (investor PDFs image-only); budget-tier alcohol & lunchbox
-  scope still `[hypothesis]`. Finish in the build sprint's parallel desk track
-  (doc v0.4, wks 1–3; PRD-02 OQ1).
+- ~~Food-delivery AOV unverifiable~~ — **CLOSED (2026-07-12, Shreya `270ddc2`):
+  national blended AOV ₹453–458 FY25 [verified — Eternal + Swiggy filings,
+  GOV÷orders re-derived]**. Residual `[hypothesis]`: Bangalore-specific AOV,
+  solo-lunch segmentation, budget-tier alcohol rows — Phase-2 sweep still wanted.
 
 ## Key conclusions to date
 
@@ -121,8 +122,9 @@ Per the forward plan (`~/.claude/plans/research-on-the-current-reflective-bear.m
 1. **Next AI session — scaffold + build** (per the approved prototype plan):
    Next.js + TS + Tailwind + Vitest scaffold, Supabase schema migration (PRD-01
    §2 + PRD-02 §2), then vertical slices gated by PRD fixtures (engine T1–T13;
-   budget ₹200/day golden, overshoot-once, lunchbox-₹150). **Needs from Founder
+   budget ₹200/day golden, overshoot-once, lunchbox-₹220). **Needs from Founder
    A at start: Supabase project URL + anon key into `.env.local`** (never commit).
+   Git workflow now applies: branch → PR into main → rebase-merge (CONTRIBUTING.md).
 2. **Founders B & C (human):** read
    `docs/session-summary/2026-07-12_decisions-and-alignment.md`; **sign the v0.4
    gate bands** (sunk-cost pre-commitment); B reviews the UX spec before building.
