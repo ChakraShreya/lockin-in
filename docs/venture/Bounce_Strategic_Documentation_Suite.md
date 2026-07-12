@@ -4,10 +4,10 @@
 
 ---
 
-**Document Version:** 0.3 (Claim-hardened — rebaseline re-sourced, moat sweep done, costs partially audited)
+**Document Version:** 0.4 (Build-first — WhatsApp pilot dropped, live cohort is the first gate)
 **Founding Team:** 3-Developer AI-Augmented Squad (side project)
 **Prepared:** July 2026
-**Status:** Desk research done (July 2026), core whitespace verified, math refactored. **Nothing is validated with real users yet** — the Phase 1 pilot is the first real evidence gate. Tweak freely.
+**Status:** Desk research done (July 2026), core whitespace verified (sweep 2026-07-12), math refactored. **Nothing is validated with real users yet** — founder decision 2026-07-12: the WhatsApp pilot is dropped; **the Week-4–6 live cohort is the first real evidence gate**, with a Week-3 closed-test checkpoint and a ₹0 recruitment copy probe as the only pre-code signals. Tweak freely.
 
 ---
 
@@ -191,7 +191,7 @@ $$D = 35 + 21.9 + 22.5 + 15 - 1.1 \times 25 \times 0.5 = 94.4 - 13.8 = 80.6$$
 $$LS = 0.75(65) + 0.25(80.6) = \mathbf{68.9} \;(\uparrow 3.9)$$
 *The score went UP on a drinking day — deliberately. A vice absorbed by an otherwise strong day shouldn't hurt: that's the portfolio thesis. (Without the drink it would've been 72.4 — the drink cost 3.5 net.)*
 
-**Day 2 — the blowout.** $LS_{t-1}=68.9$. Sleep 4.5h ($Z=14.1$, $m=1.35$), no workout, gate blown ($N=0$). Logged: `Blackout` 50 + `Drunk Cigs` 18 + `Late-Night Binge` 15 → $V_{sub}=83$. Wearable: RHR +20%, HRV −35% → $\Delta = 20(0.20+0.354)=11.1$ → $V=94.1$:
+**Day 2 — the blowout.** $LS_{t-1}=68.9$. Sleep 4.5h ($Z=14.1$, $m=1.35$), no workout, gate blown ($N=0$). Logged: `Blackout` 50 + `Drunk Cigs` 18 + `Late-Night Binge` 15 → $V_{sub}=83$. Wearable: RHR +20%, HRV −35% → $\Delta = 20(0.20+0.35)=11.0$ → $V=94.0$ *(errata 2026-07-12: HRV ratio pinned to the clean $\hat h = 0.35$ per PRD-01 Q5; final $D$/$LS$ unaffected)*:
 $$D = 35 + 14.1 + 0 + 0 - 1.35 \times 94.1 = -78 \;\rightarrow\; \mathbf{0}$$
 $$LS = 0.75(68.9) = \mathbf{51.7} \;(\downarrow 17.2 = \text{exactly the 25\% bound})$$
 
@@ -210,7 +210,7 @@ $$R = W - \sum_{\text{this week}} c_i \qquad\qquad a_{daily} = \frac{\max(0, R)}
 
 **No-rollover rule:** overshooting ($R<0$) shows the overshoot once, then **resets clean on Monday**. Debt-carrying is a guilt mechanic in a spreadsheet costume — same reason the score freezes instead of decaying. This is the financial "never miss twice."
 
-**Leftover / Lunchbox Loop (savings side, unchanged in spirit):** at dinner logging, prompt double-portion cooking; confirmed lunchbox next day credits `(delivery default − ~₹80 home-cost)` to a visible savings ledger — **₹120–300/day depending on wallet tier** (v0.1's flat "₹250/day" was mid-tier-only; the range is honest). Weekly savings injection framed in visceral terms ("half a tank of petrol").
+**Leftover / Lunchbox Loop (savings side):** at dinner logging, prompt double-portion cooking; confirmed lunchbox next day credits `(lunch delivery baseline − home cost)` to a visible savings ledger — **~₹150/day at every wallet tier** (founder-set 2026-07-12: baselines ₹250/350/450 − home costs ₹100/200/300, both `[hypothesis]`, per PRD-02 FR6; supersedes the earlier ₹120–300 range). Weekly savings injection framed in visceral terms ("most of a tank of petrol").
 
 ### 7. Recovery Mode (the third arrow) — unified trigger
 
@@ -259,88 +259,87 @@ Effects: strain/workout targets ×0.75 (−25%, mid of the 20–30% evidence-bac
 
 ---
 
-# PART 2: THE PLAN — Validation Protocol v0.2
+# PART 2: THE PLAN — Validation Protocol v0.4 (build-first)
 
-*Sequence unchanged in philosophy (cheapest evidence first), gates recalibrated to real benchmarks. Total: ~8 weeks of evenings. Every phase has a kill switch.*
+*v0.4 restructure — founder decision 2026-07-12: the WhatsApp concierge pilot is dropped. Build-first: the live cohort is now the first and only real evidence gate. The moat question moves in-app. Trade-off owned explicitly: this converts a ₹0, 2-week falsification of the riskiest assumption into a ~3-week build testing it with a blunter metric — accepted because the pilot's friends-cohort evidence was itself confounded. Total: ~7 weeks of evenings. Every phase keeps a kill switch.*
 
 ## Phase 0 — Foundations (Week 0)
 
-- Finalize vice taxonomy + tier costs (the tables above) as the pilot's shared vocabulary
-- **DPDP basics [new]:** privacy policy, named grievance officer + email, consent-log design — a few evenings of template work, done *before* collecting anyone's data
-- Recruit cohort: 30–40 profile-matched users (15 tech workers HSR/Indiranagar, 15 students), **≥12 of whom commit to the later Play closed test** — the pilot cohort double-counts as Google's 12-tester requirement
+- Finalize vice taxonomy + tier costs (the tables above) as the cohort's shared vocabulary
+- **DPDP basics:** privacy policy, named grievance officer + email, consent-log design — a few evenings of template work, done *before* collecting anyone's data
+- Recruit cohort: 30–40 profile-matched users (15 tech workers HSR/Indiranagar, 15 students), **≥12 of whom commit to the Play closed test** — now **load-bearing**: they are the Week-3 checkpoint cohort, not just Google's 12-tester requirement
 - Define instrumentation up front: the **funnel events** (link click → home-screen add → notification permission) and retention events
+- **Recruitment-embedded copy probe [new in v0.4]:** during recruitment conversations (happening anyway), show the mock reflow message ("₹200/day of fun money till Monday…") and record verbatim reactions. Not a gate, not a pilot — instrumented recruitment at ₹0. This is the cheapest surviving pre-code signal on the moat.
 
-## Phase 1 — WhatsApp Concierge Pilot (Weeks 1–2) · *the big gate*
+## Phase 1 — Build Sprint (Weeks 1–3)
 
-Founders manually simulate **the full dual loop** — this is what changed from v0.1, which only simulated the health half:
+**Stack:** Next.js + Tailwind on Vercel, Supabase (free tiers), TypeScript, localStorage offline-first — unchanged. **Key mechanics [verified rationale]:**
 
-1. User texts a vice in the taxonomy's language ("philosophical night at Toit")
-2. Founder replies with **both recalculations**: absorbed score + reflowed budget ("Score took it fine. ₹200/day of fun money till Monday — path back: cook Sat/Sun")
-3. Morning nudges (08:30) and lunch pivots (11:15) pushed manually
-4. Track every response in a shared sheet
-
-**Gates (manual-mode, inflation-aware):**
-
-| Metric | Continue | Iterate | Kill |
-|---|---|---|---|
-| D7 engagement (daily replies) | ≥ 60% | 45–60% | < 45% |
-| Vice confession (≥2 vices logged/user/wk) | ≥ 40% | 25–40% | < 25% |
-| **Budget-reflow reaction** [new] | users reference the ₹ number unprompted | polite acknowledgment | ignored/annoyed |
-
-*Caveat: a friends-cohort inflates engagement via social obligation — treat "Continue" as necessary, not sufficient. The qualitative signal on the budget reflow is the real prize: it's the one mechanic nobody else has, so nobody knows if users actually want it.*
-
-## Phase 2 — Localized Data Curation (Week 3)
-
-- Bangalore Top-100 foods JSON (household units → macros)
-- **Cost audit [new]:** real Swiggy/Zomato + bar/darshini price sweep to replace the placeholder cost tables
-- Nudge copy library from Phase 1's actual conversations (use the words users used)
-
-## Phase 3 — Build Sprint (Weeks 4–6)
-
-**Stack:** Next.js + Tailwind on Vercel, Supabase (free tiers), TypeScript, localStorage offline-first — unchanged. **Two additions [verified rationale]:**
-
-- **TWA track from day one:** Bubblewrap-wrap the PWA (~a day of work), pay the $25 one-time Play fee, start the 14-day closed test **with the Phase-1 cohort** — the testing clock runs while you build, so store eligibility arrives with the pilot data
+- **TWA track from Week 1:** Bubblewrap-wrap the PWA (~a day of work), pay the $25 one-time Play fee, start the 14-day closed test with the committed 12 — the testing clock closes inside the sprint
 - **Funnel instrumentation before features:** if we can't measure link→install→permission, we can't interpret anything else
 
 | | Founder A (engine) | Founder B (frontend) | Founder C (platform) |
 |---|---|---|---|
-| Wk 4 | $D_t$/EMA engine + budget reflow, unit tests against the worked examples above | Ring + budget line canvas, two-tap log flow | Supabase auth/schema, funnel events, consent log |
-| Wk 5 | Recovery Mode logic, savings ledger | Swipe gestures, Recovery theme | Push notifications, TWA wrap + closed test |
-| Wk 6 | Buffer + bugfix | Responsive pass | DPDP checklist, deploy |
+| Wk 1 | $D_t$/EMA engine + budget reflow, unit tests against the worked examples above (PRD-01/02) | Ring + budget line canvas, two-tap log flow | Supabase auth/schema, funnel events, consent log, TWA wrap + closed test start |
+| Wk 2 | Recovery Mode logic, savings ledger | Swipe gestures, Recovery theme | Push notifications |
+| Wk 3 | Buffer + bugfix | Responsive pass | DPDP checklist, deploy |
 
-**MVP fence:** manual logging only — no wearables, no SMS, no recipes directory (seed content only). The worked examples in Domain 1 are the acceptance tests.
+**Parallel desk track (absorbs old Phase 2, descoped):** Bangalore Top-100 foods JSON (household units → macros) + the remaining cost-audit gaps (delivery baseline, OQ1 in PRD-02). **Nudge copy v0** is founder-written `[hypothesis]`, sourced from the recruitment copy-probe verbatims + the taxonomy's own culturally-worded tiers; copy is an explicit iterate variable at the Week-6 gate. *Capacity note: this was a serial week in v0.3 — the side-project honesty rule (2-week slip → re-scope) applies with extra force to Weeks 1–3.*
 
-## Phase 4 — Live Cohort (Weeks 7–8) · *the decision gate*
+**MVP fence:** manual logging only — no wearables, no SMS, no recipes directory (seed content only). The worked examples in Domain 1 (now pinned in PRD-01/02) are the acceptance tests.
 
-Onboard the pilot cohort to the real app (PWA link + Play closed-test track).
+## Week-3 Checkpoint — closed-test cohort (n=12) · *fix-before-spend, not a product verdict*
 
-**Gates — recalibrated to category benchmarks [verified: category median D7 ≈ 7–20%, good = 28–40%]:**
+Scoped to what n=12 can measure — funnel and activation, **not** retention. Bands `[hypothesis — no citable benchmark for warm committed-tester conversion; logic: if people who promised to install can't get through, cold users have no chance]`:
+
+| Metric | Proceed | Fix first | Halt onboarding |
+|---|---|---|---|
+| Warm install funnel (link→installed→notif), committed testers | ≥ 9/12 | 6–8/12 | < 6/12 |
+| Activation (first vice log ≤48h of install) | ≥ 8/12 | 5–7/12 | < 5/12 |
+| Golden fixtures pass (a_daily==200; crash-free) | pass | — | fail |
+
+This moves funnel-leak discovery (the register's top risk) from Week 7 to Week 3.
+
+## Phase 2 — Live Cohort (Weeks 4–6) · *the decision gate*
+
+Onboard the full cohort to the real app (PWA link + Play closed-test track). Extended 2→3 weeks: D7 needs onboarding spread plus a D14 confirmatory read now that nothing precedes this gate. Two arms:
+
+- **Warm arm:** the recruited 30–40.
+- **Cold arm [new in v0.4]:** 10–15 users with no founder tie (college group / Bangalore subreddit) — replaces the dead pilot as the inflation-calibration instrument.
+- **Week-5 structured interviews (n≥6)** using the retired concierge script's language as the interview guide — recovers the pilot's lost qualitative budget-reflow signal.
+
+**Gates — retention/funnel bands benchmark-anchored [verified: category median D7 ≈ 7–20%, good = 28–40%]; loop-engagement split in v0.4:**
 
 | Metric | Exceptional | Strong (continue) | Iterate | Kill |
 |---|---|---|---|---|
-| **D7 retention** | ≥ 40% | ≥ 30% | 20–30% | **< 20%** |
+| **D7 retention** (warm) | ≥ 40% | ≥ 30% | 20–30% | **< 20%** |
 | **Install funnel** (click→installed→notif granted) | ≥ 60% | ≥ 40% | 25–40% | < 25% |
-| **Loop engagement** (users viewing budget reflow after vice log) | ≥ 60% | ≥ 40% | 20–40% | < 20% |
+| **Unprompted budget-surface opens** — *the moat test*: % of actives opening the budget surface ≥2×/wk NOT within 15 min of a log | ≥ 60% | ≥ 40% | 20–40% | < 20% |
 | Avg session | ≥ 90s | ≥ 60s | 30–60s | < 30s |
 
-*v0.1's D7 ≥45% gate is retired as a pass/fail line — it was a top-decile (Duolingo-tier) bar that would have killed a viable product. It survives as the "Exceptional" column.*
+- *Reflow delivery-view* (old "loop engagement") is demoted to a **hygiene metric**: expected ≥80%; <60% = delivery/instrumentation bug, not a product verdict `[hypothesis]`. The pushed message is near-automatic to see — as a gate, nobody could fail it.
+- Moat-test bands `[hypothesis — no citable category benchmark for feature-level unprompted revisit; same bands as v0.3's loop engagement on a deliberately stricter metric — appropriate for the only gate left]`. Secondary confirmations: cost-edit rate (correcting the ₹ = caring about the ₹), reflow-screenshot shares.
+- **Cold-arm qualifier `[hypothesis]`:** warm-cohort "Strong" counts only if cold-arm D7 is within ~10–15 pts of warm; a bigger gap = inflation → treat as Iterate.
+- *v0.1's D7 ≥45% gate remains retired as pass/fail; it survives as the "Exceptional" column.*
 
-**Decision framework at Week 8:**
-- **Strong+ on retention AND funnel** → open beta, Play production listing, start v2 list (SMS parsing, Health Connect)
+**Decision framework at Week 6:**
+- **Strong+ on retention AND funnel** (cold-arm qualified) → open beta, Play production listing, start v2 list (SMS parsing, Health Connect)
 - **Iterate band** → one focused 2-week fix cycle on the single worst metric, re-gate once
 - **Kill band on retention** with healthy funnel → the product isn't wanted; write the postmortem, keep the learnings
 - **Kill band on funnel** with decent in-app retention → distribution problem, not product problem; push the Play-Store track harder before judging the product
 
-## Risk Register (updated)
+## Risk Register (v0.4)
 
 | Risk | Likelihood | Mitigation |
 |---|---|---|
-| Install/permission funnel leaks silently | **High — the top risk** | Instrument first; Play-Store track as trust fallback; in-chat install walkthrough |
-| Pilot cohort inflation masks weak retention | High | Gate on funnel + qualitative loop-engagement too; expect cold-audience D7 to be materially lower |
-| Nudge fatigue | Medium | 2/day cap, frequency as pilot variable |
-| Budget reflow feels like surveillance, not care | Medium — untested mechanic | Phase 1 qualitative gate exists precisely for this |
-| Severity weights feel unfair/arbitrary | Medium | Ship as "beta weights," collect disagreement in-app, retune with pilot data |
-| A stealth competitor occupies the loop | Low-medium | Pre-launch sweep: App/Play store keywords + Crunchbase/Tracxn (an evening, do in Phase 0) |
+| Install/permission funnel leaks silently | **High — the top risk** | Instrument first; Week-3 checkpoint catches it 4 weeks earlier than v0.3; Play-Store track as trust fallback; in-chat install walkthrough |
+| Budget reflow feels like surveillance, not care | **High — raised in v0.4** (its old mitigation, the Phase-1 qualitative gate, died with the pilot) | Recruitment copy probe (Wk 0) + Week-5 interviews + unprompted-opens metric |
+| **Sunk-cost pressure at the only gate [new]** | High — 3 weeks of build before any evidence; founders will want to soften a Week-6 kill | All three founders sign the v0.4 bands **before Week 1** |
+| Warm-cohort inflation (no manual-mode baseline anymore) | High | Cold arm inside the live cohort; cold-arm qualifier on the gate |
+| **Untested nudge copy [new]** | Medium — copy v0 is founder intuition; compounds nudge fatigue | Copy is an explicit iterate variable at the gate |
+| Nudge fatigue | Medium | 2/day cap, frequency as a cohort variable |
+| Severity weights feel unfair/arbitrary | Medium (slightly worse — engine ships with zero human-in-loop calibration) | Ship as "beta weights," collect disagreement in-app, retune with cohort data |
+| A stealth competitor occupies the loop | Low — **sweep done 2026-07-12, clear** | Re-sweep before open beta |
 
 ---
 
@@ -393,9 +392,10 @@ Cadence: daily 15-min standup, Friday demo+retro. Side-project honesty rule: if 
 
 | Tier | Metric | Watch level |
 |---|---|---|
-| **North star** | D7 retention (cold-audience, post-pilot) | ≥ 30% |
+| **North star** | D7 retention (warm, cold-arm qualified) | ≥ 30% |
 | **The silent killer** | Link→install→notif-permission funnel | ≥ 40% |
-| **The moat test** | Budget-reflow views after vice log | ≥ 40% |
+| **The moat test** | **Unprompted budget-surface opens** (≥2×/wk, not within 15 min of a log) | ≥ 40% |
+| Hygiene | Reflow delivery-view after vice log | ≥ 80% (below 60% = instrumentation bug) |
 | Behavioral | Vice confessions ≥2/wk per active user | ≥ 40% of actives |
 | Behavioral | Recovery-Mode hydration/walk action rate | ≥ 60% |
 | Economic | Confirmed lunchbox saves/user/week | ≥ 2 |
@@ -422,11 +422,11 @@ Cadence: daily 15-min standup, Friday demo+retro. Side-project honesty rule: if 
 | **Recovery Mode** | ≤48h reduced-target soft-UI state (48h is an optimistic-median rebaseline placeholder, [hypothesis] — see Research Digest); triggers: $V_t\ge25$ ∨ sleep<5h ∨ wearable recovery<50% |
 | **TWA** | Trusted Web Activity — a thin Android wrapper that ships the existing PWA through the Play Store; ~free via Bubblewrap |
 
-### What would change our minds
+### What would change our minds (v0.4, build-first)
 
-- **Kill signals:** D7 < 20% cold, funnel < 25% after fixes, budget-reflow indifference in Phase 1
-- **Double-down signals:** unprompted budget-number references in pilot chat, D7 ≥ 30% cold, organic WhatsApp forwards
-- **Re-scope signals:** health half engages but finance half ignored (→ original-Bounce fallback), or vice-versa (→ PFM-lite pivot)
+- **Kill signals:** D7 < 20% warm; unprompted budget-opens < 20% with healthy delivery-views (the moat isn't wanted); funnel < 25% after Week-3 fixes; interview majority describing the reflow as "being watched"
+- **Double-down signals:** unprompted budget-opens ≥ 40% + meaningful cost-edit rate; D7 ≥ 30% with cold arm within ~10 pts; users referencing the ₹ number unprompted in Week-5 interviews; organic reflow-screenshot shares
+- **Re-scope signals:** score engages but budget surface ignored (→ health-only fallback), or vice-versa (→ PFM-lite pivot); funnel kill-band with decent in-app retention (→ distribution fix before product verdict)
 
 ### Version History
 
@@ -435,3 +435,4 @@ Cadence: daily 15-min standup, Friday demo+retro. Side-project honesty rule: if 
 | 0.1 | Jul 2026 | First idea capture; hypothesis framing; EMA math v1 |
 | **0.2** | **Jul 2026** | **Merged concept (health+finance loop = core, [verified] whitespace); math refactored — 100-pt day-quality fixed (v1 capped at 70), sleep restored as credit + amplifier, ω Oura-anchored, provable bounds + worked examples; vice set broadened (delivery, sugar) with cost defaults; retention gates recalibrated to category benchmarks (kill <20%, not <45%); PWA+TWA dual-track distribution; funnel promoted to primary metric; AA/Gmail verified out of reach — manual-first locked; DPDP checklist added; Whoop-first retired for India** |
 | **0.3** | **Jul 2026** | **Claim-hardening pass (research + claim-verifier, 2026-07-12): "24–48h rebaseline" un-attributed from Oura (that study has no recovery-timeframe data) and re-sourced as [hypothesis — MunichBREW II, Eur Heart J 2024] — ~24h under heavy dosing, but WHOOP real-world shows a 4–5-day tail; the 48h Recovery window is now explicitly a tunable placeholder, not a guarantee. RHR figure corrected to *lowest* RHR +8.2% (source's own label), not average. Closed-loop moat sweep completed (App/Play + Crunchbase/Tracxn) — whitespace survives, sharpened to *prospective re-plan* vs retrospective dashboards; Paceline / Aditya Birla cited as adjacent-but-opposite validation. Smoking costs updated for the Feb 2026 excise overhaul [verified]; alcohol/food/lunchbox costs partially audited with open gaps flagged. Sources: `research/2026-07-12_*.md`.** |
+| **0.4** | **Jul 2026** | **Build-first restructure (founder decision 2026-07-12, gate redesign by ceo-strategist): WhatsApp concierge pilot dropped. New sequence: Phase 0 (wk 0, + ₹0 recruitment-embedded copy probe) → build sprint (wks 1–3, old Phase-2 data work folded in as a parallel desk track) → Week-3 closed-test checkpoint (n=12, funnel + activation, fix-before-spend) → live cohort (wks 4–6, warm + cold arms, Week-5 interviews) as the first and only decision gate. Loop-engagement metric split: reflow delivery-view demoted to hygiene (≥80%); the moat test is now *unprompted budget-surface opens* [hypothesis bands]. Cold-arm qualifier on "Strong." Risk register: surveillance risk raised to High (its Phase-1 mitigation died), new sunk-cost-at-the-only-gate and untested-copy risks; competitor risk lowered (sweep clear). New riskiest assumption: users want the prospective ₹ number at all — first evidence now arrives Week 4+ in-app instead of Week 2 in chat.** |

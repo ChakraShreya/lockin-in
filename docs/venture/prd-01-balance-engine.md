@@ -7,6 +7,7 @@ BALANCE ENGINE", Part 3 "Schema deltas", §1.2 vice taxonomy.
 | Version | Date | Changelog |
 |---|---|---|
 | 1.0 | 2026-07-12 | First build-ready spec: 3 worked examples pinned as fixtures; 7 doc-named edge cases fully specced (freeze state-machine, silent re-entry, vice stacking cap, sign invariant, Δ add-only clamp, dual-α window, m_t/D_t clamps). |
+| 1.1 | 2026-07-12 | **All 7 open questions answered by founder** (§7): 04:00 day boundary; m=1.0 on null sleep; dual-EMA columns confirmed, UI shows 7d only; re-entry ≥3/fire-once; ĥ=0.35 pinned (T2 stored V=94.0); any-signal=scored; TDEE static+editable. Build unblocked. |
 
 > **Claims discipline.** This is internal engine spec — most statements are design decisions, not
 > external claims. The two external anchors are carried from the doc: `ω=20` and the alcohol-night
@@ -20,6 +21,7 @@ BALANCE ENGINE", Part 3 "Schema deltas", §1.2 vice taxonomy.
 ## 1. Overview
 
 ### 1.1 What this is
+
 The Balance Engine is the health half of Bounce's core loop. It is a **pure, deterministic scoring
 function** plus the **persistence and state-machine** around it. Given a day's inputs (sleep,
 movement, nutrition, logged vices, optional wearable strain) it produces:
@@ -31,6 +33,7 @@ movement, nutrition, logged vices, optional wearable strain) it produces:
    engine only emits the signal).
 
 ### 1.2 Design invariants (the product philosophy, as code)
+
 - **Bounded for free.** `D_t ∈ [0,100]` and `LS_0 = 60 ∈ [0,100]` ⇒ `LS_t ∈ [0,100]` forever by
   induction. No output clamp on LS; the `[0,100]` clamp lives only on `D_t`.
 - **Forgiveness Guarantee.** Worst day (`D_t=0`) costs at most `(1−α)·LS_{t-1}` = 25% at α=0.75.
@@ -41,6 +44,7 @@ movement, nutrition, logged vices, optional wearable strain) it produces:
   an enforced invariant with a test.
 
 ### 1.3 Scope boundary
+
 Pure function + state machine + persistence for **health scoring only**. Budget reflow, Recovery-Mode
 UI, nudges, and the Ring canvas are separate PRDs (§6 fence). The engine is wearable-free by default
 (`Δ=0`); the wearable path is specced but MVP-fenced.
@@ -53,24 +57,26 @@ Reference: Part 3 "Schema deltas." The doc names the tables but leaves input-sto
 storage as gaps. This section fills them. **Bold = gap this PRD fills; plain = already in doc.**
 
 ### 2.1 `vices_logged` (existing, Part 3)
+
 One **row per vice per log event** — stacking is multiple rows, never a summed row (§4.3).
 
 | Column | Type | Notes |
 |---|---|---|
 | `user_id`, `id` | fk / pk | |
-| `logged_at` | timestamptz | drives day-assignment (§ open Q1 — day boundary) |
+| `logged_at` | timestamptz | drives day-assignment: **04:00 IST cutoff (Q1 decided)** — a log before 04:00 belongs to the *previous* day; day `d` = `[d 04:00, d+1 04:00)` Asia/Kolkata |
 | `vice_domain` | enum | `alcohol \| smoking \| delivery \| sugar` |
 | `vice_tier` | enum/label | culturally-worded (`Blackout`, `Sutta-Chai Break`, …) |
 | `severity` | int | **positive magnitude only.** DB `CHECK (severity > 0)` — §4.10 invariant |
 | `cost_inr` | int | tier default, user-editable (feeds budget PRD, not this engine) |
 
 ### 2.2 **`daily_inputs`** (gap — doc stores outputs but names no input table)
+
 The raw self-report/wearable inputs for one user-day. Vices come from §2.1 (joined by day).
 
 | Column | Type | Notes |
 |---|---|---|
-| `user_id`, `date` | pk | one row per user-day |
-| `sleep_hours` (`h_t`) | numeric \| null | null ⇒ Z=0, m defaults 1.0 (§4.4, open Q2) |
+| `user_id`, `date` | pk | one row per user-day; `date` derived with the **04:00 IST boundary (Q1)** |
+| `sleep_hours` (`h_t`) | numeric \| null | null ⇒ Z=0, m defaults 1.0 (§4.4; **Q2 decided: neutral**) |
 | `active_minutes` (`a_t`) | numeric \| null | null ⇒ S=0 |
 | `protein_g` (`P_in`) | numeric \| null | for N gate |
 | `energy_in` (`E_in`) | numeric \| null | for N gate |
@@ -81,6 +87,7 @@ Profile-level (from onboarding, not per-day): `body_mass_kg` (`M`), `tdee` (`E_o
 `rhr_base`, `hrv_base`, `wallet_tier`.
 
 ### 2.3 `calculated_scores` (existing, Part 3 — with gaps filled)
+
 Doc columns: `{ Z, S, N, m, v_sub, delta_physio, v_adj, D, alpha, LS_prev, LS }`. Gaps:
 
 | Column | Type | Notes |
@@ -93,8 +100,9 @@ Doc columns: `{ Z, S, N, m, v_sub, delta_physio, v_adj, D, alpha, LS_prev, LS }`
 | **`silent_days`** | int | count of consecutive frozen days immediately preceding (§4.8) |
 | **`recovery_triggered`** | bool | `V_t≥25 ∨ h_t<5 ∨ wearable_recovery<50%` (emit-only) |
 
-> **Schema decision to confirm (open Q3):** dual EMA stored as **two columns** (`ls7*`,`ls30*`) on
-> one row, not two rows. The doc's single `alpha`/`LS` is superseded.
+> **Schema decision (Q3 — CONFIRMED 2026-07-12):** dual EMA stored as **two columns** (`ls7*`,`ls30*`)
+> on one row, not two rows. The doc's single `alpha`/`LS` is superseded. UI displays **7-day only**;
+> `ls30` computes silently for the later Advanced view.
 
 ---
 
@@ -106,7 +114,7 @@ $$D_t = \mathrm{clamp}_{[0,100]}\Big(35 + Z_t + S_t + 15N_t - m_t V_t (1 - 0.5N_
 |---|---|---|
 | `Z_t` sleep credit | `25·min(1, h_t/8)` | ≤25; `h_t=null ⇒ 0` |
 | `S_t` movement credit | `min(25, 0.5·a_t)` | ≤25; `a_t=null ⇒ 0` |
-| `N_t` nutrition gate | `1` iff `P_in ≥ 1.2·M` **AND** `|E_in − E_out| ≤ 0.15·E_out`, else `0` | {0,1} |
+| `N_t` nutrition gate | `1` iff `P_in ≥ 1.2·M` **AND** `|E_in − E_out| ≤ 0.15·E_out`, else`0` | {0,1} |
 | `m_t` sleep amplifier | `clamp(1 + 0.1·(8 − h_t), 1.0, 1.8)`; `h_t=null ⇒ 1.0` | `[1.0,1.8]` |
 | `V_sub,t` | `Σ severity` over that day's vice rows (additive) | ≥0 |
 | `Δ_t` physio top-up | `min(25, ω·(r̂ + ĥ))`, `ω=20`; no wearable ⇒ `0` | `[0,25]` |
@@ -123,6 +131,7 @@ $$D_t = \mathrm{clamp}_{[0,100]}\Big(35 + Z_t + S_t + 15N_t - m_t V_t (1 - 0.5N_
 Each FR = observable behavior + worked example + acceptance criterion. Test IDs map to §5.
 
 ### FR1 — Day Quality `D_t`
+
 **Behavior:** compute `D_t` from the §3 formula, clamped `[0,100]`.
 **Example (Given/When/Then):** *Given* `LS_prev=65`, sleep 7h, 45-min lift, nutrition met, one
 `Philosophical` (severity 25), no wearable. *When* the day is scored. *Then* `Z=21.875`, `S=22.5`,
@@ -130,6 +139,7 @@ Each FR = observable behavior + worked example + acceptance criterion. Test IDs 
 **Acceptance:** T1. `D` within ±0.1 of `80.6`.
 
 ### FR2 — Nutrition gate `N_t`
+
 **Behavior:** binary. `N=1` only when **both** protein floor and energy-window conditions hold. `N=1`
 adds +15 **and** halves the vice penalty (factor `1−0.5N`).
 **Example:** *Given* `M=72kg` (floor `86.4g`), `E_out=2000`. *When* `P_in=86.4, E_in=2000`. *Then*
@@ -138,6 +148,7 @@ adds +15 **and** halves the vice penalty (factor `1−0.5N`).
 one gram under ⇒ `N=0`.
 
 ### FR3 — Adjusted vice load `V_t` (stacking + cap)
+
 **Behavior — order of operations, exactly:** (1) `V_sub = Σ severities` (additive, **no per-vice
 clamp** — EMA smoothing is the forgiveness, not a cap here); (2) compute `Δ` (§4.5; `0` in MVP);
 (3) `V = min(100, V_sub + Δ)`. **The cap applies after Δ is added, never to `V_sub` alone.**
@@ -146,6 +157,7 @@ clamp** — EMA smoothing is the forgiveness, not a cap here); (2) compute `Δ` 
 **Acceptance:** T7. `V_sub=90, Δ=15 ⇒ V=100`. `V_sub=90, Δ=0 ⇒ V=90`.
 
 ### FR4 — Sleep amplifier `m_t` + `D_t` clamp
+
 **Behavior:** `m = clamp(1 + 0.1·(8−h), 1.0, 1.8)`. Continuous (no step cliffs). `h≥8 ⇒ 1.0`;
 `h=0 ⇒ 1.8`. `h_t=null ⇒ m=1.0` (neutral — don't amplify what wasn't measured; open Q2). `D_t`
 clamped `[0,100]` — a penalty that drives the raw sum negative floors at 0.
@@ -153,6 +165,7 @@ clamped `[0,100]` — a penalty that drives the raw sum negative floors at 0.
 **Acceptance:** T10 (`m` clamps) + T11 (`D` floors at 0 — see Day-2 fixture where raw sum = −77.9 → 0).
 
 ### FR5 — Physiology top-up `Δ` (add-only, no-wearable default)
+
 **Behavior:** `r̂` and `ĥ` **each floor at 0 independently** — a good RHR cannot cancel a bad HRV.
 `Δ = min(25, 20·(r̂+ĥ))`. **No-wearable path is the default and primary MVP path: `rhr`/`hrv` null
 ⇒ `Δ=0`, pure self-report.** Δ can only add, never subtract or replace what the user logged. Δ is
@@ -162,6 +175,7 @@ never surfaced as an accusation (UI concern, Domain 2).
 **Acceptance:** T9. Good-RHR/bad-HRV ⇒ Δ from HRV only; null wearable ⇒ Δ=0.
 
 ### FR6 — Life Score EMA, dual window
+
 **Behavior:** two EMAs run **simultaneously off the same `D_t` sequence**: `ls7` (α=0.75, default
 display) and `ls30` (α≈0.9355, long view). **Both seed `LS_0 = 60.`** Both freeze together on
 no-input days (§4.7); both step together on scored days.
@@ -175,6 +189,7 @@ both bounded `[0,100]`.
 > the `LS_0=60` seed, which the doc states but does not work through.
 
 ### FR7 — Missing-data freeze (the state machine)
+
 **Behavior — state machine, per user-day, evaluated at day rollover:**
 
 ```
@@ -202,6 +217,7 @@ both bounded `[0,100]`.
 `state=scored`, `Z=S=0, N=0, m=1.0`, D computed from those floors.
 
 ### FR8 — Silent-day re-entry (gentle, zero-penalty)
+
 **Behavior:** **Trigger = the first `scored` day following `silent_days ≥ 3` consecutive `frozen`
 days.** On return the score does **not** snap or catch up: the returning day is scored normally —
 `ls7/ls30` step **once** from the carried-forward value with the new `D_t`. No decay accrued during
@@ -211,9 +227,11 @@ row; the gentle message is Domain 2/copy (not this engine — only the flag is e
 `ls7 = 0.75·61.3 + 0.25·90 = 68.5`, `reentry_flag=true`, `silent_days=4`. Same arithmetic as any
 normal step — silence cost nothing.
 **Acceptance:** T6. 3 frozen days then a scored day ⇒ single normal EMA step, `reentry_flag=true`,
-`silent_days=3`. (Open Q4: is the threshold exactly `≥3` — a 2-day gap sets no flag?)
+`silent_days=3`. (**Q4 decided:** threshold is exactly `≥3` — a 2-day gap sets no flag — and the
+flag fires **only on the first** returning day.)
 
 ### FR9 — Recovery-Mode trigger emission (engine responsibility only)
+
 **Behavior:** on each `scored` day, set `recovery_triggered = (V_t ≥ 25) OR (h_t < 5) OR
 (wearable_recovery < 50%)`. The engine **emits the flag only**; the ≤48h state, theme, target
 trimming, and early-exit logic are Domain 2 (§6 fence). The 48h window and 25/5h thresholds are
@@ -223,6 +241,7 @@ recovery_triggered=true`.
 **Acceptance:** covered incidentally by T1/T2; no dedicated numeric gate (boundary `V=25` triggers).
 
 ### FR10 — Sign-convention invariant (persisted + enforced)
+
 **Behavior — enforced invariant:** all stored `severity` values are **positive magnitudes**
 (`CHECK (severity > 0)` at the DB layer; engine asserts `V_sub ≥ 0`). The penalty is applied by the
 formula's leading minus sign, never by a negative stored value. A write of a negative severity is
@@ -254,12 +273,12 @@ edge case gets one test. Founder A writes these as the engine's unit suite befor
 | **T10** | `m_t` clamp | h=3 / h=10 / h=0 / h=null | `m=1.5 / 1.0 / 1.8 / 1.0` | FR4 |
 | **T11** | `D_t` clamp | raw component sum = −77.9 (Day-2 shape) | `D=0` (floored, not negative) | FR4 |
 | **T12** | Dual-α window + seed | seed `LS_0=60`; first `D=80.6` | `ls7=65.15, ls30≈61.33`; both `∈[0,100]` | FR6 |
-| **T13** | Nutrition gate boundary | `M=72` → floor 86.4g, `E_out=2000`; (a) `P_in=86.4, |E_in−E_out|=300`; (b) `P_in=86.0` | (a) `N=1`; (b) `N=0` | FR2 |
+| **T13** | Nutrition gate boundary | `M=72` → floor 86.4g, `E_out=2000`; (a) `P_in=86.4, |E_in−E_out|=300`; (b)`P_in=86.0` | (a) `N=1`; (b) `N=0` | FR2 |
 
-> **Fixture note (T2):** the doc writes `Δ=11.1 → V=94.1` using `ĥ≈0.354`; a clean `−35%` gives
-> `ĥ=0.35 → Δ=11.0 → V=94.0`. Because the raw sum is deeply negative either way, **`D=0` and
-> `ls7=51.7` are exact and identical** under both. Pin the formula (`ĥ=0.35`); assert `D=0, ls7=51.7`
-> exactly and `V` within ±0.2. Flagged as open Q5 to reconcile the doc's stored `94.1`.
+> **Fixture note (T2) — Q5 DECIDED (2026-07-12):** the canonical formula is the clean ratio
+> `ĥ = max(0, (HRV_base − HRV_t)/HRV_base)` — a −35% night gives exactly `ĥ=0.35 → Δ=11.0 →
+> V=94.0`. The doc's stored `94.1` (from `ĥ≈0.354`) is an errata, corrected in the doc. Assert
+> `D=0, ls7=51.7` exactly and **`V=94.0`** (now deterministic). `D`/`LS` are unaffected either way.
 
 ---
 
@@ -280,26 +299,17 @@ Scope not explicitly fenced will crawl back in. Everything below is **out of thi
 
 ---
 
-## 7. Open questions for the founders
+## 7. Open questions — ALL ANSWERED (founder decisions, 2026-07-12)
 
-1. **Day boundary / rollover (Q1).** Local midnight, or a "night-out" cutoff (e.g. 04:00) so a 02:00
-   `Blackout` counts toward the night it belongs to, not the calendar day after? This affects
-   day-assignment for both scoring and budget. **Blocks:** `daily_inputs.date` derivation.
-2. **Unlogged-sleep `m_t` default (Q2).** This PRD defaults `h_t=null ⇒ m=1.0` (neutral). Alternative:
-   treat missing sleep as mildly penalizing. Neutral is proposed; confirm.
-3. **Dual-EMA storage (Q3).** Confirm two columns (`ls7*`,`ls30*`) on one `calculated_scores` row,
-   superseding the doc's single `alpha`/`LS`. And: does the 30-day view *display* in MVP, or compute
-   silently for later? (Affects Domain 2, not the engine, but the store decision is now.)
-4. **Re-entry threshold (Q4).** Is it exactly `≥3` frozen days (a 2-day gap sets no flag), and does the
-   flag fire only on the *first* returning day? Proposed: yes and yes.
-5. **T2 stored `V` reconciliation (Q5).** Doc shows `V=94.1` (ĥ≈0.354); clean `−35%` gives `94.0`.
-   Pick the canonical HRV-ratio definition so the stored intermediate is deterministic. (Final `D`/`LS`
-   are unaffected — both floor to `D=0`.)
-6. **`has_any_input` definition (Q6).** Confirm that logging *only* a movement check-in (no vice, no
-   sleep) is a `scored` day — i.e., the freeze is strictly "zero signals of any kind," not "no vice."
-   Proposed: any single signal ⇒ scored.
-7. **TDEE / body-mass refresh cadence (Q7).** `E_out`/`M` are onboarding profile values feeding the N
-   gate. Static for MVP, or recalculated? Proposed: static, editable in profile.
+| Q | Question | **Decision** |
+|---|---|---|
+| Q1 | Day boundary / rollover | **04:00 IST cutoff.** Day `d` = `[d 04:00, d+1 04:00)` Asia/Kolkata — a 02:00 `Blackout` counts toward the night it belongs to. Applies to scoring AND budget day-assignment. |
+| Q2 | Unlogged-sleep `m_t` default | **Neutral: `h_t=null ⇒ m=1.0`.** No penalty for missing data (consistent with freeze-not-decay). |
+| Q3 | Dual-EMA storage | **Two columns (`ls7*`,`ls30*`) on one row, confirmed.** UI shows **7-day only** in the prototype; `ls30` computes silently. |
+| Q4 | Re-entry threshold | **Exactly `≥3` frozen days** (2-day gap = no flag); flag fires **once**, on the first returning day only. |
+| Q5 | T2 stored `V` / HRV ratio | **Clean ratio pinned: `ĥ=0.35` for −35% ⇒ `V=94.0`.** Doc's 94.1 corrected as errata. |
+| Q6 | `has_any_input` | **Any single signal ⇒ `scored`** (a lone movement check-in counts). Freeze = zero signals of any kind. |
+| Q7 | TDEE / body-mass refresh | **Static onboarding values, editable in profile.** No auto-recalc in MVP. |
 
 ---
 

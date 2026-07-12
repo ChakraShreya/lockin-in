@@ -6,6 +6,7 @@ cost tables (alcohol, food delivery, cigarettes, home-cooked meal baseline) agai
 real 2026 Bangalore prices. Desk research only — no primary interviews.
 
 **Placeholders under test** (from `docs/venture/Bounce_Strategic_Documentation_Suite.md`):
+
 - Alcohol: T1/T2/T3 × budget/mid/premium = 300/600/1000, 600/1200/2500, 1200/2500/5000
 - Food delivery: T1/T2/T3 × budget/mid/premium = 200/250/500, 400/500/900, 800/900/1600
 - Smoking: ~20/50/350 per unit/pack
@@ -51,6 +52,7 @@ roughly ₹22–55 for a 20-pack, though I could not fetch these articles direct
 [hypothesis — search-engine synthesis of Deccan Herald https://www.deccanherald.com/business/union-budget/union-budget-2026-cigarette-prices-surge-up-to-rs-55-per-pack-after-excise-duty-hike-3882605 and WION https://www.wionews.com/india-news/how-much-will-your-cigarette-cost-from-feb-1-beedi-pan-masala-to-get-costlier-as-centre-imposes-new-excise-duty-cess-1767254899124 — treated as Likely given TaxGuru's independent, directly-fetched corroboration of the mechanism]
 
 **Live retail prices (July 2026), fetched directly from quick-commerce product pages:**
+
 - Gold Flake Premium, 10 sticks: ₹99 (~₹9.9/stick) — [verified — Zepto, https://www.zepto.com/pn/gold-flake-premium-cigarettes/pvid/7d3fcb4b-70c2-4b24-9382-4d95c3675538]
 - Gold Flake Filter, 10 sticks: ₹117 (~₹11.7/stick) — [verified — Zepto, https://www.zepto.com/pn/gold-flake-filter-cigarette/pvid/05776d06-bbbe-4344-91a3-e6e78118529d]
 - Classic Milds (Balanced Taste), 10 sticks: ₹240 (~₹24/stick) — consistent across two independent platforms — [verified — Blinkit https://blinkit.com/prn/classic-mild/prid/503582 ; Swiggy Instamart https://www.swiggy.com/instamart/pc/classic-milds-7KPS6P1VG2]
@@ -79,6 +81,7 @@ qualitatively ("HSR/BTM/Jayanagar pint or cocktail ₹150–300") via cost-of-li
 not a specific venue's menu. [hypothesis — bohothebar.com, bangaloreblogs.com, ff21.in]
 
 For mid/premium tier, two actual venue menus were fetched:
+
 - **Byg Brewski (Sarjapur Rd)**: food ₹215 (half-plate kebab) to ₹465 (prawns ghee
   roast, full plate); "cost for two" listed as ~₹1,500 (~₹750/head), food only — beer/
   cocktail prices were not visible on the fetched menu page. [verified — Magicpin,
@@ -129,6 +132,7 @@ directory listings with no visible prices in the fetched search snippets.
 
 Verified per-unit retail ingredient prices (BigBasket, search-indexed product listing
 prices, not independently re-fetched live at full page load):
+
 - Sona Masoori rice, 5kg: ₹310–470 → ₹62–94/kg [verified — BigBasket product listings,
   e.g. https://www.bigbasket.com/pd/40128964/bb-popular-new-rice-sona-masoori-5-kg/]
 - Toor dal, 1kg: ₹122–159 [verified — BigBasket, e.g.

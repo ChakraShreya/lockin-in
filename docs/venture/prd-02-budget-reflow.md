@@ -3,7 +3,7 @@
 **Owner:** Product (Founder A lane — engine/PM)
 **Builds in:** Phase 3, Week 4 (alongside the $D_t$/EMA balance engine)
 **Source of truth:** `docs/venture/Bounce_Strategic_Documentation_Suite.md` v0.3, Domain 1 §6 ("Financial Recalibration") + Part 3 schema
-**Version:** v0.1 · 2026-07-12 · _Initial build-ready PRD; extracts Domain 1 §6 into observable requirements, adds `savings_ledger`, resolves the ₹80 home-cost scope, carries the food-delivery-AOV gap forward as an open question._
+**Version:** v0.2 · 2026-07-12 · _v0.1: initial build-ready PRD (extracts Domain 1 §6, adds `savings_ledger`). v0.2: founder decisions landed — per-tier home cost ₹100/200/300, lunch baselines ₹250/350/450 (credit ~₹150/day), Monday **04:00** IST week boundary (follows PRD-01 Q1), OQ2/OQ3/OQ5 closed; §8 concierge script obsolete per doc v0.4 (retained as interview guide). OQ1 (delivery AOV) remains open._
 
 ---
 
@@ -17,7 +17,7 @@ blunt about where the edge is and isn't:
   Reframe, Sunnyside, and DrinkControl already do this — as **retrospective
   dashboards** (a scoreboard of the past) `[verified — competitor sweep 2026-07-12]`.
 - **The moat:** the **prospective re-plan**. One vice log **forward-recalculates**
-  the rest of the week's spendable budget and shows *the path back*. No app
+  the rest of the week's spendable budget and shows _the path back_. No app
   (global or India) was found doing this `[verified — store + Crunchbase/Tracxn
   sweep 2026-07-12, absence-not-disproof]`.
 
@@ -31,11 +31,12 @@ The second mechanic — the **Lunchbox / Leftover savings loop** — is the posi
 mirror: a logged home-cooked double portion that becomes tomorrow's lunch credits
 real rupees into a visible savings ledger. Same forward framing, opposite sign.
 
-**Phase-1 note:** before any of this is built, the moat is tested *by hand* over
-WhatsApp (§8). The one thing nobody knows — because nobody else ships it — is
-whether users actually *want* the forward ₹ number or find it like surveillance.
-That qualitative gate (venture doc Phase 1, "Budget-reflow reaction") is the real
-prize; this PRD is what gets built only if that gate passes.
+**Validation note (updated for doc v0.4 — the WhatsApp pilot is dropped):** the
+one thing nobody knows — because nobody else ships it — is whether users actually
+_want_ the forward ₹ number or find it like surveillance. That question is now
+answered **in-app** at the live-cohort gate (unprompted budget-surface opens, plus
+Week-5 interviews and the Week-0 recruitment copy probe), not by a manual pilot.
+This PRD gets built first; the gate decides whether it survives.
 
 ---
 
@@ -109,13 +110,16 @@ Tier defaults (venture doc §6): **₹1,500 / ₹3,000 / ₹6,000**
 current Monday with `budget_inr` equal to the selected tier's default. No user
 can reach the dashboard with a null/absent budget.
 
-### FR2 — Week lifecycle: calendar Monday–Sunday, Monday 00:00 IST reset
+### FR2 — Week lifecycle: calendar Monday–Sunday, Monday 04:00 IST reset
 
-**Behavior:** a "week" is a **fixed calendar week, Monday 00:00 to Sunday 23:59
-Asia/Kolkata** — not a rolling 7-day window. `week_start` is always the Monday.
+**Behavior:** a "week" is a **fixed calendar week, Monday 04:00 to the next
+Monday 04:00 Asia/Kolkata** — not a rolling 7-day window. The 04:00 boundary
+follows the engine's day-boundary decision (PRD-01 Q1, founder-decided
+2026-07-12): a Sunday-night 02:00 log still belongs to the outgoing week.
+`week_start` is always the Monday _date_.
 On the first user activity on or after a new Monday, a fresh `weekly_budgets` row
 is created with `spent_inr = 0` and `budget_inr` carried from the prior week's
-budget setting (the *setting* carries; the *spend* does not — see FR5).
+budget setting (the _setting_ carries; the _spend_ does not — see FR5).
 "Days left in week" for FR3 = **count of days from today through Sunday,
 inclusive of today** (Friday → Fri/Sat/Sun = 3).
 
@@ -127,8 +131,9 @@ inclusive of today** (Friday → Fri/Sat/Sun = 3).
   appear.
 
 **Acceptance:** no `weekly_budgets` row's `week_start` is ever a non-Monday.
-Crossing midnight Sunday→Monday zeroes `spent_inr` in the new row. "Days left"
-on Friday computes to 3; on Sunday to 1.
+Crossing Monday 04:00 IST zeroes `spent_inr` in the new row (a Monday 02:00 log
+still counts toward the outgoing week). "Days left" on Friday computes to 3; on
+Sunday to 1.
 
 ### FR3 — On-log recalculation + the "path back" message
 
@@ -143,9 +148,9 @@ and returns a message using the template:
 
 For MVP the `{suggestion}` is a deterministic string ("cook the next N days and
 you're clear" where N = days-left, or "you're clear" when `R ≥ 0` and allowance
-comfortably covers the tier). In Phase 1 the suggestion is **founder-written by
-hand** (§8) — the pilot's job is to learn what phrasing lands before we hard-code
-one.
+comfortably covers the tier). Phrasing is seeded from the §8 script language +
+the Week-0 recruitment copy probe (doc v0.4 — there is no manual pilot to learn
+from), and retuned from Week-5 interview verbatims.
 
 - **Given** `W = 3000`, `spent_inr = 800`, on a **Friday** (3 days left), the user
   logs a `Philosophical` night (`cost_inr = 1200`) and then a delivery order
@@ -155,9 +160,9 @@ one.
   message reads **"₹200/day of fun money till Monday — path back: cook Sat & Sun
   and you're clear."**
 
-**Acceptance:** the recalculation fires on *every* log write (not on dashboard
+**Acceptance:** the recalculation fires on _every_ log write (not on dashboard
 open, not batched). Given the worked-example inputs, the returned
-`daily_allowance_inr = 200`. The message always names *the path back*, never the
+`daily_allowance_inr = 200`. The message always names _the path back_, never the
 deficit alone (venture doc nudge discipline).
 
 ### FR4 — Editable cost at log time, persisted to the log row
@@ -182,14 +187,14 @@ value, not the default. A later read of the log row returns the edited number.
 **Behavior:** when `R < 0` the week is overshot. The app shows the overshoot
 **once, on the log that crossed zero**, then the rest of the week shows
 `₹0/day` with a muted, non-alarming status line — **no debt is carried and the
-next week starts clean** (venture doc §6: "the financial *never miss twice*").
+next week starts clean** (venture doc §6: "the financial _never miss twice_").
 Concretely:
 
 - The **crossing log** (first log making `R < 0`) returns the overshoot message:
   > **"You're ₹{overshoot} over this week's fun budget. No debt carried — clean
   > slate Monday. Path back: {suggestion}."**
 - **Subsequent logs while `R < 0`** do **not** re-fire the alarm. They show
-  `daily_allowance_inr = 0` and a muted line: *"Still over — resets Monday."*
+  `daily_allowance_inr = 0` and a muted line: _"Still over — resets Monday."_
   `overshoot_inr` may update silently but is never dramatized again.
 - **Monday** (FR2): new row, `spent_inr = 0`, overshoot gone. The prior overshoot
   is never summed into the new week.
@@ -212,52 +217,49 @@ variant.
 **Behavior:** three steps.
 
 1. **Prompt at dinner log** (ties to the venture doc's 20:30 Dinner & Prep nudge):
-   when the user logs a home-cooked dinner, offer *"Cook a double portion for
-   tomorrow's lunchbox?"* Accepting writes a `savings_ledger` row with
+   when the user logs a home-cooked dinner, offer _"Cook a double portion for
+   tomorrow's lunchbox?"_ Accepting writes a `savings_ledger` row with
    `status = 'pending_confirm'`, `credit_date = tomorrow`,
    `delivery_baseline_inr` = wallet-tier lunch baseline (below),
-   `home_cost_inr = 80`, `credit_inr = max(0, baseline − 80)`.
-2. **Next-day confirm:** on `credit_date`, ask *"Ate the lunchbox? (skipped the
-   ₹{baseline} delivery)"*. **Confirm** → `status = 'confirmed'`, the credit
+   `home_cost_inr` = wallet-tier home cost (below),
+   `credit_inr = max(0, baseline − home_cost)`.
+2. **Next-day confirm:** on `credit_date`, ask _"Ate the lunchbox? (skipped the
+   ₹{baseline} delivery)"_. **Confirm** → `status = 'confirmed'`, the credit
    counts toward the running total. **No/ignore by end of day** → `status =
-   'expired'`, no credit (we only bank *realized* savings — no vanity numbers).
+   'expired'`, no credit (we only bank _realized_ savings — no vanity numbers).
 3. **Ledger view** (FR7) shows the running confirmed total.
 
-**Credit math per wallet tier** — `credit = lunch_delivery_baseline − home_cost`,
-targeting the venture doc's **₹120–300/day** band:
+**Credit math per wallet tier** — `credit = lunch_delivery_baseline − home_cost`
+(**founder decisions 2026-07-12**, superseding the earlier flat-₹80 proposal —
+the doc's old "₹120–300/day" claim becomes **~₹150/day**):
 
 | Wallet tier | Lunch delivery baseline | Home cost | **Credit / day** |
 |---|---|---|---|
-| Budget | ₹200 | ₹80 | **₹120** |
-| Mid | ₹300 | ₹80 | **₹220** |
-| Premium | ₹380 | ₹80 | **₹300** |
+| Budget | ₹250 | ₹100 | **₹150** |
+| Mid | ₹350 | ₹200 | **₹150** |
+| Premium | ₹450 | ₹300 | **₹150** |
 
-All three baselines `[hypothesis — food-delivery AOV unverifiable from primary
-sources, cost audit 2026-07-12; see §5 and Open Question OQ1]`. The credit
-band lands in the doc's stated ₹120–300 range **by construction on unverified
-inputs** — treat as calibration placeholders, not confirmed savings.
-
-**₹80 home-cost scope — RESOLVED (recommendation, flagged):** adopt **₹80 as a
-single flat, *fully-loaded* home-cook cost** — LPG + protein + condiments +
-real-world wastage included, **not** raw ingredients. The cost audit shows raw
-ingredients compute to only ₹25–40/portion `[verified — BigBasket/mandi unit
-prices, cost audit 2026-07-12]`, which would make the savings *look inflated*;
-₹80 fully-loaded sits sensibly between that floor and the ₹85–235 paid-tiffin
-ceiling `[verified — tiffin-service pricing, cost audit 2026-07-12]`. **Flag:**
-₹80 remains `[hypothesis — cost audit 2026-07-12, fully-loaded scope is Bounce's
-own arithmetic, not a published figure]`; stored as a single constant
-`HOME_COST_INR = 80` so a Phase-2 audit can retune one number.
+All six constants `[hypothesis — food-delivery AOV unverifiable from primary
+sources (cost audit 2026-07-12, OQ1); home costs are the founders' own
+fully-loaded estimates for working-class/student budgets]` — calibration
+placeholders, retunable after the cohort. Stored as per-tier constants
+`HOME_COST_INR = {100, 200, 300}` and `LUNCH_BASELINE_INR = {250, 350, 450}`.
+Context kept from the cost audit: raw ingredients compute to ₹25–40/portion
+`[verified — BigBasket/mandi unit prices]` and paid tiffins run ₹85–235
+`[verified — tiffin pricing]`; the per-tier home costs are deliberately
+_fully-loaded_ (LPG + protein + wastage) and sit above the raw floor so savings
+never look inflated.
 
 - **Given** a **mid**-tier user logs a home-cooked dinner and accepts the
   double-portion prompt,
   **When** they confirm eating the lunchbox the next day,
   **Then** a `savings_ledger` row `status = 'confirmed', delivery_baseline_inr =
-  300, home_cost_inr = 80, credit_inr = 220` exists and the running total
-  increases by ₹220.
+  350, home_cost_inr = 200, credit_inr = 150` exists and the running total
+  increases by ₹150.
 
 **Acceptance:** accepting the prompt creates a `pending_confirm` row; only a
 next-day **confirm** flips it to `confirmed` and moves the total; ignoring it
-`expires` with zero credit. `credit_inr` for a mid-tier user = 220.
+`expires` with zero credit. `credit_inr` for a mid-tier user = 150.
 
 ### FR7 — Visible savings ledger
 
@@ -266,9 +268,9 @@ total** and a list of recent credits (`credit_date`, `credit_inr`, source).
 Framing is visceral and forward ("₹880 saved — half a tank of petrol"), per the
 venture doc; the copy itself is out of this PRD's lane (marketing-growth).
 
-- **Given** four confirmed mid-tier lunchbox credits (₹220 each),
+- **Given** four confirmed mid-tier lunchbox credits (₹150 each),
   **When** the user opens the ledger,
-  **Then** the total shows **₹880** and four line items are listed.
+  **Then** the total shows **₹600** and four line items are listed.
 
 **Acceptance:** the displayed total equals `SUM(credit_inr WHERE status =
 'confirmed')`. `pending_confirm` and `expired` rows are excluded from the total.
@@ -282,9 +284,9 @@ venture doc; the copy itself is out of this PRD's lane (marketing-growth).
 | Rollover / debt carry of overshoot | **Out — permanently, by design** | Debt-carry is a guilt mechanic (venture doc §6). No column, no logic. |
 | Auto-detecting cost from bank/SMS/Gmail | **Out (v2 candidate)** | Manual `cost_inr` only. AA/Gmail/SMS all verified out of MVP reach (venture doc Domain 4). |
 | Per-item itemized delivery/bar bills | **Out** | One `cost_inr` per log; tap-to-edit is the only granularity. Itemization is scope creep with no gate behind it. |
-| Multi-currency / non-INR | **Out** | Bangalore pilot is INR-only. |
-| Automated `{suggestion}` NLG in Phase 1 | **Out of Phase 1** | Suggestion is founder-written by hand in the concierge (§8); MVP ships a deterministic string. Learn phrasing before coding it. |
-| Ledger *decrement* / spending the savings | **Out** | Ledger is additive/motivational, not a wallet. No withdraw action. |
+| Multi-currency / non-INR | **Out** | Bangalore cohort is INR-only. |
+| Automated `{suggestion}` NLG | **Out of MVP** | MVP ships a deterministic string seeded from §8 language + the copy probe (doc v0.4). Learn phrasing from Week-5 interviews before coding generation. |
+| Ledger _decrement_ / spending the savings | **Out** | Ledger is additive/motivational, not a wallet. No withdraw action. |
 | Savings-total → budget top-up ("earn more fun money") | **Out (tempting, fenced)** | Coupling the two ledgers turns a motivation surface into an incentive to over-cook/over-log; not validated. Raise with ceo-strategist if it recurs. |
 | Wallet-tier auto-inference from spend | **Out** | Tier is user-set at onboarding (FR1); no behavioral inference in MVP. |
 
@@ -302,15 +304,15 @@ Per repo claims discipline, every figure the reflow depends on, traced to
 | Alcohol **premium** row | ~₹1,200–5,000/person brackets real menus | `[verified — Toit + Byg Brewski menus via Magicpin/ExploreBangalore, cost audit 2026-07-12]` |
 | Alcohol **budget/mid** rows | 300/600/1000, 600/1200/2500 | `[hypothesis — cost-of-living/nightlife blogs, no per-venue budget menu fetched, cost audit 2026-07-12]` |
 | Food-delivery vice costs (200/250/500 …) | tier table | `[hypothesis — see OQ1: AOV unverifiable]` |
-| **Lunch delivery baseline** (₹200/300/380) | drives lunchbox credit | `[hypothesis — same AOV gap, cost audit 2026-07-12]` |
-| Home-cook cost `HOME_COST_INR` | ₹80, fully-loaded | `[hypothesis — fully-loaded scope is Bounce arithmetic; raw-ingredient floor ₹25–40 is verified, cost audit 2026-07-12]` |
-| Lunchbox credit band | ₹120–300/day | `[hypothesis — derived from two unverified inputs above]` |
+| **Lunch delivery baseline** (₹250/350/450) | drives lunchbox credit (founder-set 2026-07-12) | `[hypothesis — same AOV gap, cost audit 2026-07-12]` |
+| Home-cook cost `HOME_COST_INR` (₹100/200/300 per tier) | fully-loaded, founder-set 2026-07-12 | `[hypothesis — fully-loaded scope is Bounce arithmetic; raw-ingredient floor ₹25–40 is verified, cost audit 2026-07-12]` |
+| Lunchbox credit | ~₹150/day (all tiers) | `[hypothesis — derived from two unverified inputs above]` |
 
 **Open gap called out — food-delivery AOV (OQ1):** the Zomato/Swiggy average
 order value **could not be verified from primary sources** — investor PDFs are
 image-only and blog-synthesized "₹425" is unconfirmed `[hypothesis — cost audit
-2026-07-12, "What we could NOT verify" §1]`. Both the delivery *vice* costs and
-the lunchbox *delivery baseline* rest on this gap. **Do not upgrade either to
+2026-07-12, "What we could NOT verify" §1]`. Both the delivery _vice_ costs and
+the lunchbox _delivery baseline_ rest on this gap. **Do not upgrade either to
 `[verified]` without a text-native investor figure or a Bangalore per-order
 sweep** (venture doc Phase 2 cost audit).
 
@@ -323,12 +325,16 @@ exists to move. Restated for the builder:
 
 | Gate | Where | Threshold | Status |
 |---|---|---|---|
-| **Budget-reflow reaction** (qualitative) | Phase 1, §8 | Continue = users reference the ₹ number **unprompted**; Iterate = polite ack; Kill = ignored/annoyed | `[verified — venture doc Part 2 Phase 1 gate table]` |
-| **Loop engagement** (users viewing budget reflow after a vice log) | Phase 4 | Strong ≥ 40%, Iterate 20–40%, Kill < 20% | `[verified — venture doc Part 2 Phase 4; category D7 benchmark 7–20%/28–40% cited there]` |
-| Vice confession (≥2 vices/user/wk) | Phase 1 | Continue ≥ 40% | `[verified — venture doc Phase 1]` |
+| **Unprompted budget-surface opens** — _the moat test_: % of actives opening the budget surface ≥2×/wk **not** within 15 min of a log | Live cohort (doc v0.4 Phase 2, wks 4–6) | Strong ≥ 40%, Iterate 20–40%, Kill < 20% | `[hypothesis bands — venture doc v0.4; no category benchmark for feature-level unprompted revisit]` |
+| Reflow delivery-view after a vice log (hygiene, not a gate) | Live cohort | Expected ≥ 80%; < 60% = delivery/instrumentation bug, not a product verdict | `[hypothesis — venture doc v0.4]` |
+| **Budget-reflow reaction** (qualitative) | Wk-0 recruitment copy probe + Wk-5 interviews (n≥6, guide = §8 script language) | Double-down = users reference the ₹ number **unprompted**; Kill = majority describe it as "being watched" | `[verified — venture doc v0.4 Appendix signals]` |
+| Warm install funnel + activation (first log ≤48h) | Week-3 closed-test checkpoint (n=12) | Proceed ≥ 9/12 funnel, ≥ 8/12 activation; golden fixtures must pass | `[hypothesis bands — venture doc v0.4 checkpoint table]` |
 
-The **budget-reflow reaction** gate is the one this feature lives or dies on — it
-is the only test of whether the forward ₹ number (the moat) is *wanted*.
+The **unprompted-opens** gate is the one this feature lives or dies on — delivery
+views are near-automatic (the message is pushed), so only unprompted returns to
+the budget surface test whether the forward ₹ number (the moat) is _wanted_.
+Secondary confirmations: cost-edit rate (correcting the ₹ = caring about the ₹),
+reflow-screenshot shares.
 
 ---
 
@@ -355,16 +361,17 @@ engine is wrong.
 once; next Monday row shows `budget_inr = 3000, spent_inr = 0`, no ₹900 reference.
 
 **Lunchbox fixture (FR6):** mid-tier, accept prompt → next-day confirm →
-`credit_inr == 220`, running total += 220.
+`credit_inr == 150`, running total += 150.
 
 ---
 
-## 8. Phase-1 WhatsApp concierge script (manual reflow)
+## 8. ~~Phase-1 WhatsApp concierge script~~ — OBSOLETE as a concierge (doc v0.4: pilot dropped); retained as the Week-5 interview guide + copy source
 
-This is how the moat is exercised **before a line of code** — founders play the
-engine by hand over WhatsApp. The goal is the qualitative gate in §6: *does anyone
-actually want the ₹ number, forward-looking?* Lean every reply on the **prospective
-re-plan** (what's left, path back), never a backward tally.
+The manual concierge will never run. This section survives for two jobs: (a) its
+message language seeds **nudge copy v0** and the Week-0 recruitment copy probe;
+(b) its scenarios are the **Week-5 structured-interview guide** (n≥6) at the live
+cohort. The design principle stands everywhere: lean every message on the
+**prospective re-plan** (what's left, path back), never a backward tally.
 
 **Founder-side running state (shared sheet):** per user — `W`, this-week
 `spent`, day-of-week. Founder computes `R = W − spent` and `a_daily =
@@ -372,7 +379,7 @@ max(0,R)/days-left` on each inbound vice, exactly as FR3.
 
 **Script — onboarding (Day 0):**
 > **Founder:** "Quick one to set up your week: roughly, what's a comfortable
-> *fun-spend* budget for a week — nights out, deliveries, smokes? Ballpark is
+> _fun-spend_ budget for a week — nights out, deliveries, smokes? Ballpark is
 > fine, we'll tune it. Most people land ₹1.5k / ₹3k / ₹6k."
 > **User:** "3k I guess"
 > **Founder:** "Perfect — ₹3,000/week of fun money. I'll track it as you log.
@@ -398,13 +405,13 @@ max(0,R)/days-left` on each inbound vice, exactly as FR3.
 
 **Script — lunchbox loop (the savings mirror):**
 > **Founder (20:30, dinner time):** "Cooking tonight? Make a double portion —
-> tomorrow's lunchbox skips a ~₹300 delivery."
+> tomorrow's lunchbox skips a ~₹350 delivery."
 > **User:** "yeah made extra dal chawal"
-> **Founder:** _(pending credit ₹300−₹80 = ₹220)_ "Nice. If you actually eat it
-> tomorrow instead of ordering, that's **₹220 banked.** I'll check in."
+> **Founder:** _(pending credit ₹350−₹200 = ₹150)_ "Nice. If you actually eat it
+> tomorrow instead of ordering, that's **₹150 banked.** I'll check in."
 > **Founder (next day, lunch):** "Lunchbox or delivery today?"
 > **User:** "brought it 💪"
-> **Founder:** "**₹220 saved — you're at ₹880 this month, about half a tank of
+> **Founder:** "**₹150 saved — you're at ₹600 this month, most of a tank of
 > petrol.** Genuinely, that adds up."
 
 **What founders log per exchange (for the gate):** did the user **reference the ₹
@@ -420,20 +427,20 @@ risk in the venture doc register.)
   the lunchbox delivery baseline both rest on an **unverifiable** AOV
   `[hypothesis — cost audit 2026-07-12]`. Resolve in Phase 2 with a text-native
   investor figure or a Bangalore per-order sweep before either goes `[verified]`.
-- **OQ2 — one flat home cost vs per-tier?** This PRD uses a single
-  `HOME_COST_INR = 80` (fully-loaded). Should home-cook cost also vary by wallet
-  tier (a premium user's "home cook" may include paneer/chicken)? Deferred; one
-  constant ships first.
-- **OQ3 — lunch baseline vs vice-log delivery cost:** the lunchbox uses a
-  *dedicated* lunch delivery baseline (₹200/300/380), distinct from the vice-log
-  delivery `cost_inr` (which can be a ₹1,600 Weekend Write-Off). Confirm with
-  Founder A this two-baseline split is acceptable, or unify in Phase 2 once AOV
-  is real.
-- **OQ4 — `{suggestion}` generation:** MVP ships a deterministic string; Phase 1
-  hand-writes it. When do we templatize, and from which pilot phrasings? (Feeds
-  marketing-growth's copy lane — out of this PRD.)
-- **OQ5 — timezone edge:** all math is Asia/Kolkata. Confirm no traveling-user
-  case matters for the pilot (Bangalore cohort — assume no).
+- **OQ2 — DECIDED (founder, 2026-07-12): per-tier home cost ₹100/200/300**
+  (fully-loaded; "realistic for working class and students"). Supersedes the
+  flat-₹80 proposal. `[hypothesis]` constants, retunable post-cohort.
+- **OQ3 — DECIDED (founder, 2026-07-12): keep the two-baseline split AND raise
+  the lunch baselines to ₹250/350/450** so credits stay motivating (~₹150/day
+  all tiers). Still distinct from vice-log `cost_inr`. `[hypothesis]` pending
+  the OQ1 AOV audit.
+- **OQ4 — `{suggestion}` generation:** MVP ships a deterministic string. When do
+  we templatize, and from which phrasings — copy-probe verbatims or Week-5
+  interview language (doc v0.4)? (Feeds marketing-growth's copy lane — out of
+  this PRD.)
+- **OQ5 — DECIDED (default accepted, 2026-07-12):** all math is Asia/Kolkata
+  fixed; no traveling-user handling for the Bangalore cohort. Day/week boundary
+  is **04:00 IST** per PRD-01 Q1 (see FR2).
 
 **Flag to ceo-strategist:** none on direction — this PRD executes Domain 1 §6 as
 written. The only strategic-adjacent choice fenced out (savings-total → budget
@@ -449,20 +456,20 @@ stack (schema → compute → message/UI), **not** a layer. Founder A, Week 4,
 alongside the $D_t$/EMA engine (venture doc Phase 3 table).
 
 1. **Slice A — Pot exists & resets.** Onboarding writes `budget_inr` (FR1);
-   Monday-boundary creates a fresh zero-spend row (FR2). *Proves the week
-   container is correct before any math rides on it.*
+   Monday-boundary creates a fresh zero-spend row (FR2). _Proves the week
+   container is correct before any math rides on it._
 2. **Slice B — Log recalculates & speaks.** One vice log → `spent_inr` update →
    `R`/`a_daily` compute → "path back" message (FR3), reading editable `cost_inr`
-   (FR4). *This is the moat's forward reflow — ship the §7 golden fixture
-   (`a_daily == 200`) as the gating unit test.*
+   (FR4). _This is the moat's forward reflow — ship the §7 golden fixture
+   (`a_daily == 200`) as the gating unit test._
 3. **Slice C — Overshoot, once, no rollover.** Crossing-log alarm + muted
-   subsequent state + clean Monday (FR5). *Proves the no-debt guarantee holds
-   across a week boundary.*
+   subsequent state + clean Monday (FR5). _Proves the no-debt guarantee holds
+   across a week boundary._
 4. **Slice D — Lunchbox credit end-to-end.** Dinner prompt → `pending_confirm`
-   row → next-day confirm/expire → `credit_inr` banked (FR6). *The savings
-   mirror; mid-tier `credit == 220` fixture gates it.*
+   row → next-day confirm/expire → `credit_inr` banked (FR6). _The savings
+   mirror; mid-tier `credit == 150` fixture gates it._
 5. **Slice E — Ledger surface.** Running confirmed total + recent credits (FR7).
-   *Makes the banked savings visible; last because it only reads what D writes.*
+   _Makes the banked savings visible; last because it only reads what D writes._
 
 **Grilling focus before build:** the week-boundary/timezone edge (Slice A), the
 "alarm exactly once per week" invariant (Slice C), and the two-baseline delivery

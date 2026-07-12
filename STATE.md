@@ -30,22 +30,38 @@ _Last synced: 2026-07-12._
 
 Home of **Project Bounce** — a lifestyle recalibration app where one vice log
 recalculates both your health plan and your weekly budget ("the Loop", verified
-whitespace). "Done" for this phase = the venture doc's Phase 0–4 validation
-protocol executed: WhatsApp concierge pilot → localized data → build sprint →
-live cohort, with pre-committed continue/iterate/kill gates at each step.
+whitespace). "Done" for this phase = the venture doc's v0.4 **build-first**
+protocol executed: foundations + recruitment → build sprint (wks 1–3) → Week-3
+closed-test checkpoint → live cohort (wks 4–6) as the decision gate, with
+pre-committed continue/iterate/kill bands. (The WhatsApp concierge pilot was
+dropped by founder decision 2026-07-12.)
 
 ## Current state / how it's going
 
 _As of 2026-07-12 — rewritten each sync._
 
-- Venture doc now **v0.3** (claim-hardened). No code yet — the doc
-  (`docs/venture/`) is still the only artifact; **nothing user-validated yet**;
-  Phase 1 (WhatsApp concierge pilot) remains the next real gate.
-- **Direction set (2026-07-12): parallel tracks** — deepen all six features into
-  build-ready specs *now* while Phase 0/1 pilot prep runs alongside; pilot stays
-  the evidence gate, Week-4 build starts pre-armed. Full plan:
+- Venture doc now **v0.4** (build-first). No code yet; **nothing user-validated
+  yet**. **The WhatsApp pilot is DROPPED (founder decision 2026-07-12)** — the
+  live cohort (wks 4–6) is the first and only decision gate, with a Week-3
+  closed-test checkpoint (n=12) and a ₹0 recruitment copy probe as pre-code
+  signals. Gate redesign by ceo-strategist; moat metric split (delivery-view =
+  hygiene; **unprompted budget-surface opens** = the moat test); cold arm added.
+- **Direction: parallel tracks** — deepen all six features into build-ready
+  specs now; build sprint is Weeks 1–3. Plan (amended for v0.4):
   `~/.claude/plans/research-on-the-current-reflective-bear.md`.
-- Both onboarding-era doc findings are now **closed** in v0.3 (see below).
+- **PRDs are decision-complete (2026-07-12 evening):** Founder A answered all 12
+  open questions — PRD-01 v1.1 and PRD-02 v0.2 have zero blocking unknowns.
+  Headlines: 04:00 IST day/week boundary; any-signal=scored; dual EMA stored,
+  7d shown; home cost ₹100/200/300 + lunch baselines ₹250/350/450 → lunchbox
+  credit ≈₹150/day (supersedes ₹120–300). Full table:
+  `docs/session-summary/2026-07-12_decisions-and-alignment.md` (**the founder
+  alignment handoff — B & C start there**).
+- **Prototype build plan approved:** Next.js + Supabase (from day one), ux-designer
+  wireframes first, full loop minus push nudges; friends & family are the later
+  test cohort. UX spec: `docs/venture/ux-spec-prototype.md`.
+- Both onboarding-era doc findings closed in v0.3.
+- **New riskiest assumption:** users want the prospective ₹ number at all — the
+  moat ships unvalidated; first in-app evidence arrives Week 4+.
 - AI tooling live: 6 role agents (ceo-strategist, product-manager,
   marketing-growth, ux-designer, market-researcher, claim-verifier), 3 flows
   (/venture-research, /venture-plan, /design-critique), grilling + handoff
@@ -57,10 +73,10 @@ _As of 2026-07-12 — rewritten each sync._
   deltas only — no recovery-timeframe data) — confirmed against ouraring.com
   (2026-07-11, claim-verifier).
 - **Rebaseline window re-sourced (2026-07-12):** MunichBREW II (Eur Heart J 2024)
-  shows ~24h HRV/HR normalization under *heavy dosing*; WHOOP real-world shows a
+  shows ~24h HRV/HR normalization under _heavy dosing_; WHOOP real-world shows a
   4–5-day tail. Now `[hypothesis]` — 48h Recovery window is a tunable placeholder.
 - **Closed-loop moat swept (2026-07-12):** whitespace survives; the edge is the
-  *prospective re-plan*, not dual display. Paceline / Aditya Birla = adjacent-opposite.
+  _prospective re-plan_, not dual display. Paceline / Aditya Birla = adjacent-opposite.
 - **Feb 2026 cigarette excise overhaul** confirmed — smoking cost table updated.
 - Play Store: $25 one-time fee; 12 testers / 14 days for personal-account
   closed testing — confirmed against support.google.com (2026-07-11).
@@ -77,36 +93,45 @@ _As of 2026-07-12 — rewritten each sync._
   (re-run `/design-critique "Domain 2"` → ux-designer writes the state specs).
 - **Cost tables only partially audited** — food-delivery AOV unverifiable from
   primary sources (investor PDFs image-only); budget-tier alcohol & lunchbox
-  scope still `[hypothesis]`. Finish in Phase 2 or when the budget-reflow PRD needs it.
+  scope still `[hypothesis]`. Finish in the build sprint's parallel desk track
+  (doc v0.4, wks 1–3; PRD-02 OQ1).
 
 ## Key conclusions to date
 
 - Differentiate on the **mechanic** — specifically the **prospective re-plan**
-  (one log → forward recalculation of *both* plans), not dual display and never
+  (one log → forward recalculation of _both_ plans), not dual display and never
   tone; "no-shame" is crowded and retrospective money+calorie dashboards already
   exist [verified, 2026-07-12 sweep].
-- Cheapest evidence first: concierge pilot before any code; every phase has a
-  kill switch. Feature-deepening specs can run in parallel without skipping the gate.
+- ~~Cheapest evidence first: concierge pilot before any code~~ — **superseded
+  2026-07-12 (founder decision): build-first.** The trade-off is owned in doc
+  v0.4 Part 2: a ₹0 2-week falsification became a ~3-week build with a blunter
+  metric; clawbacks = copy probe, Week-3 checkpoint, cold arm, Week-5 interviews.
+  Every phase still has a kill switch; **all 3 founders must sign the gate bands
+  before Week 1** (sunk-cost risk is now High).
 - Manual logging is the hero trigger — AA/Gmail/SMS parsing all verified out
   of MVP reach.
 
 ## Open threads / next steps
 
 Per the forward plan (`~/.claude/plans/research-on-the-current-reflective-bear.md`):
-1. ~~Engine + budget-reflow PRDs~~ **DONE (2026-07-12)** —
-   `docs/venture/prd-01-balance-engine.md`, `prd-02-budget-reflow.md`. Founder A's
-   Week-4 lane. Both carry open questions needing founder sign-off (schema
-   `daily_inputs` table, dual ls7/ls30 columns, HRV-ratio definition, ₹80
-   home-cost = fully-loaded, food-delivery AOV still unverified).
-2. **Domain 2 UX (still open)** — `/design-critique "Domain 2"` → ux-designer
-   writes the missing empty/error/recovery state specs + wireframes.
-3. **Recovery Mode spec** (product-manager) + Recovery screens (ux-designer) —
-   the emotionally sensitive screen, worst design-critique finding.
-4. **Nudge spec + funnel events + copy** (product-manager + marketing-growth).
-5. Phase 0 human tasks: DPDP basics, cohort recruitment (≥12 commit to Play test),
-   concierge playbook (drafted in PRD-02). Competitor store-sweep **done** (2026-07-12).
-6. Week-4 build sprint: `/onboard-project --upgrade` from `~/ai-research` to add
-   tdd + optional FULL-tier hooks; add the test command to CLAUDE.md.
+
+1. **Next AI session — scaffold + build** (per the approved prototype plan):
+   Next.js + TS + Tailwind + Vitest scaffold, Supabase schema migration (PRD-01
+   §2 + PRD-02 §2), then vertical slices gated by PRD fixtures (engine T1–T13;
+   budget ₹200/day golden, overshoot-once, lunchbox-₹150). **Needs from Founder
+   A at start: Supabase project URL + anon key into `.env.local`** (never commit).
+2. **Founders B & C (human):** read
+   `docs/session-summary/2026-07-12_decisions-and-alignment.md`; **sign the v0.4
+   gate bands** (sunk-cost pre-commitment); B reviews the UX spec before building.
+3. **Recruitment is the critical path (human):** 30–40 users, ≥12 committed to
+   the Play closed test, with the ₹0 mock-reflow copy probe embedded in every
+   recruitment conversation. Plus DPDP template evenings.
+4. **Remaining AI specs (smaller now):** Recovery Mode product spec
+   (product-manager) if the UX spec's states need trigger detail beyond PRD-01
+   FR9; nudge spec + copy v0 (deferred — prototype ships without push nudges).
+5. At build start: `/onboard-project --upgrade` from `~/ai-research` to add tdd;
+   add the test command to CLAUDE.md once vitest is green.
+   ~~Engine + budget-reflow PRDs~~ **DONE + decision-complete (2026-07-12).**
 
 ## Map (where things live)
 
