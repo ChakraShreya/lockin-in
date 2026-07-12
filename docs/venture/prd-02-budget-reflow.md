@@ -3,7 +3,7 @@
 **Owner:** Product (Founder A lane — engine/PM)
 **Builds in:** Phase 3, Week 4 (alongside the $D_t$/EMA balance engine)
 **Source of truth:** `docs/venture/Nudge_Strategic_Documentation_Suite.md` v0.4, Domain 1 §6 ("Financial Recalibration") + Part 3 schema
-**Version:** v0.3.1 · 2026-07-12 · _Reconciliation: v0.3's stale-draft regressions fixed; **money estimates FINAL per founder call after AOV verification** — flat ₹80 home cost, ₹200/300/380 lunch baselines, ₹120–300/day credits (supersedes v0.2's same-day per-tier ₹100/200/300 + ₹250/350/450 call); Monday **04:00** IST boundary consistent throughout; decision record added after §8. v0.3 (Shreya): food-delivery AOV **verified** — national blended ₹453–458 (FY25) from Eternal + Swiggy primary filings (re-derived GOV÷orders); §5 retagged against the verified anchor; `{suggestion}` templatization deferred until the reflow-reaction gate passes. v0.2: founder decisions landed (per-tier costs — later superseded, see v0.3.1 — Monday 04:00 week boundary, OQ2/3/5 closed). v0.1: initial build-ready PRD (extracts Domain 1 §6, adds `savings_ledger`)._
+**Version:** v0.4 · 2026-07-12 · _**Monthly supersession:** the budget pot moves from **weekly to monthly** per the 2026-07-12 **evening** founder meeting (all three founders) — this supersedes v0.3.1's FINAL weekly design (Monday 04:00 IST boundary, `weekly_budgets`, weekly reset). The period boundary is now the **1st of the calendar month, 04:00 IST**; schema becomes `monthly_budgets`; FR1's defaults are mechanically scaled to monthly `[hypothesis — amounts not yet founder-decided]`; a weekly **pacing checkpoint** is added as a PROPOSED FR (FR8, pending sign-off); FR4 gains an explicit group-order note and the MVP fence gains "automatic bill/order splitting"; §7 fixtures and §8 scripts reworked to monthly framing. **What this does NOT change:** the lunchbox credit math (flat ₹80 home cost, ₹200/300/380 lunch baselines, ₹120/220/300 credits — all FINAL), the three-tier wallet concept, the verified AOV anchor (₹453–458), the no-rollover/no-debt principle, or the 04:00 IST day boundary (PRD-01 Q1). Prior: v0.3.1 reconciliation (money estimates FINAL after AOV verification; decision record added). v0.3 (Shreya): food-delivery AOV **verified** from Eternal + Swiggy primary filings. v0.2: founder decisions landed. v0.1: initial build-ready PRD._
 
 ---
 
@@ -17,12 +17,13 @@ blunt about where the edge is and isn't:
   Reframe, Sunnyside, and DrinkControl already do this — as **retrospective
   dashboards** (a scoreboard of the past) `[verified — competitor sweep 2026-07-12]`.
 - **The moat:** the **prospective re-plan**. One vice log **forward-recalculates**
-  the rest of the week's spendable budget and shows _the path back_. No app
-  (global or India) was found doing this `[verified — store + Crunchbase/Tracxn
+  the rest of the period's spendable budget (a **monthly pot** as of v0.4 — see
+  the Decision record) and shows _the path back_. No app (global or India) was
+  found doing this `[verified — store + Crunchbase/Tracxn
   sweep 2026-07-12, absence-not-disproof]`.
 
 Every requirement below serves that framing: the user logs once, and the number
-they see is **forward-looking** ("₹200/day of fun money **till Monday**, here's
+they see is **forward-looking** ("₹200/day of fun money **till the 1st**, here's
 how to stay clear"), never a backward tally of damage done. If a requirement
 here ever reduces to a retrospective counter, it has drifted off the moat and
 should be flagged.
@@ -42,21 +43,22 @@ This PRD gets built first; the gate decides whether it survives.
 
 ## 2. Data model
 
-### 2.1 `weekly_budgets` (from venture doc Part 3 — referenced, not changed)
+### 2.1 `monthly_budgets` (supersedes the venture doc Part 3 `weekly_budgets` sketch — doc to be updated on its next revision)
 
-`{ user_id, week_start, budget_inr, spent_inr, daily_allowance_inr }` — **no
+`{ user_id, month_start, budget_inr, spent_inr, daily_allowance_inr }` — **no
 rollover column by design** (see FR5).
 
 | Field | Type | Meaning |
 |---|---|---|
 | `user_id` | fk | owner |
-| `week_start` | date | Monday of this budget week, **Asia/Kolkata** (see FR2) |
-| `budget_inr` | int | $W$ — the weekly discretionary pot, set at onboarding (FR1) |
-| `spent_inr` | int | $\sum_{\text{this week}} c_i$ — sum of `cost_inr` on this week's vice logs |
+| `month_start` | date | the 1st of this budget month, **Asia/Kolkata** (see FR2) |
+| `budget_inr` | int | $W$ — the monthly discretionary pot, set at onboarding (FR1; pro-rated on a partial first month, FR2) |
+| `spent_inr` | int | $\sum_{\text{this month}} c_i$ — sum of `cost_inr` on this month's vice logs |
 | `daily_allowance_inr` | int (computed) | $a_{daily} = \max(0, W - \text{spent})/\text{days-left}$ (FR3) |
 
 **Derived, not stored** (compute on read so there is no stale state):
-`R = budget_inr − spent_inr`; `overshoot_inr = max(0, −R)` (FR5).
+`R = budget_inr − spent_inr`; `overshoot_inr = max(0, −R)` (FR5). The weekly
+pacing figure (FR8, PROPOSED) is likewise **derived on read**, never stored.
 
 ### 2.2 `vices_logged` (from venture doc Part 3 — referenced)
 
@@ -67,7 +69,7 @@ engine reads `severity`. One log row feeds both arrows of the loop.
 ### 2.3 `savings_ledger` (NEW — this PRD adds it)
 
 The Lunchbox loop needs a durable, user-visible credit history. Not in the v0.3
-schema yet — proposed here for Founder C to add alongside `weekly_budgets`.
+schema yet — proposed here for Founder C to add alongside `monthly_budgets`.
 
 | Field | Type | Meaning |
 |---|---|---|
@@ -82,7 +84,7 @@ schema yet — proposed here for Founder C to add alongside `weekly_budgets`.
 | `created_at` | ts | prompt time |
 
 **Running savings total** = `SUM(credit_inr) WHERE status = 'confirmed'`. It is a
-query, not a stored counter (same anti-stale-state principle as `weekly_budgets`).
+query, not a stored counter (same anti-stale-state principle as `monthly_budgets`).
 The ledger is **append-only and additive** — it never decrements. It is a
 motivation surface, not a debt account (mirrors the no-rollover rule on the spend side).
 
@@ -93,50 +95,66 @@ motivation surface, not a debt account (mirrors the no-rollover rule on the spen
 Each requirement = observable behavior + one concrete example + an acceptance
 criterion a test or human check can verify.
 
-### FR1 — Onboarding sets the weekly pot $W$ by wallet tier
+### FR1 — Onboarding sets the monthly pot $W$ by wallet tier
 
 **Behavior:** during onboarding the user picks one of three wallet tiers; the app
-writes `budget_inr` = the tier default into the current week's `weekly_budgets`
-row. The value is editable later but a default must always exist.
+writes `budget_inr` = the tier default into the current month's `monthly_budgets`
+row (pro-rated if onboarding lands mid-month — FR2). The value is editable later
+but a default must always exist.
 
-Tier defaults (venture doc §6): **₹1,500 / ₹3,000 / ₹6,000**
-`[hypothesis — venture doc placeholder, Phase 2 cost-audit pending]`.
+Tier defaults — **monthly**: **₹6,500 / ₹13,000 / ₹26,000**
+`[hypothesis — mechanically scaled from the weekly defaults (₹1,500/3,000/6,000
+× ~4.33, rounded to clean numbers); founder confirmation of the monthly amounts
+pending]`. **Note the scope of the founder decision:** the 2026-07-12 evening
+meeting decided the **period change only** (weekly → monthly). The monthly
+*amounts* were **not** decided — the figures above are Product's mechanical
+scaling, flagged for Founder A (see Decision record).
 
-- **Given** a new user selecting the **mid** wallet tier,
+- **Given** a new user selecting the **mid** wallet tier on the 1st of the month,
   **When** onboarding completes,
-  **Then** `weekly_budgets.budget_inr = 3000` for the current `week_start`.
+  **Then** `monthly_budgets.budget_inr = 13000` for the current `month_start`.
 
-**Acceptance:** after onboarding, exactly one `weekly_budgets` row exists for the
-current Monday with `budget_inr` equal to the selected tier's default. No user
-can reach the dashboard with a null/absent budget.
+**Acceptance:** after onboarding, exactly one `monthly_budgets` row exists for the
+current month's 1st with `budget_inr` equal to the selected tier's default (or its
+FR2 pro-ration on a partial first month). No user can reach the dashboard with a
+null/absent budget.
 
-### FR2 — Week lifecycle: calendar Monday–Sunday, Monday 04:00 IST reset
+### FR2 — Month lifecycle: calendar month, 1st-of-month 04:00 IST reset
 
-**Behavior:** a "week" is a **fixed calendar week, Monday 04:00 to the next
-Monday 04:00 Asia/Kolkata** — not a rolling 7-day window. The 04:00 boundary
-follows the engine's day-boundary decision (PRD-01 Q1, founder-decided
-2026-07-12): a Sunday-night 02:00 log still belongs to the outgoing week.
-`week_start` is always the Monday _date_.
-On the first user activity on or after a new Monday, a fresh `weekly_budgets` row
-is created with `spent_inr = 0` and `budget_inr` carried from the prior week's
+**Behavior:** a "month" is a **fixed calendar month, the 1st at 04:00 to the next
+1st at 04:00 Asia/Kolkata** — not a rolling 30-day window. **Rationale for 04:00:**
+it keeps the engine's single day-boundary convention (PRD-01 Q1) so a
+late-night log on the last night of the month belongs to the month it happened in.
+`month_start` is always the 1st's _date_.
+On the first user activity on or after a new 1st, a fresh `monthly_budgets` row
+is created with `spent_inr = 0` and `budget_inr` carried from the prior month's
 budget setting (the _setting_ carries; the _spend_ does not — see FR5).
-"Days left in week" for FR3 = **count of days from today through Sunday,
-inclusive of today** (Friday → Fri/Sat/Sun = 3).
+"Days left in month" for FR3 = **count of days from today through the last day of
+the month, inclusive of today** (the 29th of a 31-day month → 29/30/31 = 3).
 
-- **Given** the last row is `week_start = 2026-07-06` (a Monday) and the user
-  opens the app on Monday **2026-07-13**,
+**Partial first month — pro-rate by default `[hypothesis — pro-rating chosen as
+the default over granting the full pot; flagged decision for Founder A]`:** when a
+user onboards mid-month, the first `monthly_budgets` row gets
+`budget_inr = round(tier_default × days-left / days-in-month)`. A full pot on
+day 20 would read as three weeks of free headroom; pro-rating keeps the first
+reflow message honest. Example: mid-tier onboarding on the 16th of a 30-day month
+→ `13000 × 15/30 = 6500`. From the next 1st, the full tier default applies.
+
+- **Given** the last row is `month_start = 2026-06-01` and the user
+  opens the app on Wednesday **2026-07-01**,
   **When** the app loads,
-  **Then** a new row `week_start = 2026-07-13, spent_inr = 0` is created and the
-  dashboard shows the full pot; the prior week's overshoot (if any) does **not**
+  **Then** a new row `month_start = 2026-07-01, spent_inr = 0` is created and the
+  dashboard shows the full pot; the prior month's overshoot (if any) does **not**
   appear.
 
-**Acceptance:** no `weekly_budgets` row's `week_start` is ever a non-Monday.
-Crossing Monday 04:00 IST zeroes `spent_inr` in the new row (a Monday 02:00 log
-still counts toward the outgoing week). "Days left" on Friday computes to 3; on
-Sunday to 1.
+**Acceptance:** no `monthly_budgets` row's `month_start` is ever a non-1st.
+Crossing the 1st at 04:00 IST zeroes `spent_inr` in the new row (a 02:00 log on
+the 1st still counts toward the outgoing month). "Days left" on the 29th of a
+31-day month computes to 3; on the last day to 1. Mid-month onboarding produces
+the pro-rated `budget_inr` per the formula above.
 
-**Timezone — decided, single-zone:** all budget math (week boundaries, the
-Monday 04:00 reset, and "days left") is fixed to **Asia/Kolkata**, hard-coded —
+**Timezone — decided, single-zone:** all budget math (month boundaries, the
+1st-of-month 04:00 reset, and "days left") is fixed to **Asia/Kolkata**, hard-coded —
 there is no per-user timezone field in MVP. The Bangalore pilot is IST-only, so
 the traveling-user / timezone-crossing case is **explicitly out of scope**;
 revisit only if Nudge expands beyond IST users. This assumption is recorded here
@@ -145,13 +163,13 @@ so the boundary logic is unambiguous for the builder.
 ### FR3 — On-log recalculation + the "path back" message
 
 **Behavior:** **every vice log** (the exact trigger — one recalculation per log
-write) recomputes, for the log's week:
+write) recomputes, for the log's month:
 
-$$R = W - \sum_{\text{this week}} c_i, \qquad a_{daily} = \frac{\max(0, R)}{\text{days left in week}}$$
+$$R = W - \sum_{\text{this month}} c_i, \qquad a_{daily} = \frac{\max(0, R)}{\text{days left in month}}$$
 
 and returns a message using the template:
 
-> **"₹{a_daily}/day of fun money till Monday — path back: {suggestion}."**
+> **"₹{a_daily}/day of fun money till the 1st — path back: {suggestion}."**
 
 For MVP the `{suggestion}` is a deterministic string ("cook the next N days and
 you're clear" where N = days-left, or "you're clear" when `R ≥ 0` and allowance
@@ -165,13 +183,13 @@ templates until the **budget-reflow-reaction gate (§6) passes** — no point tu
 the copy of a mechanic that isn't yet proven wanted. Post-gate, templatization is
 handed to marketing-growth's copy lane (out of this PRD).
 
-- **Given** `W = 3000`, `spent_inr = 800`, on a **Friday** (3 days left), the user
-  logs a `Philosophical` night (`cost_inr = 1200`) and then a delivery order
-  (`cost_inr = 400`),
+- **Given** `W = 13000`, `spent_inr = 10800`, on **the 29th of a 31-day month**
+  (3 days left), the user logs a `Philosophical` night (`cost_inr = 1200`) and
+  then a delivery order (`cost_inr = 400`),
   **When** the second log writes,
-  **Then** `spent_inr = 2400`, `R = 600`, `a_daily = 600/3 = 200`, and the
-  message reads **"₹200/day of fun money till Monday — path back: cook Sat & Sun
-  and you're clear."**
+  **Then** `spent_inr = 12400`, `R = 600`, `a_daily = 600/3 = 200`, and the
+  message reads **"₹200/day of fun money till the 1st — path back: cook the next
+  3 days and you're clear."**
 
 **Acceptance:** the recalculation fires on _every_ log write (not on dashboard
 open, not batched). Given the worked-example inputs, the returned
@@ -186,43 +204,52 @@ default or edited — is written to `vices_logged.cost_inr` and is what `spent_i
 sums. Editing cost changes budget math but never `severity` (health side is
 independent).
 
+**Group orders — handled by cost-edit, not by splitting:** when a delivery or bar
+bill is shared, the user **edits the cost down to their own share and logs only
+their own consumption**. That is the entire MVP mechanism — there is no
+split-the-bill flow; "automatic bill/order splitting" is explicitly fenced out
+(§4). One editable `cost_inr` covers the case.
+
 - **Given** a `Late-Night Binge` delivery pre-fills `cost_inr = 500` but the user
   actually spent ₹650,
   **When** they tap the field, enter 650, and confirm,
   **Then** the row persists `cost_inr = 650`, `spent_inr` reflects 650, and the
   reflow message uses 650 — while `severity` is unchanged.
+- **Given** a ₹1,200 group delivery of which the user's share is ₹400,
+  **When** they edit the pre-filled cost to 400 and confirm,
+  **Then** the row persists `cost_inr = 400` and only ₹400 hits `spent_inr`.
 
 **Acceptance:** the persisted `cost_inr` equals the confirmed (possibly edited)
 value, not the default. A later read of the log row returns the edited number.
 
-### FR5 — No-rollover overshoot: show once, reset clean Monday
+### FR5 — No-rollover overshoot: show once, reset clean on the 1st
 
-**Behavior:** when `R < 0` the week is overshot. The app shows the overshoot
-**once, on the log that crossed zero**, then the rest of the week shows
+**Behavior:** when `R < 0` the month is overshot. The app shows the overshoot
+**once, on the log that crossed zero**, then the rest of the month shows
 `₹0/day` with a muted, non-alarming status line — **no debt is carried and the
-next week starts clean** (venture doc §6: "the financial _never miss twice_").
+next month starts clean** (venture doc §6: "the financial _never miss twice_").
 Concretely:
 
 - The **crossing log** (first log making `R < 0`) returns the overshoot message:
-  > **"You're ₹{overshoot} over this week's fun budget. No debt carried — clean
-  > slate Monday. Path back: {suggestion}."**
+  > **"You're ₹{overshoot} over this month's fun budget. No debt carried — clean
+  > slate on the 1st. Path back: {suggestion}."**
 - **Subsequent logs while `R < 0`** do **not** re-fire the alarm. They show
-  `daily_allowance_inr = 0` and a muted line: _"Still over — resets Monday."_
+  `daily_allowance_inr = 0` and a muted line: _"Still over — resets on the 1st."_
   `overshoot_inr` may update silently but is never dramatized again.
-- **Monday** (FR2): new row, `spent_inr = 0`, overshoot gone. The prior overshoot
-  is never summed into the new week.
+- **The 1st** (FR2): new row, `spent_inr = 0`, overshoot gone. The prior overshoot
+  is never summed into the new month.
 
-- **Given** `W = 3000`, `spent_inr = 2900`, the user logs a `Blackout` night
+- **Given** `W = 13000`, `spent_inr = 12900`, the user logs a `Blackout` night
   (`cost_inr = 1000`),
   **When** the log writes,
   **Then** `R = −900`, `overshoot_inr = 900`, `daily_allowance_inr = 0`, and the
-  crossing message fires once. A further ₹300 delivery the same week shows
-  `₹0/day` + "Still over — resets Monday", **not** a second alarm. The following
-  Monday the dashboard shows the full ₹3,000 with no reference to the −900.
+  crossing message fires once. A further ₹300 delivery the same month shows
+  `₹0/day` + "Still over — resets on the 1st", **not** a second alarm. The
+  following 1st the dashboard shows the full ₹13,000 with no reference to the −900.
 
-**Acceptance:** `weekly_budgets` has no rollover/debt column. Overshoot never
-propagates across a `week_start` boundary. The alarm message string is emitted at
-most **once per week** (on the crossing log); later same-week logs emit the muted
+**Acceptance:** `monthly_budgets` has no rollover/debt column. Overshoot never
+propagates across a `month_start` boundary. The alarm message string is emitted at
+most **once per month** (on the crossing log); later same-month logs emit the muted
 variant.
 
 ### FR6 — Lunchbox / Leftover loop: dinner prompt → next-day confirm → ledger credit
@@ -246,7 +273,7 @@ variant.
 (**FINAL — founder call 2026-07-12 PM, after AOV verification:** the flat-₹80 +
 ₹200/300/380 figures below are re-affirmed against the verified AOV anchor,
 superseding the same-day per-tier ₹100/200/300 + ₹250/350/450 call — see the
-Decision record after §8):
+Decision record after §8; **unaffected by the v0.4 weekly→monthly change**):
 
 | Wallet tier | Lunch delivery baseline | Home cost | **Credit / day** |
 |---|---|---|---|
@@ -308,6 +335,41 @@ venture doc; the copy itself is out of this PRD's lane (marketing-growth).
 **Acceptance:** the displayed total equals `SUM(credit_inr WHERE status =
 'confirmed')`. `pending_confirm` and `expired` rows are excluded from the total.
 
+### FR8 — Weekly pacing checkpoint (**PROPOSED — pending founder sign-off, not yet a founder decision**)
+
+> **Status:** Claude's recommendation, accepted by Founder A **for inclusion as a
+> proposal only** at the 2026-07-12 evening meeting. Do **not** build until all
+> three founders sign off (see Decision record). Everything else in this PRD
+> stands without it.
+
+**Why it exists:** the weekly reset the monthly pot removed was quietly doing
+anti-guilt work — a frequent clean-slate rhythm. A monthly pot alone means a bad
+first week can read as "month's ruined" for three more weeks. This checkpoint
+preserves the weekly feedback cadence **without** a hard reset or scolding.
+
+**Behavior:** a soft, read-only pacing line on the budget surface:
+
+> **"You're pacing ₹{week_spend}/week against your month (~₹{pace} is even pace)."**
+
+- `pace = round(budget_inr × 7 / days-in-month)` — derived on read, never stored.
+- `week_spend` = `SUM(cost_inr)` over the current Mon-04:00–Mon-04:00 IST window
+  (reusing the 04:00 convention; the *week* here is a display lens only).
+- **No hard reset, no alarm, no scolding:** the pot, `spent_inr`, and FR5's
+  overshoot logic are untouched. Over-pace weeks render in the same muted register
+  as FR5's "still over" line — informational, never a second alarm channel. Each
+  Monday the pacing lens starts a fresh window naturally, giving the clean-slate
+  beat without any budget mechanic behind it.
+
+- **Given** a mid-tier user (`W = 13000`, 31-day month → even pace ≈ ₹2,935/week)
+  who has logged ₹1,800 so far this Mon–Thu,
+  **When** they open the budget surface,
+  **Then** the pacing line reads "You're pacing ₹1,800/week against your month
+  (~₹2,935 is even pace)" — no alarm state, no change to `daily_allowance_inr`.
+
+**Acceptance (applies only if signed off):** the pacing figure is derived on read
+(no new stored column); it never mutates `monthly_budgets`; an over-pace week
+triggers no alarm-register message; the Monday window boundary is 04:00 IST.
+
 ---
 
 ## 4. Deliberately out (and why)
@@ -317,6 +379,7 @@ venture doc; the copy itself is out of this PRD's lane (marketing-growth).
 | Rollover / debt carry of overshoot | **Out — permanently, by design** | Debt-carry is a guilt mechanic (venture doc §6). No column, no logic. |
 | Auto-detecting cost from bank/SMS/Gmail | **Out (v2 candidate)** | Manual `cost_inr` only. AA/Gmail/SMS all verified out of MVP reach (venture doc Domain 4). |
 | Per-item itemized delivery/bar bills | **Out** | One `cost_inr` per log; tap-to-edit is the only granularity. Itemization is scope creep with no gate behind it. |
+| **Automatic bill/order splitting (group orders)** | **Out** | Group orders are handled by the user editing `cost_inr` down to their own share (FR4). A split flow means contacts, shares, and settlement UX — a different product. |
 | Multi-currency / non-INR | **Out** | Bangalore pilot is INR-only. |
 | Automated `{suggestion}` NLG / templatization | **Out until the reflow-reaction gate passes** | MVP ships a deterministic string seeded from the §8 script language + the copy probe (the manual concierge never runs — doc v0.4). No copy investment until the moat is validated (FR3); then it moves to marketing-growth. |
 | Ledger *decrement* / spending the savings | **Out** | Ledger is additive/motivational, not a wallet. No withdraw action. |
@@ -332,7 +395,7 @@ Per repo claims discipline, every figure the reflow depends on, traced to
 
 | Figure | Value | Status |
 |---|---|---|
-| Wallet-tier pot $W$ | ₹1,500 / 3,000 / 6,000 | `[hypothesis — venture doc placeholder, Phase 2 audit pending]` |
+| Wallet-tier pot $W$ (**monthly**, v0.4) | ₹6,500 / 13,000 / 26,000 | `[hypothesis — mechanically scaled from the weekly ₹1,500/3,000/6,000 placeholders (themselves Phase-2-audit pending); founder confirmation of the monthly amounts pending]` |
 | Smoking cost | per-stick × count; Gold Flake ≈ ₹12, Classic Milds ≈ ₹24, pack ≈ ₹120–240 | `[verified — TaxGuru Feb-2026 excise notification + live Zepto/Blinkit/Instamart listings, cost audit 2026-07-12]` |
 | Alcohol **premium** row | ~₹1,200–5,000/person brackets real menus | `[verified — Toit + Byg Brewski menus via Magicpin/ExploreBangalore, cost audit 2026-07-12]` |
 | Alcohol **budget/mid** rows | 300/600/1000, 600/1200/2500 | `[hypothesis — cost-of-living/nightlife blogs, no per-venue budget menu fetched, cost audit 2026-07-12]` |
@@ -385,28 +448,35 @@ reflow-screenshot shares.
 
 ## 7. Acceptance criteria — re-derived worked example (the canonical test fixture)
 
-The venture doc's §6 example, restated as an end-to-end test Founder A's unit
-tests must pass (mirrors the "worked examples are the acceptance tests" rule):
+The venture doc's §6 example, restated on the **monthly** pot as an end-to-end
+test Founder A's unit tests must pass (mirrors the "worked examples are the
+acceptance tests" rule). The per-day arithmetic is unchanged from the weekly
+fixture — only the container is monthly.
 
-**Setup:** `W = 3000`; earlier this week `spent_inr = 800`; today is **Friday**
-(days-left = 3, inclusive).
+**Setup:** `W = 13000` (mid tier, monthly); earlier this month `spent_inr = 10800`;
+today is **the 29th of a 31-day month** (days-left = 3, inclusive).
 
 | Step | Action | Expected state |
 |---|---|---|
-| 1 | Log `Philosophical` night, default `cost_inr = 1200` | `spent_inr = 2000`, `R = 1000`, `a_daily = 1000/3 = 333` |
-| 2 | Log delivery, default `cost_inr = 400` | `spent_inr = 2400`, `R = 600`, `a_daily = 600/3 = **200**` |
-| 3 | Read reflow message | **"₹200/day of fun money till Monday — path back: cook Sat & Sun and you're clear."** |
+| 1 | Log `Philosophical` night, default `cost_inr = 1200` | `spent_inr = 12000`, `R = 1000`, `a_daily = 1000/3 = 333` |
+| 2 | Log delivery, default `cost_inr = 400` | `spent_inr = 12400`, `R = 600`, `a_daily = 600/3 = **200**` |
+| 3 | Read reflow message | **"₹200/day of fun money till the 1st — path back: cook the next 3 days and you're clear."** |
 
 **Pass condition:** after step 2, `daily_allowance_inr == 200` exactly, matching
-the venture doc §6 worked example. This is the golden fixture — if it drifts, the
-engine is wrong.
+the venture doc §6 worked example's per-day result. This is the golden fixture —
+if it drifts, the engine is wrong.
 
-**Overshoot fixture (FR5):** `W = 3000`, `spent_inr = 2900`, log `cost_inr = 1000`
+**Overshoot fixture (FR5):** `W = 13000`, `spent_inr = 12900`, log `cost_inr = 1000`
 → `R = −900`, `overshoot_inr = 900`, `a_daily = 0`, crossing-alarm fires exactly
-once; next Monday row shows `budget_inr = 3000, spent_inr = 0`, no ₹900 reference.
+once per month; the next 1st's row shows `budget_inr = 13000, spent_inr = 0`, no
+₹900 reference.
 
-**Lunchbox fixture (FR6):** mid-tier, accept prompt → next-day confirm →
-`credit_inr == 220`, running total += 220.
+**Lunchbox fixture (FR6 — unchanged by the monthly move):** mid-tier, accept
+prompt → next-day confirm → `credit_inr == 220`, running total += 220.
+
+**Pro-ration fixture (FR2, `[hypothesis]` default):** mid-tier onboarding on the
+16th of a 30-day month → first row `budget_inr == 6500` (`13000 × 15/30`); the
+following 1st's row → `budget_inr == 13000`.
 
 ---
 
@@ -417,36 +487,47 @@ message language seeds **nudge copy v0** and the Week-0 recruitment copy probe;
 (b) its scenarios are the **Week-5 structured-interview guide** (n≥6) at the live
 cohort. The design principle stands everywhere: lean every message on the
 **prospective re-plan** (what's left, path back), never a backward tally.
+Language below is reworked for the **monthly pot + weekly pacing** framing (v0.4).
 
-**Founder-side running state (shared sheet):** per user — `W`, this-week
-`spent`, day-of-week. Founder computes `R = W − spent` and `a_daily =
-max(0,R)/days-left` on each inbound vice, exactly as FR3.
+**Founder-side running state (shared sheet):** per user — `W` (monthly), this-month
+`spent`, day-of-month. Founder computes `R = W − spent` and `a_daily =
+max(0,R)/days-left-in-month` on each inbound vice, exactly as FR3.
 
 **Script — onboarding (Day 0):**
-> **Founder:** "Quick one to set up your week: roughly, what's a comfortable
-> _fun-spend_ budget for a week — nights out, deliveries, smokes? Ballpark is
-> fine, we'll tune it. Most people land ₹1.5k / ₹3k / ₹6k."
-> **User:** "3k I guess"
-> **Founder:** "Perfect — ₹3,000/week of fun money. I'll track it as you log.
+> **Founder:** "Quick one to set up your month: roughly, what's a comfortable
+> _fun-spend_ budget for a month — nights out, deliveries, smokes? Ballpark is
+> fine, we'll tune it. Most people land ₹6.5k / ₹13k / ₹26k."
+> _(Amounts here are the FR1 `[hypothesis]` monthly scalings — retune when the
+> founders confirm the monthly figures.)_
+> **User:** "13k I guess"
+> **Founder:** "Perfect — ₹13,000/month of fun money. I'll track it as you log.
 > Just text me the vice in plain words whenever, like 'philosophical night at
-> Toit' — I'll tell you where your week stands."
+> Toit' — I'll tell you where your month stands."
 
 **Script — a vice log (the core moment):**
-> **User (Fri):** "philosophical night at toit, and ordered a biryani after"
-> **Founder:** _(computes: spent 800 → +1200 +400 = 2400, R=600, 3 days left,
-> 600/3=200)_
+> **User (the 29th):** "philosophical night at toit, and ordered a biryani after"
+> **Founder:** _(computes: spent 10,800 → +1200 +400 = 12,400, R=600, 3 days
+> left, 600/3=200)_
 > "Logged. Score absorbed it fine — one night can't wreck a rolling average.
-> On money: **₹200/day of fun money till Monday.** Path back: cook Sat & Sun and
-> you're clear — no dent. Want me to send a lunchbox nudge tomorrow?"
+> On money: **₹200/day of fun money till the 1st.** Path back: cook the next 3
+> days and you're clear — no dent. Want me to send a lunchbox nudge tomorrow?"
 
 **Script — overshoot (no-rollover, said once):**
 > **User (Sat):** "ended up at another bar, blackout, ~1200"
 > **Founder:** _(R now −600)_
-> "Got it. You're **₹600 over for the week** — but here's the thing: **no debt
-> carries. Clean ₹3,000 again Monday.** Rest of this weekend's on you; I'll just
-> ping the recovery + lunchbox stuff. No guilt trip from me."
-> _(Any further logs Sat/Sun: founder does NOT re-nag the overshoot — just logs
-> and, if asked, says "still over, resets Monday.")_
+> "Got it. You're **₹600 over the month's fun budget** — but here's the thing:
+> **no debt carries. Clean ₹13,000 again on the 1st.** And a Weekend Write-Off is
+> one bad week against a whole month — your weekly pace starts fresh Monday even
+> though the pot doesn't. I'll just ping the recovery + lunchbox stuff. No guilt
+> trip from me."
+> _(Any further logs that month: founder does NOT re-nag the overshoot — just
+> logs and, if asked, says "still over, resets on the 1st.")_
+
+**Script — weekly pacing check-in (FR8, PROPOSED — probe this language only if
+the pacing checkpoint is signed off):**
+> **Founder (Monday morning):** "New week inside your month: you're pacing
+> **₹1,800/week against ~₹2,935 even pace** — comfortably clear. Nothing resets,
+> nothing owed; just the rhythm."
 
 **Script — lunchbox loop (the savings mirror):**
 > **Founder (20:30, dinner time):** "Cooking tonight? Make a double portion —
@@ -474,7 +555,11 @@ risk in the venture doc register.)
 | Home-cook cost (was OQ2) | **FINAL: flat ₹80, fully-loaded.** History: proposed flat ₹80 (v0.1) → founder set per-tier ₹100/200/300 (v0.2, same day) → **re-affirmed flat ₹80** after AOV verification (v0.3.1, Founder A). `[hypothesis]` constant, retunable post-cohort. | 2026-07-12 PM, Founder A |
 | Lunch baselines / split (was OQ3) | **FINAL: two-baseline split kept; baselines ₹200/300/380** (solo everyday lunch, bounded by the verified sub-₹250 budget-meal segment) → credits ₹120/220/300. History: ₹200/300/380 (v0.1) → raised ₹250/350/450 (v0.2) → **reverted to ₹200/300/380** with the verified anchor (v0.3.1). | 2026-07-12 PM, Founder A |
 | `{suggestion}` templatization (was OQ4) | Deterministic string for MVP; **no NLG/template investment until the reflow-reaction gate passes**, then marketing-growth's lane. | 2026-07-12, v0.3 |
-| Timezone / boundaries (was OQ5) | Asia/Kolkata hard-coded; **day + week boundary 04:00 IST** (PRD-01 Q1); no traveling-user handling in MVP. | 2026-07-12, Founder A |
+| Timezone / boundaries (was OQ5) | Asia/Kolkata hard-coded; **day boundary 04:00 IST** (PRD-01 Q1); no traveling-user handling in MVP. (Row originally also fixed the *week* boundary at Monday 04:00 — that part is superseded by the monthly decision below.) | 2026-07-12, Founder A |
+| **Budget period: weekly → MONTHLY** | **DECIDED — supersedes the prior FINAL weekly design** (v0.3.1: Monday 04:00 IST week boundary, `weekly_budgets` schema, weekly reset). The pot is a **calendar-month** pot; boundary = **1st of month, 04:00 IST** (FR2); schema = `monthly_budgets` (§2.1). **Scope note:** only the *period* was decided — the monthly tier *amounts* were not (FR1 figures are `[hypothesis]` scalings, pending). | **2026-07-12 evening founder meeting, all three founders** |
+| Monthly tier amounts (₹6,500/13,000/26,000) | **OPEN — flagged for founders.** Product's mechanical ×~4.33 scaling of the weekly defaults, rounded. Confirm or replace before onboarding copy freezes. | pending, all founders |
+| Partial-first-month handling | **OPEN — flagged for Founder A.** Default in this PRD: **pro-rate** the pot (`tier × days-left/days-in-month`) `[hypothesis]`; alternative is granting the full pot mid-month. | pending, Founder A |
+| Weekly pacing checkpoint (FR8) | **PROPOSED, not decided.** Claude recommendation accepted by Founder A **for inclusion as a proposal**; preserves the weekly clean-slate/anti-guilt cadence the reset used to give, with no hard reset and no alarm. Needs three-founder sign-off before build. | pending, all founders |
 
 ---
 
@@ -485,23 +570,28 @@ skill + product-manager agent). Each slice is one end-to-end behavior through th
 stack (schema → compute → message/UI), **not** a layer. Founder A, Week 4,
 alongside the $D_t$/EMA engine (venture doc Phase 3 table).
 
-1. **Slice A — Pot exists & resets.** Onboarding writes `budget_inr` (FR1);
-   Monday-boundary creates a fresh zero-spend row (FR2). _Proves the week
-   container is correct before any math rides on it._
+1. **Slice A — Pot exists & resets.** Onboarding writes `budget_inr` (FR1, incl.
+   the pro-rated partial first month per FR2); the 1st-of-month boundary creates
+   a fresh zero-spend row (FR2). _Proves the month container is correct before
+   any math rides on it._
 2. **Slice B — Log recalculates & speaks.** One vice log → `spent_inr` update →
    `R`/`a_daily` compute → "path back" message (FR3), reading editable `cost_inr`
-   (FR4). _This is the moat's forward reflow — ship the §7 golden fixture
-   (`a_daily == 200`) as the gating unit test._
+   (FR4, incl. the group-order share edit). _This is the moat's forward reflow —
+   ship the §7 golden fixture (`a_daily == 200`) as the gating unit test._
 3. **Slice C — Overshoot, once, no rollover.** Crossing-log alarm + muted
-   subsequent state + clean Monday (FR5). _Proves the no-debt guarantee holds
-   across a week boundary._
+   subsequent state + clean 1st (FR5). _Proves the no-debt guarantee holds
+   across a month boundary._
 4. **Slice D — Lunchbox credit end-to-end.** Dinner prompt → `pending_confirm`
    row → next-day confirm/expire → `credit_inr` banked (FR6). _The savings
    mirror; mid-tier `credit == 220` fixture gates it._
 5. **Slice E — Ledger surface.** Running confirmed total + recent credits (FR7).
    _Makes the banked savings visible; last because it only reads what D writes._
+6. **Slice F (CONDITIONAL — build only after founder sign-off) — Weekly pacing
+   line.** Derived-on-read pace figure + muted surface line (FR8). _Held out of
+   the committed build order until the Decision-record item closes._
 
-**Grilling focus before build:** the week-boundary/timezone edge (Slice A), the
-"alarm exactly once per week" invariant (Slice C), and the two-baseline delivery
+**Grilling focus before build:** the month-boundary/pro-ration edge (Slice A —
+variable month lengths, mid-month onboarding, the 02:00-on-the-1st log), the
+"alarm exactly once per month" invariant (Slice C), and the two-baseline delivery
 split (FR6, Slice D) are the three places this is most likely to be wrong — grill
 those first.
