@@ -7,7 +7,7 @@
 If you're a fresh agent (or a future me), read this top-to-bottom and you have
 everything needed to continue.
 
-_Last synced: 2026-07-12._
+_Last synced: 2026-07-12 (post-evening-meeting)._
 
 ---
 
@@ -30,7 +30,7 @@ _Last synced: 2026-07-12._
 ## Why this repo exists
 
 Home of **Project Nudge** — a lifestyle recalibration app where one vice log
-recalculates both your health plan and your weekly budget ("the Loop", verified
+recalculates both your health plan and your monthly budget ("the Loop", verified
 whitespace). "Done" for this phase = the venture doc's v0.4 **build-first**
 protocol executed: foundations + recruitment → build sprint (wks 1–3) → Week-3
 closed-test checkpoint → live cohort (wks 4–6) as the decision gate, with
@@ -56,14 +56,27 @@ _As of 2026-07-12 — rewritten each sync._
 - **Direction: parallel tracks** — deepen all six features into build-ready
   specs now; build sprint is Weeks 1–3. Plan (amended for v0.4):
   `~/.claude/plans/research-on-the-current-reflective-bear.md`.
-- **PRDs are decision-complete (2026-07-12):** all open questions answered —
-  PRD-01 v1.1 and PRD-02 v0.3.1 have zero blocking unknowns. Headlines: 04:00
-  IST day/week boundary; any-signal=scored; dual EMA stored, 7d shown; **money
-  FINAL (after Shreya's AOV verification): flat ₹80 home cost + ₹200/300/380
-  lunch baselines → credits ₹120/220/300** (the same-day per-tier call was
-  superseded — full chain in PRD-02's Decision record). Alignment handoff:
+- **Budget went MONTHLY (evening founder meeting 2026-07-12, all three):**
+  PRD-02 now **v0.4** — `monthly_budgets` schema, 1st-of-month 04:00 IST reset,
+  pro-rated first month (Founder A call), monthly tier pots ₹6,500/13,000/26,000
+  `[hypothesis — confirmed-for-now, retunable]`, **FR8 weekly pacing checkpoint
+  signed off** (soft pace read, no reset — preserves the anti-guilt cadence the
+  weekly reset gave). UX spec → **v1.1**, venture doc → **v0.4.1** (all weekly
+  copy/schema swept). Lunchbox credit math unchanged and FINAL: flat ₹80 home
+  cost + ₹200/300/380 baselines → credits ₹120/220/300 (chain in PRD-02's
+  Decision record). All three files uncommitted in the working tree.
+- **Meeting-ideas triage (2026-07-12, from `founder_discussions`):** sprint adds
+  = staple-diet presets (FR still to write) + group-order share-edit (landed in
+  PRD-02 FR4; auto-splitting fenced out). Backlog = BCA report tracking
+  (mechanism undecided — recommend manual entry over upload, DPDP), per-user
+  high/low budget calibration, sex-based score adjustment (engine tunable only;
+  no blackout/medical framing). Weekend-blowoff worry absorbed by monthly pot +
+  FR8. Full triage in `research/journal.md`.
+- **PRDs remain decision-complete:** PRD-01 v1.1 and PRD-02 v0.4, zero blocking
+  unknowns. Headlines: 04:00 IST boundary; any-signal=scored; dual EMA stored,
+  7d shown. Alignment handoff:
   `docs/session-summary/2026-07-12_decisions-and-alignment.md` (**B & C start
-  there**).
+  there** — note it predates the monthly change; PRD-02 v0.4 is authoritative).
 - **Prototype build plan approved:** Next.js + Supabase (from day one), ux-designer
   wireframes first, full loop minus push nudges; friends & family are the later
   test cohort. UX spec: `docs/venture/ux-spec-prototype.md`.
@@ -121,6 +134,12 @@ _As of 2026-07-12 — rewritten each sync._
   before Week 1** (sunk-cost risk is now High).
 - Manual logging is the hero trigger — AA/Gmail/SMS parsing all verified out
   of MVP reach.
+- A budget reset cadence is an anti-guilt mechanic, not just accounting: the
+  monthly pot needed FR8's soft weekly pace read to replace what the weekly
+  reset was quietly doing (2026-07-12).
+- Subagent writes must be verified on disk — a product-manager run reported a
+  successful PRD rewrite that never persisted (caught 2026-07-12; check the
+  file, not the report).
 
 ## Open threads / next steps
 
@@ -138,10 +157,14 @@ Per the forward plan (`~/.claude/plans/research-on-the-current-reflective-bear.m
 3. **Recruitment is the critical path (human):** 30–40 users, ≥12 committed to
    the Play closed test, with the ₹0 mock-reflow copy probe embedded in every
    recruitment conversation. Plus DPDP template evenings.
-4. **Remaining AI specs (smaller now):** Recovery Mode product spec
+4. **Remaining AI specs (smaller now):** staple-diet presets FR (sprint-worthy,
+   PRD-01/UX spec — from the meeting triage); Recovery Mode product spec
    (product-manager) if the UX spec's states need trigger detail beyond PRD-01
    FR9; nudge spec + copy v0 (deferred — prototype ships without push nudges).
-5. At build start: `/onboard-project --upgrade` from `~/ai-research` to add tdd;
+5. **Deferred founder decisions (next call):** gate-bands sign-off (still
+   outstanding, sunk-cost pre-commitment); BCA-report mechanism (manual entry
+   vs upload); monthly tier amounts revisit if requirements change.
+6. At build start: `/onboard-project --upgrade` from `~/ai-research` to add tdd;
    add the test command to CLAUDE.md once vitest is green.
    ~~Engine + budget-reflow PRDs~~ **DONE + decision-complete (2026-07-12).**
 

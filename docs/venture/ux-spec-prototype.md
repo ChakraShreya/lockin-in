@@ -3,7 +3,11 @@
 **Owner:** Founder B (frontend lane) · **Builds in:** Week-1–2 sprint, alongside PRD-01/PRD-02
 **Source of truth:** `docs/venture/Nudge_Strategic_Documentation_Suite.md` (v0.4) Domain 2 + Domain 1
 math; `docs/venture/prd-01-balance-engine.md`; `docs/venture/prd-02-budget-reflow.md`
-**Version:** v1.0 · 2026-07-12 · First build-ready UX spec — Domain 2 previously had zero screen-level
+**Version:** v1.1 · 2026-07-12 · Budget copy swept weekly → **monthly** per the founder meeting
+decision (PRD-02 v0.4): pot resets on the 1st (04:00 IST), "till Monday" → "till the 1st",
+overshoot alarm once/month, Advanced Metrics gains the weekly-pace line (PRD-02 FR8, signed off).
+Amounts shown use the mid-tier monthly default ₹13,000 `[hypothesis — PRD-02 §5]`.
+v1.0 · 2026-07-12 · First build-ready UX spec — Domain 2 previously had zero screen-level
 detail; this fills it for the 5 prototype screens.
 
 > **Claims discipline.** This document makes no new market/factual claims — it inherits every
@@ -85,7 +89,7 @@ Present, identically positioned, on **all 5 screens** unless a screen explicitly
 │             ╲   (7-day)      ╱               │
 │              ╰─────────────╯                │
 │                                              │
-│   ₹200/day of fun money till Monday      ›  │
+│   ₹200/day of fun money till the 1st     ›  │
 │   Path back: cook Sat & Sun and you're      │
 │   clear.                                     │
 │                                              │
@@ -105,7 +109,8 @@ Present, identically positioned, on **all 5 screens** unless a screen explicitly
    │ Movement credit   22.5 / 25       │
    │ Nutrition gate    ✓ met (protein  │
    │                    shield active) │
-   │ This week spent   ₹2,400 / ₹3,000 │
+   │ This month spent  ₹9,800 / ₹13,000│
+   │ Weekly pace       ₹2,900 — on track│
    │                                    │
    │ Connect a wearable (optional) ›   │  ← only affordance re: RHR/HRV;
    └──────────────────────────────────┘     never shown elsewhere, never nags
@@ -121,7 +126,7 @@ default** applies to Advanced Metrics too, not just casual view.
 | Overflow menu `⋯` | tap | Settings (profile, wallet tier, data/consent — out of this spec's 5-screen scope) |
 | Life Score ring | animated display, non-interactive | Renders `ls7` only. Color bands are neutral tones (blue→teal), **never red** — a low score must not read as a stoplight failure |
 | Budget line | tap-to-expand (row) | Renders PRD-02 FR3 message verbatim. Tap expands an inline card: days-left, spent/total — **this in-place tap is itself an "unprompted budget-surface open" per the KPI dashboard**, so it must be reachable without leaving Dashboard |
-| Advanced Metrics toggle | tap | Folds/unfolds D_t component breakdown + week spend. Collapsed by default on every app open (state does not persist as "expanded" across sessions — casual-first every time) |
+| Advanced Metrics toggle | tap | Folds/unfolds D_t component breakdown + month spend + weekly pace line (PRD-02 FR8, signed off 2026-07-12). Collapsed by default on every app open (state does not persist as "expanded" across sessions — casual-first every time) |
 | Global Nav Shell | — | §1 |
 
 ### States
@@ -137,8 +142,8 @@ default** applies to Advanced Metrics too, not just casual view.
             │  starting point │
              ╲                ╱
               ╰─────────────╯
-   ₹3,000/week — nothing logged yet.
-   Your week's wide open.
+   ₹13,000/month — nothing logged yet.
+   Your month's wide open.
 ```
 
 Ring renders in a muted/neutral fill (not the earned-score gradient) to signal "not yet moved,"
@@ -235,7 +240,7 @@ numbers"*).
 │  Score absorbed it — one night can't wreck    │
 │  a rolling average.                           │
 │                                                │
-│  ₹200/day of fun money till Monday.           │
+│  ₹200/day of fun money till the 1st.          │
 │  Path back: cook Sat & Sun and you're clear.  │
 │                                                │
 │              [ Undo ]                         │
@@ -291,18 +296,18 @@ core action is never held hostage by network state.
   Score absorbed it — one night can't wreck
   a rolling average.
 
-  You're ₹900 over this week's fun budget.
-  No debt carried — clean slate Monday.
+  You're ₹900 over this month's fun budget.
+  No debt carried — clean slate on the 1st.
   Path back: ease up the next couple days
-  and you're set for next week.
+  and you're back on pace.
               [ Undo ]
 ```
 
-**Subsequent logs the same overshot week** (muted variant, alarm never re-fires per week):
+**Subsequent logs the same overshot month** (muted variant, alarm never re-fires per month):
 
 ```
   ✓ Logged.
-  Still over — resets Monday.
+  Still over — resets on the 1st.
               [ Undo ]
 ```
 
@@ -449,7 +454,7 @@ mode of the same app, not a place you get sent (see **Finding F1**).
 │         [ Log a walk ]                        │
 │                                                │
 │                                                │
-│  Life Score: 51 · ₹200/day till Monday        │  ← muted footer, see Finding F4
+│  Life Score: 51 · ₹200/day till the 1st       │  ← muted footer, see Finding F4
 │                                                │
 │  I'm feeling good — exit Recovery Mode  ›     │
 ├──────────────────────────────────────────────┤
@@ -604,9 +609,9 @@ Confirming the lunchbox = 1 tap. Declining = 1 tap. Viewing the ledger = 0 taps 
 | Recovery Mode — early exit offer | 4 | "Looks like you're steady again." / `[ Ease off Recovery Mode ]` `[ Stay in it a bit longer ]` |
 | Recovery Mode — manual exit confirm | 4 | "You know your body best. Exiting Recovery Mode — your regular plan's back." |
 | Recovery Mode — re-trigger mid-window | 4 | "Noted — sticking with the easy plan a little longer." |
-| Reflow — normal path back | 2 | "Logged. Score absorbed it — one night can't wreck a rolling average. ₹{a_daily}/day of fun money till Monday. Path back: {suggestion}." |
-| Overshoot — crossing log (once/week) | 2 | "You're ₹{overshoot} over this week's fun budget. No debt carried — clean slate Monday. Path back: {suggestion}." |
-| Overshoot — muted subsequent logs | 2 | "Still over — resets Monday." |
+| Reflow — normal path back | 2 | "Logged. Score absorbed it — one night can't wreck a rolling average. ₹{a_daily}/day of fun money till the 1st. Path back: {suggestion}." |
+| Overshoot — crossing log (once/month) | 2 | "You're ₹{overshoot} over this month's fun budget. No debt carried — clean slate on the 1st. Path back: {suggestion}." |
+| Overshoot — muted subsequent logs | 2 | "Still over — resets on the 1st." |
 | Re-entry — after ≥3 frozen days | 1 | "Welcome back. Nothing lost — your score's exactly where you left it." |
 | Freeze — mid-silence, opened before re-entry | 1 | "Paused — no entries in {n} days. Whenever you're ready." |
 | First-ever log | 2 | "Logged — first one! Your Life Score starts moving from here." |
@@ -720,7 +725,7 @@ ring color-band exact hex values — all taste-level, buildable either way).
    rings hidden."** The doc doesn't say to hide the Life Score itself in Recovery Mode — only
    exercise/strain rings — but a literal reading of "single walk+water focus" could argue for
    hiding everything else too. **Fix (applied):** Screen 4 keeps a muted one-line `Life Score: 51 ·
-   ₹200/day till Monday` footer, satisfying heuristic #4 literally. **Flag:** confirm this reading
+   ₹200/day till the 1st` footer, satisfying heuristic #4 literally. **Flag:** confirm this reading
    with product — if Recovery Mode is meant to be a full metrics blackout, the footer should come
    out.
 
