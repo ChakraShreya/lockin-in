@@ -1,11 +1,49 @@
 # Research Journal
 
-Append-only, dated history of work on `lockin-in` (Bounce). Newest entries on
+Append-only, dated history of work on `lockin-in` (Nudge). Newest entries on
 top. The always-current snapshot is [../STATE.md](../STATE.md); this is the
 trail of how we got there.
 
 Maintained by `/sync-context` — each run prepends one entry. Format per entry:
 **What we did · What we concluded · How it's going / next.**
+
+---
+
+## 2026-07-12 (later night) — product renamed Bounce → Nudge
+
+**What we did**
+
+- Founder decision: the product is renamed from **Bounce** to **Nudge**.
+  GitHub repo renamed manually by the user to `github.com/ChakraShreya/nudge`
+  (local `origin` remote URL not yet updated — flagged, needs an explicit ask
+  per CLAUDE.local.md rule 1).
+- Swept all 22 files containing "Bounce" (79 occurrences, found via an Explore
+  pass) and replaced the product name with "Nudge" throughout: venture doc,
+  both PRDs, UX spec (including its dashboard mockup label), research digests,
+  STATE/CLAUDE/GUIDE/README, all 6 agent personas, all 3 relevant skills, the
+  sync-context command, and the alignment handoff doc.
+- **The venture doc's named recovery mechanic, "The Bounce"** (§4, "the name is
+  the mechanic"), was also renamed — to **"The Rebound"** — since leaving it
+  as "Bounce" would orphan-reference the old product name. Updated in 5 spots
+  across the venture doc and PRD-01 (test-case names, worked-example headings,
+  the comparison-table cell, the canonical mechanic definition).
+- **Renamed the venture doc file itself:**
+  `Bounce_Strategic_Documentation_Suite.md` →
+  `Nudge_Strategic_Documentation_Suite.md` (via `git mv`, preserving history),
+  and updated the ~13 files that referenced it by path.
+
+**What we concluded**
+
+- Verified zero residual "bounce" (case-insensitive) references anywhere in
+  the repo after the sweep.
+
+**How it's going / next**
+
+- Working tree has the rename staged as an `RM` (rename) on the venture doc
+  plus modifications everywhere else; not committed (git only on explicit ask).
+  When committing: branch → PR → rebase-merge, per the now-adopted workflow.
+- **Follow-up needed:** update the local `origin` remote URL to
+  `github.com/ChakraShreya/nudge.git` when asked.
 
 ---
 
@@ -144,7 +182,7 @@ Maintained by `/sync-context` — each run prepends one entry. Format per entry:
   ~24h HRV/HR normalization under *heavy dosing*, but WHOOP real-world shows a
   4–5-day tail. Now `[hypothesis]`; the 48h Recovery window is a tunable
   placeholder, not a guarantee. RHR corrected to *lowest* RHR +8.2%.
-- **The moat survives the sweep** — but sharpened: Bounce's edge is the
+- **The moat survives the sweep** — but sharpened: Nudge's edge is the
   **prospective re-plan** (one log → forward recalculation of both plans), not
   dual display. Reframe/Sunnyside/DrinkControl already show money+calories
   retrospectively. Paceline / Aditya Birla = adjacent-but-opposite (exercise→money).
@@ -180,7 +218,7 @@ Maintained by `/sync-context` — each run prepends one entry. Format per entry:
 - Onboarded this repo at tier **STANDARD + BUSINESS bundle** using ai-research
   tooling: context capture (STATE/journal/sync-context/SessionStart hook),
   grilling + handoff skills, 6 business role agents, 3 venture flows, GUIDE.md.
-- Copied the Bounce venture doc v0.2 into `docs/venture/`.
+- Copied the Nudge venture doc v0.2 into `docs/venture/`.
 - Smoke-tested claim-verifier against the doc: Oura figures, Play fee/testing
   rules, and Day-1 math all confirmed; **"24–48h rebaseline" contradicted**
   (not in the cited Oura source).

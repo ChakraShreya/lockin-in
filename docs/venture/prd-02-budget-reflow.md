@@ -2,7 +2,7 @@
 
 **Owner:** Product (Founder A lane — engine/PM)
 **Builds in:** Phase 3, Week 4 (alongside the $D_t$/EMA balance engine)
-**Source of truth:** `docs/venture/Bounce_Strategic_Documentation_Suite.md` v0.4, Domain 1 §6 ("Financial Recalibration") + Part 3 schema
+**Source of truth:** `docs/venture/Nudge_Strategic_Documentation_Suite.md` v0.4, Domain 1 §6 ("Financial Recalibration") + Part 3 schema
 **Version:** v0.3.1 · 2026-07-12 · _Reconciliation: v0.3's stale-draft regressions fixed; **money estimates FINAL per founder call after AOV verification** — flat ₹80 home cost, ₹200/300/380 lunch baselines, ₹120–300/day credits (supersedes v0.2's same-day per-tier ₹100/200/300 + ₹250/350/450 call); Monday **04:00** IST boundary consistent throughout; decision record added after §8. v0.3 (Shreya): food-delivery AOV **verified** — national blended ₹453–458 (FY25) from Eternal + Swiggy primary filings (re-derived GOV÷orders); §5 retagged against the verified anchor; `{suggestion}` templatization deferred until the reflow-reaction gate passes. v0.2: founder decisions landed (per-tier costs — later superseded, see v0.3.1 — Monday 04:00 week boundary, OQ2/3/5 closed). v0.1: initial build-ready PRD (extracts Domain 1 §6, adds `savings_ledger`)._
 
 ---
@@ -139,7 +139,7 @@ Sunday to 1.
 Monday 04:00 reset, and "days left") is fixed to **Asia/Kolkata**, hard-coded —
 there is no per-user timezone field in MVP. The Bangalore pilot is IST-only, so
 the traveling-user / timezone-crossing case is **explicitly out of scope**;
-revisit only if Bounce expands beyond IST users. This assumption is recorded here
+revisit only if Nudge expands beyond IST users. This assumption is recorded here
 so the boundary logic is unambiguous for the builder.
 
 ### FR3 — On-log recalculation + the "path back" message
@@ -258,7 +258,7 @@ These lunch baselines sit **below** the now-verified blended food-delivery AOV o
 ₹453–458 (§5) — by design, since a solo everyday lunch is smaller than a blended
 (often multi-person) order, and they map to Zomato's verified sub-₹250 budget-meal
 segment. So the baselines are **anchored and directionally supported by primary
-data**, but the specific solo-lunch figures remain `[hypothesis — Bounce's own
+data**, but the specific solo-lunch figures remain `[hypothesis — Nudge's own
 segmentation of the verified AOV, not a standalone published number; Bangalore
 per-order sweep would confirm]`. The credit band still lands in the doc's stated
 ₹120–300 range — treat as **calibrated** (against a verified anchor), not yet
@@ -279,7 +279,7 @@ ingredients compute to only ₹25–40/portion `[verified — BigBasket/mandi un
 prices, cost audit 2026-07-12]`, which would make the savings *look inflated*;
 ₹80 fully-loaded sits sensibly between that floor and the ₹85–235 paid-tiffin
 ceiling `[verified — tiffin-service pricing, cost audit 2026-07-12]`. **Flag:**
-₹80 remains `[hypothesis — cost audit 2026-07-12, fully-loaded scope is Bounce's
+₹80 remains `[hypothesis — cost audit 2026-07-12, fully-loaded scope is Nudge's
 own arithmetic, not a published figure]`; stored as a single constant
 `HOME_COST_INR = 80` so a Phase-2 audit can retune one number.
 
@@ -339,7 +339,7 @@ Per repo claims discipline, every figure the reflow depends on, traced to
 | Blended food-delivery AOV | ₹453–458 (FY25) | `[verified — Eternal FY25 + Swiggy FY25 filings, re-derived GOV÷orders, cost audit 2026-07-12]` |
 | Food-delivery vice costs (200/250/500 …) | tier table | `[verified anchor — mid-tier ₹400–500 on national AOV]` / `[hypothesis — per-tier spread + Bangalore-specific, see §5 note]` |
 | **Lunch delivery baseline** (₹200/300/380) | drives lunchbox credit | `[hypothesis — solo everyday-lunch order; bounded by verified sub-₹250 budget-meal segment but not a standalone published figure, see §5 note]` |
-| Home-cook cost `HOME_COST_INR` | ₹80, fully-loaded | `[hypothesis — fully-loaded scope is Bounce arithmetic; raw-ingredient floor ₹25–40 is verified, cost audit 2026-07-12]` |
+| Home-cook cost `HOME_COST_INR` | ₹80, fully-loaded | `[hypothesis — fully-loaded scope is Nudge arithmetic; raw-ingredient floor ₹25–40 is verified, cost audit 2026-07-12]` |
 | Lunchbox credit band | ₹120–300/day | `[hypothesis — derived from two unverified inputs above]` |
 
 **Food-delivery AOV — RESOLVED (verified 2026-07-12):** the text-native-investor-figure
@@ -358,7 +358,7 @@ remain, and they are the ones this PRD's numbers actually ride on:** (1) the AOV
 Bangalore metro likely sits at or above the blend); (2) the lunchbox **lunch-delivery
 baseline (₹200/300/380)** is a *solo everyday-lunch* order, which is deliberately
 below the blended AOV and is bounded by Zomato's verified sub-₹250 budget-meal
-segment — but the specific solo figure is Bounce's own segmentation, not a published
+segment — but the specific solo figure is Nudge's own segmentation, not a published
 number. Both are resolvable only by a Bangalore per-order sweep (Phase-2 cost audit).
 
 ---

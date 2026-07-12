@@ -1,7 +1,7 @@
 # PRD-01 — Life Score / Balance Engine (Domain 1)
 
 **Owner:** Founder A (engine/PM lane) · **Build window:** Week-4 sprint · **Status:** build-ready
-**Source of truth:** `docs/venture/Bounce_Strategic_Documentation_Suite.md` (v0.3), Domain 1 "THE CORE
+**Source of truth:** `docs/venture/Nudge_Strategic_Documentation_Suite.md` (v0.3), Domain 1 "THE CORE
 BALANCE ENGINE", Part 3 "Schema deltas", §1.2 vice taxonomy.
 
 | Version | Date | Changelog |
@@ -22,7 +22,7 @@ BALANCE ENGINE", Part 3 "Schema deltas", §1.2 vice taxonomy.
 
 ### 1.1 What this is
 
-The Balance Engine is the health half of Bounce's core loop. It is a **pure, deterministic scoring
+The Balance Engine is the health half of Nudge's core loop. It is a **pure, deterministic scoring
 function** plus the **persistence and state-machine** around it. Given a day's inputs (sleep,
 movement, nutrition, logged vices, optional wearable strain) it produces:
 
@@ -263,7 +263,7 @@ edge case gets one test. Founder A writes these as the engine's unit suite befor
 |---|---|---|---|---|
 | **T1** | Day 1 — drink on a great day | `LS_prev=65`; h=7, a=45, N met (`P_in≥1.2M`, energy in-band), 1×`Philosophical`(25), no wearable | `Z=21.875, S=22.5, N=1, m=1.1, V=25, D=80.6, ls7=68.9` | FR1,2,6 |
 | **T2** | Day 2 — the blowout | `LS_prev=68.9`; h=4.5, a=0, N=0, vices `Blackout`(50)+`Drunk Cigs`(18)+`Late-Night Binge`(15)=83, wearable RHR +20% / HRV −35% | `Z=14.0625, S=0, N=0, m=1.35, V_sub=83, Δ≈11.0, V≈94.0, raw=−77.9 → D=0, ls7=51.7` | FR1,3,4,5 |
-| **T3** | Day 3 — the bounce | `LS_prev=51.7`; h=8, a=30, N met, zero vices, no wearable | `Z=25, S=15, N=1, m=1.0, V=0, D=90, ls7=61.3` | FR1,6 |
+| **T3** | Day 3 — the rebound | `LS_prev=51.7`; h=8, a=30, N met, zero vices, no wearable | `Z=25, S=15, N=1, m=1.0, V=0, D=90, ls7=61.3` | FR1,6 |
 | **T4** | Freeze on no-input day | `ls7_prev=61.3, ls30_prev=…`; zero inputs, zero vices | `state=frozen`, `ls7=61.3` (unchanged), no `D` row value, no EMA step | FR7 |
 | **T5** | Partial day (vice only) | only 1×`Buzzed`(10) logged; no sleep/movement/nutrition | `state=scored, Z=0, S=0, N=0, m=1.0, V=10, D=35 − 1.0·10·1 = 25` | FR7 |
 | **T6** | Silent re-entry ≥3 | `ls7=61.3` held 3 frozen days, then `D=90` day | single step `ls7=0.75·61.3+0.25·90=68.5`, `reentry_flag=true, silent_days=3` | FR8 |
@@ -325,7 +325,7 @@ this order — each slice is shippable and testable on its own:
 2. **Slice B — Vice stacking + `V_t` cap.** Multiple `vices_logged` rows → `V_sub` → `V=min(100,·)`.
    Lands **T5** (partial/vice-only day) and **T7** (cap).
 3. **Slice C — Dual-window EMA + seed.** `ls7`/`ls30` off the same `D_t`, seed 60. Lands **T3**
-   (bounce) and **T12** (dual-α + seed). Now the full 3-day worked sequence T1→T2→T3 runs green
+   (rebound) and **T12** (dual-α + seed). Now the full 3-day worked sequence T1→T2→T3 runs green
    (needs Slice D for T2's Δ).
 4. **Slice D — Δ physiology path (behind a flag, off by default).** FR5 add-only clamp. Lands **T2**
    (full blowout fixture) and **T9**. Ships disabled (`Δ=0`) per the MVP fence; exists as v2 seed.

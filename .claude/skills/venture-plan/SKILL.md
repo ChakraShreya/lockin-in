@@ -9,7 +9,7 @@ allowed-tools: Read, Write, Grep, Glob, Task, Skill
 # Venture Plan
 
 Turn an idea (or a stale venture doc) into a versioned plan for
-**Bounce** — the business-side sibling of the dev pipeline
+**Nudge** — the business-side sibling of the dev pipeline
 (grill → PRD → issues). Requires the `ceo-strategist`, `marketing-growth`,
 and `product-manager` agents, plus the `grilling` skill.
 
@@ -44,7 +44,7 @@ phase with metric gates, cost, and kill switch; the "Deliberately out" table;
 dev-pipeline handoff naming the first vertical slices.
 
 ### 6. Assemble the venture doc
-Write `docs/venture/Bounce_Strategic_Documentation_Suite.md` (or the next version of it), in this structure:
+Write `docs/venture/Nudge_Strategic_Documentation_Suite.md` (or the next version of it), in this structure:
 **Executive summary** → **Research digest** (imported table, or the
 "research not run" banner) → **Positioning** → **Product spec / core
 mechanic** → **Validation protocol** (phases + gates) → **GTM sketch** →

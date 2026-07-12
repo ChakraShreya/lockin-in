@@ -52,7 +52,7 @@ default · casual view shows only Life Score + budget.
 | Command | What it does | Reach for it when |
 |---|---|---|
 | `/venture-research <topic>` | Fans out 2–4 market-researchers on non-overlapping question sets, kill-passes load-bearing claims through claim-verifier, writes a dated Research Digest to `research/` | A decision hangs on several unknowns (competitor sweep, price audit, platform rules). Token-heavy — for one small question, just ask market-researcher directly |
-| `/venture-plan <idea or doc path>` | Grill → ceo-strategist → marketing-growth → product-manager → one versioned venture doc | Revising the Bounce doc (v0.2 → v0.3), or planning a new phase properly |
+| `/venture-plan <idea or doc path>` | Grill → ceo-strategist → marketing-growth → product-manager → one versioned venture doc | Revising the Nudge doc (v0.2 → v0.3), or planning a new phase properly |
 | `/design-critique <section/flow>` | ux-designer critiques the named surface vs house heuristics; validated findings + prioritized fix list | Before building any screen, and after any Domain 2 edit |
 | `grilling` (auto-triggers, or say "grill me") | One-question-at-a-time alignment until shared understanding | Before committing to any plan or doc revision |
 | `/handoff <next focus>` | Compacts the session into `docs/session-summary/` | Ending mid-task, or passing work to another founder |

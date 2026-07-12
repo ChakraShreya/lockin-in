@@ -80,7 +80,7 @@ deterministic string; templatization waits for the reflow-reaction gate.
 
 ## Where everything lives
 
-- Venture doc **v0.4**: `docs/venture/Bounce_Strategic_Documentation_Suite.md`
+- Venture doc **v0.4**: `docs/venture/Nudge_Strategic_Documentation_Suite.md`
 - Engine spec: `docs/venture/prd-01-balance-engine.md` (v1.1 — all Qs answered)
 - Budget spec: `docs/venture/prd-02-budget-reflow.md` (v0.2 — all Qs answered)
 - UX spec: `docs/venture/ux-spec-prototype.md` (landing today)

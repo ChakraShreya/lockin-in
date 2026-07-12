@@ -2,7 +2,7 @@
      Maintained by /sync-context — run it at the end of substantive AI work.
      This is the SNAPSHOT (always current). The append-only history is research/journal.md. -->
 
-# START HERE — fresh-chat context for `lockin-in` (Bounce)
+# START HERE — fresh-chat context for `lockin-in` (Nudge)
 
 If you're a fresh agent (or a future me), read this top-to-bottom and you have
 everything needed to continue.
@@ -13,7 +13,7 @@ _Last synced: 2026-07-12._
 
 ## About us (the team)
 
-- Here are the 3-founder side-project squad building **Bounce**
+- Here are the 3-founder side-project squad building **Nudge**
   - Founder A profile:
     engine/PM lane per the venture doc's Part 4 charter.
     Day job: junior Salesforce dev
@@ -28,7 +28,7 @@ _Last synced: 2026-07-12._
 
 ## Why this repo exists
 
-Home of **Project Bounce** — a lifestyle recalibration app where one vice log
+Home of **Project Nudge** — a lifestyle recalibration app where one vice log
 recalculates both your health plan and your weekly budget ("the Loop", verified
 whitespace). "Done" for this phase = the venture doc's v0.4 **build-first**
 protocol executed: foundations + recruitment → build sprint (wks 1–3) → Week-3
@@ -40,6 +40,12 @@ dropped by founder decision 2026-07-12.)
 
 _As of 2026-07-12 — rewritten each sync._
 
+- **Product renamed Bounce → Nudge (2026-07-12 night)** — swept repo-wide (79
+  occurrences, 22 files); the recovery mechanic formerly "the Bounce" is now
+  **"The Rebound"**; venture doc file renamed to
+  `Nudge_Strategic_Documentation_Suite.md`. GitHub repo renamed manually to
+  `github.com/ChakraShreya/nudge` — **local git remote still needs updating**
+  (not done automatically; ask explicitly).
 - Venture doc now **v0.4** (build-first). No code yet; **nothing user-validated
   yet**. **The WhatsApp pilot is DROPPED (founder decision 2026-07-12)** — the
   live cohort (wks 4–6) is the first and only decision gate, with a Week-3
@@ -140,7 +146,7 @@ Per the forward plan (`~/.claude/plans/research-on-the-current-reflective-bear.m
 
 ## Map (where things live)
 
-- `docs/venture/Bounce_Strategic_Documentation_Suite.md` → the product, in full
+- `docs/venture/Nudge_Strategic_Documentation_Suite.md` → the product, in full
 - `GUIDE.md` → how to use the installed agents/flows
 - `research/` → dated research digests + `journal.md` (session history)
 - `docs/session-summary/` → handoffs between sessions/founders

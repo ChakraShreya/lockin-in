@@ -8,7 +8,7 @@ allowed-tools: Read, Grep, Glob, Task
 
 # Design Critique
 
-Critique a UX surface of **Bounce** against its stated heuristics,
+Critique a UX surface of **Nudge** against its stated heuristics,
 via the `ux-designer` agent (installed to `.claude/agents/`).
 
 ## Process
@@ -20,7 +20,7 @@ doc section or screens, and stop until pinned. A critique of an unpinned
 subject critiques the critic's imagination.
 
 ### 2. Pin the heuristics
-Collect the house heuristics from `docs/venture/Bounce_Strategic_Documentation_Suite.md (Domain 2)`:
+Collect the house heuristics from `docs/venture/Nudge_Strategic_Documentation_Suite.md (Domain 2)`:
 core action (vice log) <=2 taps and <3 seconds; supportive tone in every state (incl. Recovery Mode), never guilt-based; wearable-free default; casual view shows only Life Score + budget (advanced metrics folded). **Push them into the subagent's brief explicitly** — don't
 assume it knows them. If the user wants extra lenses for this run (e.g.
 "first-time-user eyes"), add them to the brief as temporary heuristics.

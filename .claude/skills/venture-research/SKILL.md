@@ -8,7 +8,7 @@ allowed-tools: Read, Write, Grep, Glob, Task, WebSearch, WebFetch
 
 # Venture Research
 
-Run a verification-first desk-research pass for **Bounce** and produce
+Run a verification-first desk-research pass for **Nudge** and produce
 a single Research Digest the strategy work can stand on. Requires the
 `market-researcher` and `claim-verifier` agents (installed to
 `.claude/agents/` by the BUSINESS bundle).

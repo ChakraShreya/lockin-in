@@ -1,5 +1,5 @@
 ---
-description: Capture what this session did into lockin-in (Bounce) — refresh STATE.md and append a dated journal entry — so a fresh chat has full context
+description: Capture what this session did into lockin-in (Nudge) — refresh STATE.md and append a dated journal entry — so a fresh chat has full context
 allowed-tools: Read, Edit, Write, Glob, Grep, Bash(git status:*), Bash(git diff:*), Bash(git log:*), Bash(date:*)
 ---
 
