@@ -210,7 +210,7 @@ $$R = W - \sum_{\text{this week}} c_i \qquad\qquad a_{daily} = \frac{\max(0, R)}
 
 **No-rollover rule:** overshooting ($R<0$) shows the overshoot once, then **resets clean on Monday**. Debt-carrying is a guilt mechanic in a spreadsheet costume — same reason the score freezes instead of decaying. This is the financial "never miss twice."
 
-**Leftover / Lunchbox Loop (savings side):** at dinner logging, prompt double-portion cooking; confirmed lunchbox next day credits `(lunch delivery baseline − home cost)` to a visible savings ledger — **~₹150/day at every wallet tier** (founder-set 2026-07-12: baselines ₹250/350/450 − home costs ₹100/200/300, both `[hypothesis]`, per PRD-02 FR6; supersedes the earlier ₹120–300 range). Weekly savings injection framed in visceral terms ("most of a tank of petrol").
+**Leftover / Lunchbox Loop (savings side):** at dinner logging, prompt double-portion cooking; confirmed lunchbox next day credits `(lunch delivery baseline − home cost)` to a visible savings ledger — **₹120–300/day by wallet tier** (final, founder call 2026-07-12: baselines ₹200/300/380 − flat ₹80 fully-loaded home cost, per PRD-02 FR6 — baselines anchored against the now-**[verified]** national blended delivery AOV of ₹453–458 FY25, solo-lunch segmentation still `[hypothesis]`). Weekly savings injection framed in visceral terms ("half a tank of petrol").
 
 ### 7. Recovery Mode (the third arrow) — unified trigger
 

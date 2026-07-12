@@ -50,15 +50,17 @@ reading the session logs. Everything below is already landed in the docs it name
 | Dual EMA | Store `ls7` + `ls30` both; **UI shows 7-day only** for now | PRD-01 §2.3/FR6 |
 | HRV ratio | Clean `ĥ=0.35`; doc's Day-2 stored V corrected 94.1 → **94.0** (errata; final scores unchanged) | PRD-01 T2, doc Domain 1 §5 |
 | TDEE / mass | Static onboarding values, editable in profile | PRD-01 §7 |
-| Home-cook cost | **Per-tier ₹100/200/300** (fully-loaded; realistic for working class + students) `[hypothesis]` | PRD-02 FR6 |
-| Lunch baselines | **Raised to ₹250/350/450** → lunchbox credit ≈ **₹150/day at every tier** (replaces the doc's ₹120–300 range) `[hypothesis]` | PRD-02 FR6, doc §6 |
+| Home-cook cost | ~~Per-tier ₹100/200/300~~ → **FINAL (same day, PM): flat ₹80 fully-loaded** — re-affirmed after Shreya's AOV verification `[hypothesis]` | PRD-02 FR6 + Decision record |
+| Lunch baselines | ~~Raised to ₹250/350/450~~ → **FINAL (same day, PM): ₹200/300/380** (anchored under the verified ₹453–458 blended AOV) → credits **₹120/220/300** `[hypothesis on solo-lunch segmentation]` | PRD-02 FR6 + Decision record |
 | Timezone | Asia/Kolkata fixed; no traveling-user handling | PRD-02 OQ5 |
 | Persistence | **Supabase from day one** (auth + Postgres + RLS), not localStorage-first | build plan |
 | Design order | ux-designer wireframe spec **before** code | build plan |
 | Prototype scope | **Full loop, no push nudges**: dashboard, two-tap log, check-ins, Recovery Mode UI, lunchbox + savings ledger | build plan |
 
-Still deliberately open: food-delivery AOV (`[hypothesis]` until a real audit —
-PRD-02 OQ1); `{suggestion}` copy ships as a deterministic string.
+~~Still deliberately open: food-delivery AOV~~ — **CLOSED same day by Shreya
+(`270ddc2`): national blended delivery AOV ₹453–458 FY25 [verified — Eternal +
+Swiggy primary filings, GOV÷orders re-derived]**. `{suggestion}` copy ships as a
+deterministic string; templatization waits for the reflow-reaction gate.
 
 ## What we need from YOU
 

@@ -548,8 +548,8 @@ Pending-confirm card renders **only** if a `savings_ledger` row exists with
 `status='pending_confirm'` and `credit_date = today`. Per PRD-02 FR6, there is at most one such row
 at a time (the window is next-day-only).
 
-> *(Illustrative amounts above predate the 2026-07-12 constants decision — build against PRD-02
-> v0.2: baselines ₹250/350/450, credits ≈₹150/day.)*
+> *(Amounts above match PRD-02's final constants (v0.3.1, 2026-07-12): baselines ₹200/300/380 −
+> flat ₹80 → mid-tier credit ₹220; four confirmed = ₹880.)*
 
 ### Element inventory
 

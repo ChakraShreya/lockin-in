@@ -2,8 +2,8 @@
 
 **Owner:** Product (Founder A lane — engine/PM)
 **Builds in:** Phase 3, Week 4 (alongside the $D_t$/EMA balance engine)
-**Source of truth:** `docs/venture/Bounce_Strategic_Documentation_Suite.md` v0.3, Domain 1 §6 ("Financial Recalibration") + Part 3 schema
-**Version:** v0.3 · 2026-07-12 · _Food-delivery AOV **verified** and tags flipped (§5, FR6): national blended AOV ₹453–458 (FY25) confirmed from Eternal + Swiggy primary filings (re-derived GOV÷orders); vice-cost mid-tier now anchored, with Bangalore-specific + solo-lunch figures the only residual `[hypothesis]`. v0.2 resolved all open questions into the body (§9 removed): home cost flat ₹80 (FR6); two-baseline delivery split adopted (FR6); `{suggestion}` deterministic until the reflow-reaction gate passes (FR3/§4); all math fixed to Asia/Kolkata (FR2). v0.1 extracted Domain 1 §6 into observable requirements, added `savings_ledger`, resolved the ₹80 home-cost scope._
+**Source of truth:** `docs/venture/Bounce_Strategic_Documentation_Suite.md` v0.4, Domain 1 §6 ("Financial Recalibration") + Part 3 schema
+**Version:** v0.3.1 · 2026-07-12 · _Reconciliation: v0.3's stale-draft regressions fixed; **money estimates FINAL per founder call after AOV verification** — flat ₹80 home cost, ₹200/300/380 lunch baselines, ₹120–300/day credits (supersedes v0.2's same-day per-tier ₹100/200/300 + ₹250/350/450 call); Monday **04:00** IST boundary consistent throughout; decision record added after §8. v0.3 (Shreya): food-delivery AOV **verified** — national blended ₹453–458 (FY25) from Eternal + Swiggy primary filings (re-derived GOV÷orders); §5 retagged against the verified anchor; `{suggestion}` templatization deferred until the reflow-reaction gate passes. v0.2: founder decisions landed (per-tier costs — later superseded, see v0.3.1 — Monday 04:00 week boundary, OQ2/3/5 closed). v0.1: initial build-ready PRD (extracts Domain 1 §6, adds `savings_ledger`)._
 
 ---
 
@@ -136,7 +136,7 @@ still counts toward the outgoing week). "Days left" on Friday computes to 3; on
 Sunday to 1.
 
 **Timezone — decided, single-zone:** all budget math (week boundaries, the
-Monday 00:00 reset, and "days left") is fixed to **Asia/Kolkata**, hard-coded —
+Monday 04:00 reset, and "days left") is fixed to **Asia/Kolkata**, hard-coded —
 there is no per-user timezone field in MVP. The Bangalore pilot is IST-only, so
 the traveling-user / timezone-crossing case is **explicitly out of scope**;
 revisit only if Bounce expands beyond IST users. This assumption is recorded here
@@ -243,14 +243,16 @@ variant.
 3. **Ledger view** (FR7) shows the running confirmed total.
 
 **Credit math per wallet tier** — `credit = lunch_delivery_baseline − home_cost`
-(**founder decisions 2026-07-12**, superseding the earlier flat-₹80 proposal —
-the doc's old "₹120–300/day" claim becomes **~₹150/day**):
+(**FINAL — founder call 2026-07-12 PM, after AOV verification:** the flat-₹80 +
+₹200/300/380 figures below are re-affirmed against the verified AOV anchor,
+superseding the same-day per-tier ₹100/200/300 + ₹250/350/450 call — see the
+Decision record after §8):
 
 | Wallet tier | Lunch delivery baseline | Home cost | **Credit / day** |
 |---|---|---|---|
-| Budget | ₹250 | ₹100 | **₹150** |
-| Mid | ₹350 | ₹200 | **₹150** |
-| Premium | ₹450 | ₹300 | **₹150** |
+| Budget | ₹200 | ₹80 | **₹120** |
+| Mid | ₹300 | ₹80 | **₹220** |
+| Premium | ₹380 | ₹80 | **₹300** |
 
 These lunch baselines sit **below** the now-verified blended food-delivery AOV of
 ₹453–458 (§5) — by design, since a solo everyday lunch is smaller than a blended
@@ -285,12 +287,12 @@ own arithmetic, not a published figure]`; stored as a single constant
   double-portion prompt,
   **When** they confirm eating the lunchbox the next day,
   **Then** a `savings_ledger` row `status = 'confirmed', delivery_baseline_inr =
-  350, home_cost_inr = 200, credit_inr = 150` exists and the running total
-  increases by ₹150.
+  300, home_cost_inr = 80, credit_inr = 220` exists and the running total
+  increases by ₹220.
 
 **Acceptance:** accepting the prompt creates a `pending_confirm` row; only a
 next-day **confirm** flips it to `confirmed` and moves the total; ignoring it
-`expires` with zero credit. `credit_inr` for a mid-tier user = 150.
+`expires` with zero credit. `credit_inr` for a mid-tier user = 220.
 
 ### FR7 — Visible savings ledger
 
@@ -299,9 +301,9 @@ total** and a list of recent credits (`credit_date`, `credit_inr`, source).
 Framing is visceral and forward ("₹880 saved — half a tank of petrol"), per the
 venture doc; the copy itself is out of this PRD's lane (marketing-growth).
 
-- **Given** four confirmed mid-tier lunchbox credits (₹150 each),
+- **Given** four confirmed mid-tier lunchbox credits (₹220 each),
   **When** the user opens the ledger,
-  **Then** the total shows **₹600** and four line items are listed.
+  **Then** the total shows **₹880** and four line items are listed.
 
 **Acceptance:** the displayed total equals `SUM(credit_inr WHERE status =
 'confirmed')`. `pending_confirm` and `expired` rows are excluded from the total.
@@ -316,7 +318,7 @@ venture doc; the copy itself is out of this PRD's lane (marketing-growth).
 | Auto-detecting cost from bank/SMS/Gmail | **Out (v2 candidate)** | Manual `cost_inr` only. AA/Gmail/SMS all verified out of MVP reach (venture doc Domain 4). |
 | Per-item itemized delivery/bar bills | **Out** | One `cost_inr` per log; tap-to-edit is the only granularity. Itemization is scope creep with no gate behind it. |
 | Multi-currency / non-INR | **Out** | Bangalore pilot is INR-only. |
-| Automated `{suggestion}` NLG / templatization | **Out until the reflow-reaction gate passes** | Suggestion is founder-written by hand in the concierge (§8); MVP ships a deterministic string. No copy investment until the moat is validated (FR3); then it moves to marketing-growth. |
+| Automated `{suggestion}` NLG / templatization | **Out until the reflow-reaction gate passes** | MVP ships a deterministic string seeded from the §8 script language + the copy probe (the manual concierge never runs — doc v0.4). No copy investment until the moat is validated (FR3); then it moves to marketing-growth. |
 | Ledger *decrement* / spending the savings | **Out** | Ledger is additive/motivational, not a wallet. No withdraw action. |
 | Savings-total → budget top-up ("earn more fun money") | **Out (tempting, fenced)** | Coupling the two ledgers turns a motivation surface into an incentive to over-cook/over-log; not validated. Raise with ceo-strategist if it recurs. |
 | Wallet-tier auto-inference from spend | **Out** | Tier is user-set at onboarding (FR1); no behavioral inference in MVP. |
@@ -404,7 +406,7 @@ engine is wrong.
 once; next Monday row shows `budget_inr = 3000, spent_inr = 0`, no ₹900 reference.
 
 **Lunchbox fixture (FR6):** mid-tier, accept prompt → next-day confirm →
-`credit_inr == 150`, running total += 150.
+`credit_inr == 220`, running total += 220.
 
 ---
 
@@ -450,17 +452,29 @@ max(0,R)/days-left` on each inbound vice, exactly as FR3.
 > **Founder (20:30, dinner time):** "Cooking tonight? Make a double portion —
 > tomorrow's lunchbox skips a ~₹350 delivery."
 > **User:** "yeah made extra dal chawal"
-> **Founder:** _(pending credit ₹350−₹200 = ₹150)_ "Nice. If you actually eat it
-> tomorrow instead of ordering, that's **₹150 banked.** I'll check in."
+> **Founder:** _(pending credit ₹300−₹80 = ₹220)_ "Nice. If you actually eat it
+> tomorrow instead of ordering, that's **₹220 banked.** I'll check in."
 > **Founder (next day, lunch):** "Lunchbox or delivery today?"
 > **User:** "brought it 💪"
-> **Founder:** "**₹150 saved — you're at ₹600 this month, most of a tank of
+> **Founder:** "**₹220 saved — you're at ₹880 this month, about half a tank of
 > petrol.** Genuinely, that adds up."
 
 **What founders log per exchange (for the gate):** did the user **reference the ₹
 number unprompted** in a later message? (Continue signal.) Did they push back
 ("feels like being watched")? (Kill signal — feeds the "surveillance not care"
 risk in the venture doc register.)
+
+---
+
+## Decision record (audit trail — replaces the resolved §9 open-questions list)
+
+| Decision | Outcome | When / by |
+|---|---|---|
+| Food-delivery AOV (was OQ1) | **CLOSED — [verified]:** national blended ₹453–458 FY25 (Eternal ₹453, Swiggy ₹458; primary filings, re-derived GOV÷orders). Residual `[hypothesis]`: Bangalore-specific + solo-lunch segmentation. | 2026-07-12, Founder B/C session (`270ddc2`), digest updated |
+| Home-cook cost (was OQ2) | **FINAL: flat ₹80, fully-loaded.** History: proposed flat ₹80 (v0.1) → founder set per-tier ₹100/200/300 (v0.2, same day) → **re-affirmed flat ₹80** after AOV verification (v0.3.1, Founder A). `[hypothesis]` constant, retunable post-cohort. | 2026-07-12 PM, Founder A |
+| Lunch baselines / split (was OQ3) | **FINAL: two-baseline split kept; baselines ₹200/300/380** (solo everyday lunch, bounded by the verified sub-₹250 budget-meal segment) → credits ₹120/220/300. History: ₹200/300/380 (v0.1) → raised ₹250/350/450 (v0.2) → **reverted to ₹200/300/380** with the verified anchor (v0.3.1). | 2026-07-12 PM, Founder A |
+| `{suggestion}` templatization (was OQ4) | Deterministic string for MVP; **no NLG/template investment until the reflow-reaction gate passes**, then marketing-growth's lane. | 2026-07-12, v0.3 |
+| Timezone / boundaries (was OQ5) | Asia/Kolkata hard-coded; **day + week boundary 04:00 IST** (PRD-01 Q1); no traveling-user handling in MVP. | 2026-07-12, Founder A |
 
 ---
 
@@ -483,7 +497,7 @@ alongside the $D_t$/EMA engine (venture doc Phase 3 table).
    across a week boundary._
 4. **Slice D — Lunchbox credit end-to-end.** Dinner prompt → `pending_confirm`
    row → next-day confirm/expire → `credit_inr` banked (FR6). _The savings
-   mirror; mid-tier `credit == 150` fixture gates it._
+   mirror; mid-tier `credit == 220` fixture gates it._
 5. **Slice E — Ledger surface.** Running confirmed total + recent credits (FR7).
    _Makes the banked savings visible; last because it only reads what D writes._
 
