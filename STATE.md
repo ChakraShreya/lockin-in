@@ -87,10 +87,13 @@ _As of 2026-07-12 — rewritten each sync._
 
 - ~~"24–48h rebaseline" mis-sourced~~ — **CLOSED in v0.3** (re-sourced to
   MunichBREW II as `[hypothesis]`; window flagged as a tunable placeholder).
-- UX spec (Domain 2) has no empty/error/recovery states for any screen —
-  design-critique found 6 findings ≥75, worst: Recovery Mode empty states
-  (the emotionally sensitive screen). Still open — the next Track-1 UX session
-  (re-run `/design-critique "Domain 2"` → ux-designer writes the state specs).
+- ~~Domain 2 had no empty/error/recovery states~~ — **CLOSED for the 5 prototype
+  screens (2026-07-12): `docs/venture/ux-spec-prototype.md`** (wireframes, all
+  states, exact sensitive-state copy, tap-count audits). Three flags for
+  Founder A inside its §10: past-day log editing needs an engine decision
+  (F6), lunchbox-expiry footnote interpretation (F5), Recovery-Mode score
+  footer reading (F7). Non-prototype screens (settings/consent/onboarding)
+  still unspecced.
 - **Cost tables only partially audited** — food-delivery AOV unverifiable from
   primary sources (investor PDFs image-only); budget-tier alcohol & lunchbox
   scope still `[hypothesis]`. Finish in the build sprint's parallel desk track
