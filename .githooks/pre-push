@@ -1,0 +1,24 @@
+#!/bin/sh
+# Blocks pushing to main (PRs only) and warns on merge commits (linear history).
+# See CONTRIBUTING.md.
+zero=0000000000000000000000000000000000000000
+status=0
+while read local_ref local_sha remote_ref remote_sha; do
+  [ "$local_sha" = "$zero" ] && continue  # branch deletion — allow
+  if [ "$remote_ref" = "refs/heads/main" ]; then
+    echo "✗ Pushing directly to main is not allowed — raise a PR (CONTRIBUTING.md)."
+    echo "  Emergency bypass (rare): git push --no-verify"
+    status=1
+    continue
+  fi
+  if [ "$remote_sha" = "$zero" ]; then
+    range="$local_sha --not --remotes=origin"
+  else
+    range="$remote_sha..$local_sha"
+  fi
+  if [ -n "$(git rev-list --merges $range 2>/dev/null | head -1)" ]; then
+    echo "⚠ Outgoing commits include merge commits — we keep linear history."
+    echo "  Prefer: git rebase origin/main   (push allowed; see CONTRIBUTING.md)"
+  fi
+done
+exit $status

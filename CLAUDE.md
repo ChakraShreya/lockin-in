@@ -10,9 +10,9 @@ installed AI tooling (agents, flows, when to use what).
 
 ## Layout
 
-- `docs/venture/Bounce_Strategic_Documentation_Suite.md` — **the venture doc**
-  (v0.2): product spec, scoring math, validation protocol, gates, risk
-  register. The single source of truth for what Bounce is.
+- `docs/venture/Bounce_Strategic_Documentation_Suite.md` — **the venture doc**:
+  product spec, scoring math, validation protocol, gates, risk register. The
+  single source of truth for what Bounce is (version history at its foot).
 - `docs/session-summary/` — handoff docs between sessions/founders (created on
   first `/handoff`).
 - `research/` — dated research digests (`YYYY-MM-DD_topic.md`) +
@@ -22,9 +22,22 @@ installed AI tooling (agents, flows, when to use what).
 
 ## Conventions
 
-- **Tests:** none yet — no code yet. When the Week-4 build sprint starts,
+- **Tests:** none yet — no code yet. When the build sprint starts,
   add the test command here and install the `tdd` skill
   (`/onboard-project --upgrade` from `~/ai-research`).
 - **Claims discipline:** every market/competitor/platform claim in venture
   docs is `[verified — source]` or `[hypothesis]` — see CLAUDE.local.md.
 - End substantive sessions with **`/sync-context`**.
+
+## Git workflow (applies to AI sessions — full rules in CONTRIBUTING.md)
+
+- **Never commit or push on `main`** — PRs only. Local `.githooks/` enforce this
+  (activate once per clone: `git config core.hooksPath .githooks`).
+- Flow: `git checkout -b <type>/<short-desc>` (feat/fix/docs/chore/research) →
+  commit → `git push -u origin <branch>` → `gh pr create` →
+  `gh pr merge --rebase --delete-branch`. No approval mandate; self-merge is fine.
+- **Linear history:** `git pull --rebase` always (`git config pull.rebase true`);
+  rebase branches on `origin/main`, never merge main into a branch; PRs land via
+  rebase-merge only.
+- When to run git at all is still governed by CLAUDE.local.md (only when
+  explicitly asked).
