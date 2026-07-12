@@ -5,6 +5,14 @@
 cost tables (alcohol, food delivery, cigarettes, home-cooked meal baseline) against
 real 2026 Bangalore prices. Desk research only — no primary interviews.
 
+**Update 2026-07-12 (food-delivery AOV — OQ1 closed):** the food-delivery
+average-order-value gap flagged below has since been **resolved against primary,
+text-native investor filings** (Eternal/Zomato FY25 annual report + Swiggy FY25
+annual report and shareholder letter). Both majors now converge on a **national
+blended food-delivery AOV of ₹453–458 (FY25)**, each independently re-derived from
+disclosed GOV ÷ orders. See §3 and the "AOV resolution" verdict block. The rows
+below marked with a ⟳ have been upgraded from `[hypothesis]` accordingly.
+
 **Placeholders under test** (from `docs/venture/Bounce_Strategic_Documentation_Suite.md`):
 
 - Alcohol: T1/T2/T3 × budget/mid/premium = 300/600/1000, 600/1200/2500, 1200/2500/5000
@@ -25,12 +33,14 @@ real 2026 Bangalore prices. Desk research only — no primary interviews.
 | Mid-range Bangalore brewpub (Byg Brewski, Sarjapur Rd) food items ₹215–465/plate; site-quoted "cost for two" ≈ ₹1,500 (≈₹750/person, food only, no drinks priced) | **Confirmed (food only)** `[verified — Byg Brewski menu via Magicpin, fetched 2026-07-12]` | Confirms mid-tier food spend; drink prices weren't listed on this page — see next row |
 | Toit Brewpub (Indiranagar) cocktails ₹200–1,150 (mocktails ₹200; signature cocktails ₹400–700; premium spirits to ₹1,150); food ₹150–850 | **Confirmed** `[verified — Toit menu via ExploreBangalore aggregator, fetched 2026-07-12]` | A 2–3 drink + food night at a premium Indiranagar venue plausibly lands ₹1,500–3,000+/person — roughly matches placeholder's premium row (1200/2500/5000) but no pint-specific figure found (breweries serve house beer without a single listed "pint price") |
 | General nightlife cost estimates (blog aggregation): neighborhood pubs (HSR/BTM/Jayanagar) pint/cocktail ₹150–300; mid-range pubs ₹250–500/drink; upscale bars ₹600–1,000+/drink; full night out ₹2,000–7,000/person; Indiranagar specifically ₹1,500–2,500/person | **Unverified / Likely (weak)** `[hypothesis — cost-of-living/nightlife blogs (bohothebar, bangaloreblogs, ff21), not primary venue pricing, ranges very wide]` | Broadly consistent with placeholder's shape (budget < mid < premium, escalating with venue), but these are guide-book style estimates, not verified per-venue bills — treat placeholder as "reasonable order of magnitude," not confirmed |
-| Zomato reported average order value (AOV) ≈ ₹425 in Q1 FY25 (across all food delivery, blended) | **Unverified** `[hypothesis — appears in search-engine synthesis attributed to Zomato's Q1FY25 shareholder letter; direct fetch of blog.zomato.com/q1fy25 and the Eternal/Zomato investor-relations PDFs failed (timeout / unreadable image-based PDF) — could not independently confirm the figure or its exact definition]` | Do not hard-code ₹425 as ground truth; it's a plausible blended national AOV but unconfirmed by direct reading, and Bangalore-specific AOV wasn't found anywhere |
+| ⟳ **Zomato (Eternal) food-delivery AOV = ₹453 in FY25** (blended, all-India), up from ₹428 in FY24 | **Confirmed** `[verified — Eternal Ltd FY25 Company Overview (May 2025), food-delivery GOV ₹38,646 Cr; order count 853 Mn per Eternal FY25 Annual Report (via MediaNama); re-derived 38,646 Cr ÷ 853 Mn = ₹453.1, matches disclosed AOV exactly]` | Supersedes the earlier unverified "₹425 Q1FY25" figure. The blended national AOV ≈ ₹453 anchors the food-delivery *vice* mid-tier (₹400–500) squarely on real data |
+| ⟳ **Swiggy food-delivery AOV = ₹458 in FY25** (blended, all-India), up from ₹428 (FY24) / ₹416 (FY23) / ₹407 (FY22) | **Confirmed** `[verified — Swiggy Ltd FY25 Annual Report, food-delivery GOV ₹28,783 Cr ÷ Total Orders 628.9 Mn = ₹457.6, matches disclosed AOV ₹458; AOV series cross-checked in the same report]` | Independent second major converges within ₹5 of Zomato — the two together make ₹453–458 a **verified national blended food-delivery AOV**, not a guess |
+| ⟳ **Caveat — this is a *blended national* AOV, not a Bangalore or single-diner figure.** Neither company publishes city-level AOV; AOV = GOV ÷ *all* orders (incl. multi-person/group orders), and Zomato is *deliberately* pushing sub-₹250 "budget" orders (min order for free delivery cut to ₹99) | **Confirmed (scope limits)** `[verified — Eternal Q4FY26 shareholder letter: "declining NAOV is a natural and intended consequence" of budget-meal strategy; curated meals under ₹250]` | ₹453–458 is a solid *anchor* but (a) Bangalore (metro/tier-1) likely sits at or above it, and (b) a solo indulgent order ≠ the blended average — treat ₹455 as the central peg, not a ceiling |
 | Quick-commerce (not restaurant food delivery) AOVs: Blinkit ₹665, Instamart ₹527 (FY25) | **Confirmed (different category)** `[verified — reported in search synthesis of company disclosures; consistent with widely-cited FY25 quick-commerce unit economics]` — but **flagged out of scope**: this is grocery quick-commerce, not Swiggy/Zomato *restaurant* food delivery | Don't conflate with food-delivery order value — Bounce's "food delivery" vice logging is about restaurant meals, a different spend pattern than 10-min grocery orders |
-| Generic AOV bands cited in blog analysis: "light users ~₹250, moderate users ~₹300 per order"; example restaurant-level comparison "Zomato ₹650 vs Swiggy ₹480" for one premium restaurant | **Unverified** `[hypothesis — restrologic.com blog, presented as illustrative examples not sourced to a named dataset]` | Suggests real single-order values cluster ₹250–650 depending on restaurant tier and user segment — broadly brackets the placeholder's Tier1/Tier2 (200/250/500, 400/500/900) reasonably, but no authoritative single figure exists |
+| Generic AOV bands cited in blog analysis: "light users ~₹250, moderate users ~₹300 per order"; example restaurant-level comparison "Zomato ₹650 vs Swiggy ₹480" for one premium restaurant | **Superseded** `[hypothesis — restrologic.com blog, illustrative only]` — now overridden by the verified ₹453–458 blended AOV above | Directionally consistent (single-order values cluster ₹250–650 by tier/segment) but no longer load-bearing: the verified filings give the authoritative central figure the blogs only approximated |
 | Home-cook ingredient cost, computed from verified retail unit prices (Sona Masoori rice ₹62–94/kg; toor dal ₹122–159/kg; Fortune sunflower oil ₹195–200/L; onion/tomato ₹22–33/kg) → a simple rice+dal+one sabzi+oil portion computes to roughly ₹25–40/portion in raw ingredients alone | **Verified inputs, hypothesis for the total** `[verified — BigBasket product listings for rice/dal/oil (search-indexed prices, not independently re-fetched live); verified — mandi price trackers rozkabhav.com/oneindia.com for vegetables, dated Apr–May 2026]` + `[hypothesis — the ₹25–40/portion total is Bounce's own arithmetic, not a published figure, and excludes LPG/electricity, protein, condiments, wastage, and any labor cost]` | The venture doc's ₹80/meal assumption is **plausible and likely on the generous side** for a bare-ingredients meal, but becomes reasonable once LPG, protein, condiments and real-world wastage are added — recommend the doc state its ₹80 figure is "fully-loaded" not "raw ingredients," or it will look inflated next to this bottom-up math |
 | Bangalore monthly tiffin/subscription services: ₹2,500–₹7,000/month depending on provider and veg/non-veg, i.e. roughly ₹85–235/meal for a *prepared, delivered* meal (not self-cooked) | **Confirmed (as a different baseline)** `[verified — multiple tiffin-service pricing pages: Maa Ka Dulaar, Bangalore Tiffin, Tiffyy, Dabba Meals, Growfit, cross-checked, consistent range]` | This is a *paid-tiffin* cost, not a *self-cooked* cost — useful as an upper bound / alternative baseline if Bounce ever models "outsourced home-style food" as a third option, but should not be conflated with the ₹80 self-cook assumption |
-| Implied delivery-vs-homecook savings: if a typical restaurant delivery order runs ₹250–650 (unverified AOV bands above) against a self-cooked meal at ~₹25–80 (ingredient math + doc assumption), the gap is roughly ₹170–570/day | **Hypothesis (derived, not directly sourced)** `[hypothesis — Bounce's own arithmetic combining two already-unverified/weakly-verified inputs]` | The doc's claimed ₹120–300/day savings range is **plausible and may even be conservative** at the higher end, but rests on two shaky inputs (AOV, ingredient cost) — don't upgrade this range to "confirmed" without a cleaner primary source for at least one side of the comparison |
+| Implied delivery-vs-homecook savings: a restaurant delivery order at the verified blended AOV (~₹455) against a self-cooked meal at ~₹25–80 (ingredient math + doc assumption) gives a gap of roughly ₹375–430/order | **Partially upgraded** `[verified — AOV side, ₹453–458 from filings]` + `[hypothesis — home-cost side ₹25–80, and the assumption that a *lunchbox-replacing* order equals the blended AOV]` | One of the two inputs (AOV) is now primary-verified. The doc's ₹120–300/day savings band is **conservative** against a full-AOV order — but the lunchbox baseline (₹200–380) deliberately uses a *solo everyday-lunch* order, which is below blended AOV; that solo-lunch figure is bounded by the sub-₹250 budget-meal segment but not independently verified as a standalone number |
 
 ---
 
@@ -100,33 +110,74 @@ plausible premium-venue per-person spend of ₹1,500–3,000+, which brackets th
 placeholder's premium row (1200/2500/5000) reasonably. This is triangulation, not a
 verified single receipt.
 
-### 3. Food delivery
+### 3. Food delivery — AOV RESOLVED (2026-07-12 update)
 
-Attempts to pull Swiggy's and Zomato's own investor-relations AOV disclosures directly
-failed: the Swiggy Q3FY25 shareholder-letter PDF and the Eternal (Zomato) Q1FY26
-shareholder-letter PDF are both image-based/infographic PDFs that render as
-unreadable binary when fetched, and a direct fetch of blog.zomato.com/q1fy25 timed
-out twice. [attempted, both failed — see search trail below]
+The earlier pass could not read the image-based investor PDFs. This pass obtained
+**text-native investor filings** for both majors and re-derived the food-delivery
+AOV from first principles (GOV ÷ orders). The result: a **verified national blended
+food-delivery AOV of ₹453–458 for FY25.**
 
-A search-engine synthesis (not a direct read) attributed "₹425 average order value in
-Q1 FY25" to Zomato's shareholder letter. I could not independently confirm this
-number or its exact scope (blended across food delivery only, or including quick
-commerce). [hypothesis]
+**Zomato / Eternal — food delivery, FY25:**
+- GOV series (₹ crore): FY22 21,297 · FY23 26,305 · FY24 32,224 · **FY25 38,646**
+  [verified — Eternal Ltd FY25 Company Overview, May 2025,
+  https://b.zmtcdn.com/investor-relations/Eternal_Ltd_Company_overview_May_2025.pdf]
+- Orders: **853 Mn in FY25** (up from 753 Mn FY24); disclosed **AOV ₹453** (up from
+  ₹428 FY24) [verified — Eternal FY25 Annual Report, reported by MediaNama,
+  https://www.medianama.com/2025/07/223-eternal-fy25-annual-report-highlights-zomato-blinkit/]
+- **Re-derivation:** 38,646 Cr ÷ 853 Mn = ₹453.1 → matches the disclosed ₹453 exactly. ✓
+- Food-delivery NOV FY25 = ₹32,862 Cr (GOV minus discounts), also disclosed — implies
+  a blended discount of ~15% off GOV, i.e. a *net* AOV around ₹385.
 
-Swiggy's DRHP (2024 pre-IPO filing) is reported, via search synthesis of Outlook
-Business/Business Today coverage, to show GOV of ~₹35,000 cr across ~14.3M monthly
-transacting users for the consumer business (food delivery + Instamart + dining) —
-this is a blended figure across business lines, not a clean food-delivery AOV.
-[hypothesis — https://www.outlookbusiness.com/start-up/explainers/what-swiggys-ipo-filing-reveals-about-its-bid-to-take-on-zomato]
+**Swiggy — food delivery, FY25:**
+- AOV series (₹/order): FY22 407 · FY23 416 · FY24 428 · **FY25 458**
+  [verified — Swiggy Ltd FY25 Annual Report,
+  https://www.swiggy.com/corporate/wp-content/uploads/2025/07/Swiggy-Annual-Report-FY-2024-25.pdf]
+- FY25 food-delivery GOV ₹28,783 Cr ÷ Total Orders 628.9 Mn = **₹457.6 → matches
+  disclosed ₹458.** ✓ (Q4FY25 food-delivery GOV ₹7,347 Cr independently confirmed in
+  the Q4FY25 shareholder letter,
+  https://www.swiggy.com/corporate/wp-content/uploads/2025/05/Q4-FY2025-Shareholder-letter.pdf)
 
-Quick-commerce AOVs (Blinkit ₹665, Instamart ₹527, FY25) are a **different product
-category** (10-minute grocery delivery) from restaurant food delivery — flagging this
-explicitly so it doesn't get conflated with Bounce's "food delivery vice" logging,
-which is about restaurant meal orders.
+**Convergence:** two independent primary sources land within ₹5 of each other
+(₹453 vs ₹458). This is the authoritative anchor the earlier "₹425" blog synthesis
+only gestured at.
 
-No Bangalore-specific or single-item (e.g., "typical biryani order") price was found;
-searches for specific delivery menu prices (biryani, thali) returned only restaurant
-directory listings with no visible prices in the fetched search snippets.
+**Three caveats that keep this honest (claim-verifier discipline):**
+1. **Blended national, not Bangalore.** Neither company publishes city-level AOV.
+   Bangalore is a metro/tier-1 market and plausibly sits *at or above* the blended
+   figure — so ₹453–458 is a reasonable floor for the Bangalore pilot, not a ceiling.
+2. **Per-order, not per-person.** AOV = GOV ÷ *all* orders, including multi-person /
+   group orders. Bounce's "food-delivery vice" is usually one person's indulgent
+   order, so AOV is an anchor, not a 1:1 map to a single-diner spend.
+3. **The tail is deliberately widening downward.** Eternal's Q4FY26 letter states a
+   *declining net AOV* is an intended outcome of pushing budget-conscious orders
+   (free-delivery min order cut ₹199→₹99; curated meals under ₹250). So a large,
+   growing share of real orders sit ₹99–250 — which is exactly the band the
+   **lunchbox delivery baseline (₹200–380)** models. The baseline is therefore
+   *bounded and directionally supported* by primary data, though the specific
+   solo-lunch figure is still Bounce's own segmentation, not a published number.
+
+**Not conflated:** Quick-commerce AOVs (Blinkit, and Swiggy Instamart's ₹700 in
+Q4FY26) are a **different product category** (10-min grocery) and are explicitly kept
+out of the food-delivery figure. The widely-cited "₹527" is Instamart QC AOV, *not*
+food delivery — an easy error the earlier synthesis nearly made.
+
+No Bangalore-specific or single-item (e.g. "typical biryani order") price is published
+by either platform; the blended AOV above is the best primary anchor available.
+
+**AOV resolution — claim-verifier verdict block:**
+
+| # | Claim (as checked) | Verdict | Confidence | Source / derivation |
+|---|---|---|---|---|
+| 1 | Zomato food-delivery AOV = ₹453 (FY25, blended) | **Confirmed** | 94 | Eternal FY25 filing GOV ₹38,646 Cr ÷ 853 Mn orders = ₹453.1; matches disclosed ₹453 |
+| 2 | Swiggy food-delivery AOV = ₹458 (FY25, blended) | **Confirmed** | 95 | Swiggy FY25 AR GOV ₹28,783 Cr ÷ 628.9 Mn orders = ₹457.6; matches disclosed ₹458 |
+| 3 | National blended food-delivery AOV ≈ ₹453–458 (FY25) | **Confirmed** | 92 | Two independent primary sources converge within ₹5 |
+| 4 | Bangalore-specific food-delivery AOV | **Unverifiable** | 40 | Neither company publishes city-level AOV; genuine disclosure gap. Blended figure used as proxy (metro likely ≥ blend) |
+| 5 | Lunchbox delivery baseline ₹200–380 = a real solo-lunch order value | **Unverifiable** | 55 | Bounded by verified sub-₹250 budget-meal segment, but the specific solo figure is Bounce's own segmentation, not a published number |
+| 6 | Earlier "₹425 Q1FY25" blog figure | **Superseded** | — | Plausible for a single quarter; FY25 full-year is ₹453 (primary). Not contradicted, just replaced by a better source |
+
+**Summary:** 3 confirmed · 0 contradicted · 2 unverifiable (Bangalore-specific,
+solo-lunch figure) — **safe to ingest: yes** for the national blended AOV (₹453–458);
+keep the Bangalore/solo-lunch breakouts tagged `[hypothesis]` until a per-order sweep.
 
 ### 4. Home-cooked meal baseline
 
@@ -164,16 +215,14 @@ distinction should be made explicit in the doc.
 
 ## What we could NOT verify
 
-- **Zomato/Swiggy Bangalore-specific average order value.** Searched: "Swiggy Zomato
-  average order value Bangalore 2026", "Zomato food delivery average order value
-  annual report FY25", direct fetch of blog.zomato.com/q1fy25 (timed out twice),
-  direct fetch of Swiggy Q3FY25 and Eternal Q1FY26 shareholder-letter PDFs (both
-  rendered as unreadable image-based binary). Found instead: a search-engine-synthesized
-  claim of "₹425 in Q1FY25" with no independently-confirmed primary reading, and two
-  blended, non-Bangalore-specific company-wide GOV/MTU figures. What would settle it:
-  a text-native copy of Zomato's or Swiggy's quarterly investor deck (not the
-  infographic-style PDF), or a city-level breakout, which neither company appears to
-  publish externally.
+- ~~**Zomato/Swiggy average order value.**~~ **RESOLVED 2026-07-12** — see §3. The
+  *national blended* food-delivery AOV is now verified at **₹453 (Zomato) / ₹458
+  (Swiggy), FY25**, both re-derived from primary text-native filings. What remains
+  *un*verified is only the **Bangalore-specific** and **single-diner** breakouts —
+  neither company publishes city-level or per-person AOV, and this appears to be a
+  genuine external-disclosure gap, not a search failure. For pilot purposes the
+  blended ₹455 anchor is sufficient; a Bangalore-specific number would require a
+  primary per-order sweep (venture doc Phase-2 cost audit).
 
 - **A single named budget-tier bar/pub's actual drink menu** (Indiranagar/HSR/Koramangala).
   Searched several specific venue names; only broad cost-of-living blog estimates
@@ -207,9 +256,10 @@ distinction should be made explicit in the doc.
 
 ## Suggested next questions
 
-1. Get a text-native (not image PDF) copy of Zomato's or Swiggy's latest investor
-   letter, or find a press article that quotes AOV with an explicit citation to page/
-   line — needed before the food-delivery placeholder can move past "hypothesis."
+1. ~~Get a text-native copy of Zomato's/Swiggy's investor letter to verify AOV.~~
+   **DONE 2026-07-12** — food-delivery AOV verified at ₹453–458 (FY25) from primary
+   filings (§3). Remaining follow-up: a Bangalore-specific / single-diner per-order
+   sweep if the pilot needs a city-level number sharper than the national blend.
 2. Pull 3–5 actual Zomato/Swiggy restaurant menu pages for specific Bangalore budget
    venues (not breweries) to nail the alcohol budget tier and a "typical single meal
    order" figure for food delivery — this pass's WebFetch attempts on Zomato pages

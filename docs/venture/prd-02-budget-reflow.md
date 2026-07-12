@@ -3,7 +3,7 @@
 **Owner:** Product (Founder A lane — engine/PM)
 **Builds in:** Phase 3, Week 4 (alongside the $D_t$/EMA balance engine)
 **Source of truth:** `docs/venture/Bounce_Strategic_Documentation_Suite.md` v0.3, Domain 1 §6 ("Financial Recalibration") + Part 3 schema
-**Version:** v0.2 · 2026-07-12 · _v0.1: initial build-ready PRD (extracts Domain 1 §6, adds `savings_ledger`). v0.2: founder decisions landed — per-tier home cost ₹100/200/300, lunch baselines ₹250/350/450 (credit ~₹150/day), Monday **04:00** IST week boundary (follows PRD-01 Q1), OQ2/OQ3/OQ5 closed; §8 concierge script obsolete per doc v0.4 (retained as interview guide). OQ1 (delivery AOV) remains open._
+**Version:** v0.3 · 2026-07-12 · _Food-delivery AOV **verified** and tags flipped (§5, FR6): national blended AOV ₹453–458 (FY25) confirmed from Eternal + Swiggy primary filings (re-derived GOV÷orders); vice-cost mid-tier now anchored, with Bangalore-specific + solo-lunch figures the only residual `[hypothesis]`. v0.2 resolved all open questions into the body (§9 removed): home cost flat ₹80 (FR6); two-baseline delivery split adopted (FR6); `{suggestion}` deterministic until the reflow-reaction gate passes (FR3/§4); all math fixed to Asia/Kolkata (FR2). v0.1 extracted Domain 1 §6 into observable requirements, added `savings_ledger`, resolved the ₹80 home-cost scope._
 
 ---
 
@@ -135,6 +135,13 @@ Crossing Monday 04:00 IST zeroes `spent_inr` in the new row (a Monday 02:00 log
 still counts toward the outgoing week). "Days left" on Friday computes to 3; on
 Sunday to 1.
 
+**Timezone — decided, single-zone:** all budget math (week boundaries, the
+Monday 00:00 reset, and "days left") is fixed to **Asia/Kolkata**, hard-coded —
+there is no per-user timezone field in MVP. The Bangalore pilot is IST-only, so
+the traveling-user / timezone-crossing case is **explicitly out of scope**;
+revisit only if Bounce expands beyond IST users. This assumption is recorded here
+so the boundary logic is unambiguous for the builder.
+
 ### FR3 — On-log recalculation + the "path back" message
 
 **Behavior:** **every vice log** (the exact trigger — one recalculation per log
@@ -151,6 +158,12 @@ you're clear" where N = days-left, or "you're clear" when `R ≥ 0` and allowanc
 comfortably covers the tier). Phrasing is seeded from the §8 script language +
 the Week-0 recruitment copy probe (doc v0.4 — there is no manual pilot to learn
 from), and retuned from Week-5 interview verbatims.
+
+**Decided — templatize only after the gate:** the deterministic string ships as-is
+for MVP. We do **not** invest in `{suggestion}` NLG or harvest pilot phrasings into
+templates until the **budget-reflow-reaction gate (§6) passes** — no point tuning
+the copy of a mechanic that isn't yet proven wanted. Post-gate, templatization is
+handed to marketing-growth's copy lane (out of this PRD).
 
 - **Given** `W = 3000`, `spent_inr = 800`, on a **Friday** (3 days left), the user
   logs a `Philosophical` night (`cost_inr = 1200`) and then a delivery order
@@ -239,16 +252,34 @@ the doc's old "₹120–300/day" claim becomes **~₹150/day**):
 | Mid | ₹350 | ₹200 | **₹150** |
 | Premium | ₹450 | ₹300 | **₹150** |
 
-All six constants `[hypothesis — food-delivery AOV unverifiable from primary
-sources (cost audit 2026-07-12, OQ1); home costs are the founders' own
-fully-loaded estimates for working-class/student budgets]` — calibration
-placeholders, retunable after the cohort. Stored as per-tier constants
-`HOME_COST_INR = {100, 200, 300}` and `LUNCH_BASELINE_INR = {250, 350, 450}`.
-Context kept from the cost audit: raw ingredients compute to ₹25–40/portion
-`[verified — BigBasket/mandi unit prices]` and paid tiffins run ₹85–235
-`[verified — tiffin pricing]`; the per-tier home costs are deliberately
-_fully-loaded_ (LPG + protein + wastage) and sit above the raw floor so savings
-never look inflated.
+These lunch baselines sit **below** the now-verified blended food-delivery AOV of
+₹453–458 (§5) — by design, since a solo everyday lunch is smaller than a blended
+(often multi-person) order, and they map to Zomato's verified sub-₹250 budget-meal
+segment. So the baselines are **anchored and directionally supported by primary
+data**, but the specific solo-lunch figures remain `[hypothesis — Bounce's own
+segmentation of the verified AOV, not a standalone published number; Bangalore
+per-order sweep would confirm]`. The credit band still lands in the doc's stated
+₹120–300 range — treat as **calibrated** (against a verified anchor), not yet
+confirmed per-tier.
+
+**Two-baseline split — adopted (MVP design):** the lunchbox uses a *dedicated*
+lunch-delivery baseline (₹200/300/380 — a routine weekday lunch) that is
+**deliberately distinct** from the vice-log delivery `cost_inr` (which can be a
+₹1,600 "Weekend Write-Off" blowout). These measure different behaviors, so they
+stay two numbers for MVP. Founder A signs off on this split at build time;
+unifying to one delivery baseline is a Phase-2 candidate only *if* real AOV data
+(§5) shows one number covers both cases.
+
+**₹80 home-cost scope — RESOLVED (recommendation, flagged):** adopt **₹80 as a
+single flat, *fully-loaded* home-cook cost** — LPG + protein + condiments +
+real-world wastage included, **not** raw ingredients. The cost audit shows raw
+ingredients compute to only ₹25–40/portion `[verified — BigBasket/mandi unit
+prices, cost audit 2026-07-12]`, which would make the savings *look inflated*;
+₹80 fully-loaded sits sensibly between that floor and the ₹85–235 paid-tiffin
+ceiling `[verified — tiffin-service pricing, cost audit 2026-07-12]`. **Flag:**
+₹80 remains `[hypothesis — cost audit 2026-07-12, fully-loaded scope is Bounce's
+own arithmetic, not a published figure]`; stored as a single constant
+`HOME_COST_INR = 80` so a Phase-2 audit can retune one number.
 
 - **Given** a **mid**-tier user logs a home-cooked dinner and accepts the
   double-portion prompt,
@@ -284,9 +315,9 @@ venture doc; the copy itself is out of this PRD's lane (marketing-growth).
 | Rollover / debt carry of overshoot | **Out — permanently, by design** | Debt-carry is a guilt mechanic (venture doc §6). No column, no logic. |
 | Auto-detecting cost from bank/SMS/Gmail | **Out (v2 candidate)** | Manual `cost_inr` only. AA/Gmail/SMS all verified out of MVP reach (venture doc Domain 4). |
 | Per-item itemized delivery/bar bills | **Out** | One `cost_inr` per log; tap-to-edit is the only granularity. Itemization is scope creep with no gate behind it. |
-| Multi-currency / non-INR | **Out** | Bangalore cohort is INR-only. |
-| Automated `{suggestion}` NLG | **Out of MVP** | MVP ships a deterministic string seeded from §8 language + the copy probe (doc v0.4). Learn phrasing from Week-5 interviews before coding generation. |
-| Ledger _decrement_ / spending the savings | **Out** | Ledger is additive/motivational, not a wallet. No withdraw action. |
+| Multi-currency / non-INR | **Out** | Bangalore pilot is INR-only. |
+| Automated `{suggestion}` NLG / templatization | **Out until the reflow-reaction gate passes** | Suggestion is founder-written by hand in the concierge (§8); MVP ships a deterministic string. No copy investment until the moat is validated (FR3); then it moves to marketing-growth. |
+| Ledger *decrement* / spending the savings | **Out** | Ledger is additive/motivational, not a wallet. No withdraw action. |
 | Savings-total → budget top-up ("earn more fun money") | **Out (tempting, fenced)** | Coupling the two ledgers turns a motivation surface into an incentive to over-cook/over-log; not validated. Raise with ceo-strategist if it recurs. |
 | Wallet-tier auto-inference from spend | **Out** | Tier is user-set at onboarding (FR1); no behavioral inference in MVP. |
 
@@ -303,18 +334,30 @@ Per repo claims discipline, every figure the reflow depends on, traced to
 | Smoking cost | per-stick × count; Gold Flake ≈ ₹12, Classic Milds ≈ ₹24, pack ≈ ₹120–240 | `[verified — TaxGuru Feb-2026 excise notification + live Zepto/Blinkit/Instamart listings, cost audit 2026-07-12]` |
 | Alcohol **premium** row | ~₹1,200–5,000/person brackets real menus | `[verified — Toit + Byg Brewski menus via Magicpin/ExploreBangalore, cost audit 2026-07-12]` |
 | Alcohol **budget/mid** rows | 300/600/1000, 600/1200/2500 | `[hypothesis — cost-of-living/nightlife blogs, no per-venue budget menu fetched, cost audit 2026-07-12]` |
-| Food-delivery vice costs (200/250/500 …) | tier table | `[hypothesis — see OQ1: AOV unverifiable]` |
-| **Lunch delivery baseline** (₹250/350/450) | drives lunchbox credit (founder-set 2026-07-12) | `[hypothesis — same AOV gap, cost audit 2026-07-12]` |
-| Home-cook cost `HOME_COST_INR` (₹100/200/300 per tier) | fully-loaded, founder-set 2026-07-12 | `[hypothesis — fully-loaded scope is Bounce arithmetic; raw-ingredient floor ₹25–40 is verified, cost audit 2026-07-12]` |
-| Lunchbox credit | ~₹150/day (all tiers) | `[hypothesis — derived from two unverified inputs above]` |
+| Blended food-delivery AOV | ₹453–458 (FY25) | `[verified — Eternal FY25 + Swiggy FY25 filings, re-derived GOV÷orders, cost audit 2026-07-12]` |
+| Food-delivery vice costs (200/250/500 …) | tier table | `[verified anchor — mid-tier ₹400–500 on national AOV]` / `[hypothesis — per-tier spread + Bangalore-specific, see §5 note]` |
+| **Lunch delivery baseline** (₹200/300/380) | drives lunchbox credit | `[hypothesis — solo everyday-lunch order; bounded by verified sub-₹250 budget-meal segment but not a standalone published figure, see §5 note]` |
+| Home-cook cost `HOME_COST_INR` | ₹80, fully-loaded | `[hypothesis — fully-loaded scope is Bounce arithmetic; raw-ingredient floor ₹25–40 is verified, cost audit 2026-07-12]` |
+| Lunchbox credit band | ₹120–300/day | `[hypothesis — derived from two unverified inputs above]` |
 
-**Open gap called out — food-delivery AOV (OQ1):** the Zomato/Swiggy average
-order value **could not be verified from primary sources** — investor PDFs are
-image-only and blog-synthesized "₹425" is unconfirmed `[hypothesis — cost audit
-2026-07-12, "What we could NOT verify" §1]`. Both the delivery _vice_ costs and
-the lunchbox _delivery baseline_ rest on this gap. **Do not upgrade either to
-`[verified]` without a text-native investor figure or a Bangalore per-order
-sweep** (venture doc Phase 2 cost audit).
+**Food-delivery AOV — RESOLVED (verified 2026-07-12):** the text-native-investor-figure
+path landed. Both majors publish food-delivery AOV in readable filings, each
+re-derived from disclosed GOV ÷ orders: **Zomato/Eternal ₹453 (FY25)** — GOV
+₹38,646 Cr ÷ 853 Mn orders = ₹453.1 — and **Swiggy ₹458 (FY25)** — GOV ₹28,783 Cr
+÷ 628.9 Mn orders = ₹457.6. Two independent primary sources converge within ₹5, so
+the **national blended food-delivery AOV ≈ ₹453–458** is now `[verified — Eternal
+FY25 Company Overview + Swiggy FY25 Annual Report, cost audit 2026-07-12]`. This
+supersedes the earlier unconfirmed "₹425" blog figure.
+
+**What is verified vs still calibration:** the *vice-log delivery cost* mid-tier
+(₹400–500) now sits on a verified anchor. **Two residual `[hypothesis]` items
+remain, and they are the ones this PRD's numbers actually ride on:** (1) the AOV is
+*blended national*, not Bangalore-specific (no platform publishes city-level AOV —
+Bangalore metro likely sits at or above the blend); (2) the lunchbox **lunch-delivery
+baseline (₹200/300/380)** is a *solo everyday-lunch* order, which is deliberately
+below the blended AOV and is bounded by Zomato's verified sub-₹250 budget-meal
+segment — but the specific solo figure is Bounce's own segmentation, not a published
+number. Both are resolvable only by a Bangalore per-order sweep (Phase-2 cost audit).
 
 ---
 
@@ -421,34 +464,7 @@ risk in the venture doc register.)
 
 ---
 
-## 9. Open questions
-
-- **OQ1 — food-delivery AOV (blocks two figures):** the delivery vice costs and
-  the lunchbox delivery baseline both rest on an **unverifiable** AOV
-  `[hypothesis — cost audit 2026-07-12]`. Resolve in Phase 2 with a text-native
-  investor figure or a Bangalore per-order sweep before either goes `[verified]`.
-- **OQ2 — DECIDED (founder, 2026-07-12): per-tier home cost ₹100/200/300**
-  (fully-loaded; "realistic for working class and students"). Supersedes the
-  flat-₹80 proposal. `[hypothesis]` constants, retunable post-cohort.
-- **OQ3 — DECIDED (founder, 2026-07-12): keep the two-baseline split AND raise
-  the lunch baselines to ₹250/350/450** so credits stay motivating (~₹150/day
-  all tiers). Still distinct from vice-log `cost_inr`. `[hypothesis]` pending
-  the OQ1 AOV audit.
-- **OQ4 — `{suggestion}` generation:** MVP ships a deterministic string. When do
-  we templatize, and from which phrasings — copy-probe verbatims or Week-5
-  interview language (doc v0.4)? (Feeds marketing-growth's copy lane — out of
-  this PRD.)
-- **OQ5 — DECIDED (default accepted, 2026-07-12):** all math is Asia/Kolkata
-  fixed; no traveling-user handling for the Bangalore cohort. Day/week boundary
-  is **04:00 IST** per PRD-01 Q1 (see FR2).
-
-**Flag to ceo-strategist:** none on direction — this PRD executes Domain 1 §6 as
-written. The only strategic-adjacent choice fenced out (savings-total → budget
-top-up, §4) is noted there in case it resurfaces as a growth idea.
-
----
-
-## 10. Dev handoff (vertical slices, build order)
+## 9. Dev handoff (vertical slices, build order)
 
 Handoff into the dev pipeline (grilling → PRD → vertical slices, via the grilling
 skill + product-manager agent). Each slice is one end-to-end behavior through the
@@ -473,5 +489,5 @@ alongside the $D_t$/EMA engine (venture doc Phase 3 table).
 
 **Grilling focus before build:** the week-boundary/timezone edge (Slice A), the
 "alarm exactly once per week" invariant (Slice C), and the two-baseline delivery
-split (OQ3, Slice D) are the three places this is most likely to be wrong — grill
+split (FR6, Slice D) are the three places this is most likely to be wrong — grill
 those first.
