@@ -16,10 +16,11 @@ _Last synced: 2026-07-12._
 - Here are the 3-founder side-project squad building **Nudge**
   - Founder A profile:
     engine/PM lane per the venture doc's Part 4 charter.
-    Day job: junior Salesforce dev
+    Day job: junior SDE (Javascript,SpringBoot,Java,typescript)
   - Founder B profile :
     Day Job: junior python developer, working on optimizing AI workflows.
   - Founder C profile:
+     Day job: Junior Python Developer works on AI and cybersecurity.
 
   (this repo is personal, evenings-and-weekends for all three of us.)
 - Hard constraints: git only when explicitly asked (see CLAUDE.local.md rule 1);
